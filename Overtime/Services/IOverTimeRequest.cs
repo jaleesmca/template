@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Overtime.Services
 {
-    interface IUser
+    interface IOverTimeRequest
     {
-        IEnumerable<User> GetUsers { get;}
-        User GetUser(int id);
+        IEnumerable<OverTimeRequest> GetRequests { get; }
+        OverTimeRequest GetOverTimeRequest(int id);
 
-        void Add(User user);
+        void Add(OverTimeRequest overTimeRequest);
 
         void Remove(int id);
     }

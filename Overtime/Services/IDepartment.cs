@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Overtime.Services
 {
-    interface IUser
+    interface IDepartment
     {
-        IEnumerable<User> GetUsers { get;}
-        User GetUser(int id);
+        IEnumerable<Department> GetDepartments { get; }
+        Department GetDepartment(int id);
 
-        void Add(User user);
+        void Add(Department department);
 
         void Remove(int id);
     }

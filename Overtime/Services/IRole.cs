@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Overtime.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Overtime.Services
 {
-    interface Role
+    interface IRole
     {
-        IEnumerable<Role> GetRoles { get; set; }
+        IEnumerable<Role> GetRoles { get; }
         Role GetRole(int id);
 
         void Add(Role role);

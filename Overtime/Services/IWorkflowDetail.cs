@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Overtime.Services
 {
-    interface IUser
+    interface IWorkflowDetail
     {
-        IEnumerable<User> GetUsers { get;}
-        User GetUser(int id);
+        IEnumerable<WorkflowDetail> GetWorkFlowDetails { get; set; }
+        WorkflowDetail GetWorkFlowDetail(int id);
 
-        void Add(User user);
+        void Add(WorkflowDetail workflow);
 
         void Remove(int id);
     }
