@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,6 +19,9 @@ namespace Overtime.Models
         public string u_password { get; set; }
 
         public int u_role_id { get; set; }
+
+        [NotMapped]
+        public string u_role_name { get; set; }
 
         public int u_dep_id { get; set; }
 

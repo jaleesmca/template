@@ -1,0 +1,103 @@
+﻿@model IEnumerable<Overtime.Models.Workflow>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.w_description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.w_active_yn)
+            </th>
+            <th>
+                View Detail
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.w_cre_by)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.w_cre_date)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.w_description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.w_active_yn)
+            </td>
+            <th>
+                <button type="button" onclick="openWorkflowDetl()">
+                    View
+                </button>
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.w_cre_by)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.w_cre_date)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.w_id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.w_id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+<div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Workflow Detail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label  class="control-label">Role</label>
+                                <select class="form-control" asp-items="@(new SelectList(ViewBag.RoleList,"r_id","r_description"))"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label>workflow Priority</label>
+                            <input type="number" id="wdfRolePriority" name="wdfRolePriority" class="form-control"
+                                   value="">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="button" id="save" class="btn hover" onclick="saveWorkFlowDetails()"
+                                   style="margin-top: 25px;" value="Save"> </input>
+                        </div>
+                       
+                    </div>
+                    <div id="cont" style="width:75%;margin-top:20px;">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+    </div>
+</div>

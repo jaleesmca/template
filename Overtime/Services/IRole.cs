@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Overtime.Services
 {
-    interface IRole
+    public interface IRole
     {
         IEnumerable<Role> GetRoles { get; }
         Role GetRole(int id);

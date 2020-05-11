@@ -34,6 +34,7 @@ namespace Overtime.Repository
         {
             Department department = db.Departments.Find(id);
             db.Departments.Remove(department);
+            db.SaveChanges();
            
         }
     }

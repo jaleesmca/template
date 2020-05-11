@@ -15,7 +15,7 @@ namespace Overtime.Repository
         {
             db = _db;
         }
-        public IEnumerable<Workflow> GetWorkflows { get => throw new NotImplementedException(); }
+        public IEnumerable<Workflow> GetWorkflows => db.Workflows;
 
         public void Add(Workflow workflow)
         {

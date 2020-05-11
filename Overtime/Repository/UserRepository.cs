@@ -34,6 +34,7 @@ namespace Overtime.Repository
         {
             User user = db.Users.Find(id);
             db.Users.Remove(user);
+            db.SaveChanges();
         }
     }
 }

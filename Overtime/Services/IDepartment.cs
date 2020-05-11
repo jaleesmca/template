@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Overtime.Services
 {
-    interface IDepartment
+    public interface IDepartment
     {
         IEnumerable<Department> GetDepartments { get; }
         Department GetDepartment(int id);

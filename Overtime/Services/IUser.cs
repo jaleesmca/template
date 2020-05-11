@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Overtime.Services
 {
-    interface IUser
+    public interface IUser
     {
         IEnumerable<User> GetUsers { get;}
         User GetUser(int id);

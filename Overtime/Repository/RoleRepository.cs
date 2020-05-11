@@ -34,6 +34,7 @@ namespace Overtime.Repository
         {
             Role role = db.Roles.Find(id);
             db.Roles.Remove(role);
+            db.SaveChanges();
         }
     }
 }

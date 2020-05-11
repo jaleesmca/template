@@ -1,0 +1,65 @@
+﻿@model Overtime.Models.User
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="u_id" />
+            <div class="form-group">
+                <label asp-for="u_name" class="control-label"></label>
+                <input asp-for="u_name" class="form-control" />
+                <span asp-validation-for="u_name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="u_password" class="control-label"></label>
+                <input asp-for="u_password" class="form-control" />
+                <span asp-validation-for="u_password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="u_role_id" class="control-label"></label>
+                <input asp-for="u_role_id" class="form-control" />
+                <span asp-validation-for="u_role_id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="u_dep_id" class="control-label"></label>
+                <input asp-for="u_dep_id" class="form-control" />
+                <span asp-validation-for="u_dep_id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="u_active_yn" class="control-label"></label>
+                <input asp-for="u_active_yn" class="form-control" />
+                <span asp-validation-for="u_active_yn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="u_cre_by" class="control-label"></label>
+                <input asp-for="u_cre_by" class="form-control" />
+                <span asp-validation-for="u_cre_by" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="u_cre_date" class="control-label"></label>
+                <input asp-for="u_cre_date" class="form-control" />
+                <span asp-validation-for="u_cre_date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

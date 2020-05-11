@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Overtime.Services
 {
-    interface IWorkflow
+    public interface IWorkflow
     {
         IEnumerable<Workflow> GetWorkflows { get; }
         Workflow GetWorkflow(int id);
