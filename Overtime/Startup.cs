@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Overtime.Repository;
+using Overtime.Services;
 
 namespace Overtime
 {
@@ -27,6 +28,13 @@ namespace Overtime
         {
             services.AddDbContext<DBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionStr")));
             services.AddControllersWithViews();
+            services.AddTransient<IUser, UserRepository>();
+            services.AddTransient<IRole, RoleRepository>();
+            services.AddTransient<IDepartment, DepartmentRepository>();
+            services.AddTransient<IWorkflow, WorkflowRepository>();
+            services.AddTransient<IWorkflowDetail, WorkflowDetailRepository>();
+            services.AddTransient<IWorkflowTracker,WorkflowTrackerRepository>();
+            services.AddTransient<IOverTimeRequest, OverTimeRequestRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

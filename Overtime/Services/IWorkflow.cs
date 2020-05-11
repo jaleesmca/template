@@ -8,7 +8,7 @@ namespace Overtime.Services
 {
     interface IWorkflow
     {
-        IEnumerable<Workflow> GetWorkflows { get; set; }
+        IEnumerable<Workflow> GetWorkflows { get; }
         Workflow GetWorkflow(int id);
 
         void Add(Workflow workflow);
