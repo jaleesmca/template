@@ -1,0 +1,112 @@
+﻿
+CREATE TABLE [dbo].[Department](
+	[d_id] [int] IDENTITY(1,1) NOT NULL,
+	[d_description] [varchar](50) NULL,
+	[d_active_yn] [varchar](1) NULL,
+	[d_cre_by] [int] NULL,
+	[d_cre_date] [datetime] NULL,
+ CONSTRAINT [PK_Department] PRIMARY KEY CLUSTERED 
+(
+	[d_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[Role](
+	[r_id] [int] IDENTITY(1,1) NOT NULL,
+	[r_description] [varchar](50) NULL,
+	[r_active_yn] [varchar](1) NULL,
+	[r_cre_by] [int] NULL,
+	[r_cre_date] [datetime] NULL,
+ CONSTRAINT [PK_Role] PRIMARY KEY CLUSTERED 
+(
+	[r_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+
+CREATE TABLE [dbo].[Request](
+	[rq_id] [int] IDENTITY(1,1) NOT NULL,
+	[rq_doc_id] [int] null,
+	[rq_description] [varchar](max) null,
+	[rq_dep_id] [int] NULL,
+	[rq_start_time] [datetime] NOT NULL,
+	[rq_no_of_hours] [int] NOT NULL,
+	[rq_remarks][varchar](max) null,
+	[rq_status] [int] null,
+	[rq_active_yn] [varchar](1) NULL,
+	[rq_cre_by] [int] NULL,
+	[rq_cre_date] [datetime] NULL,
+ CONSTRAINT [PK_Request] PRIMARY KEY CLUSTERED 
+(
+	[rq_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+CREATE TABLE [dbo].[Workflow_tracker](
+	[wt_id] [int] IDENTITY(1,1) NOT NULL,
+	[wt_doc_id] int NULL,
+	[wt_workflow_id] [int] NULL,
+	[wt_role_id] int null,
+	[wt_assigned_to] int null,
+	[wf_remarks] varchar(max) null,
+	[wf_pro_status] varchar(20) null,
+	[wt_cre_by] [int] NULL,
+	[wt_cre_date] [datetime] NULL,
+ CONSTRAINT [PK_Workflow_tracker] PRIMARY KEY CLUSTERED 
+(
+	[wt_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[User](
+	[u_id] [int] IDENTITY(1,1) NOT NULL,
+	[u_name] [varchar](50) NULL,
+	[u_password] [varchar](50) NULL,
+	[u_role_id] [int] NULL,
+	[u_dep_id] [int] NULL,
+	[u_active_yn] [varchar](1) NULL,
+	[u_cre_by] [int] NULL,
+	[u_cre_date] [datetime] NULL,
+ CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED 
+(
+	[u_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+CREATE TABLE [dbo].[Workflow_Detail](
+	[wd_id] [int] IDENTITY(1,1) NOT NULL,
+	[wd_workflow_id] [varchar](50) NULL,
+	[wd_role_id] [int] NOT NULL,
+	[wd_priority] [int] NOT NULL,
+	[wd_active_yn] [varchar](1) NULL,
+	[wd_cre_by] [int] NULL,
+	[wd_cre_date] [datetime] NULL,
+ CONSTRAINT [PK_Workflow_Detail] PRIMARY KEY CLUSTERED 
+(
+	[wd_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+CREATE TABLE [dbo].[document](
+	[d_id] [int] IDENTITY(1,1) NOT NULL,
+	[d_description] [varchar](50) NULL,
+	[wd_active_yn] [varchar](1) NULL,
+	[wd_cre_by] [int] NULL,
+	[wd_cre_date] [datetime] NULL,
+ CONSTRAINT [PK_document] PRIMARY KEY CLUSTERED 
+(
+	[d_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
