@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Overtime.Models.WorkflowDetail>
+@{ 
+    Layout = null;
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.wd_workflow_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.wd_role_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.wd_priority)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.wd_active_yn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.wd_cre_by)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.wd_cre_date)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.wd_workflow_id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.wd_role_id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.wd_priority)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.wd_active_yn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.wd_cre_by)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.wd_cre_date)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

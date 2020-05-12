@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Overtime.Services
 {
-    interface IOverTimeRequest
+   public interface IOverTimeRequest
     {
-        IEnumerable<OverTimeRequest> GetRequests { get; }
+        IEnumerable<OverTimeRequest> GetOvertimeRequests { get; }
         OverTimeRequest GetOverTimeRequest(int id);
 
         void Add(OverTimeRequest overTimeRequest);

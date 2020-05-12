@@ -29,10 +29,19 @@ namespace Overtime.Repository
             return workflowDetail;
         }
 
+        public IEnumerable<WorkflowDetail> GetWorkFlowDetailsByWorkFlow(int Wf_id)
+        {
+            IEnumerable<WorkflowDetail> workflow = db.WorkflowDetails.Where(s => s.wd_workflow_id == Wf_id);
+            
+            Console.WriteLine(workflow);
+            return workflow;
+        }
+
         public void Remove(int id)
         {
             WorkflowDetail workflowDetail = db.WorkflowDetails.Find(id);
             db.WorkflowDetails.Remove(workflowDetail);
         }
+
     }
 }

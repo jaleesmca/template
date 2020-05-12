@@ -4,50 +4,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Overtime.Models;
-using Overtime.Repository;
 using Overtime.Services;
 
 namespace Overtime.Controllers
 {
-    public class WorkflowController : Controller
+    public class OvertimeRequestController : Controller
     {
-        private readonly IWorkflow iworkflow;
-        private readonly IRole irole;
-        private readonly IWorkflowDetail iworkflowDetail;
-
-        public WorkflowController(IWorkflow _iworkflow, IRole _irole, IWorkflowDetail _iworkflowDetail)
+        private readonly IOverTimeRequest ioverTimeRequest;
+       
+        public OvertimeRequestController(IOverTimeRequest _ioverTimeReques)
         {
-            iworkflow = _iworkflow;
-            irole = _irole;
-            iworkflowDetail = _iworkflowDetail;
+            ioverTimeRequest = _ioverTimeReques;
         }
 
-        public ActionResult Index(int id)
+        // GET: OvertimeRequest
+        public ActionResult Index()
         {
-            ViewBag.RoleList = (irole.GetRoles);
-            return View(iworkflow.GetWorkflows);
+            return View(ioverTimeRequest.GetOvertimeRequests);
         }
-        // GET: Workflow/Details/5
+
+        // GET: OvertimeRequest/Details/5
         public ActionResult Details(int id)
         {
-            return View(iworkflowDetail.GetWorkFlowDetailsByWorkFlow(id));
+            return View();
         }
 
-        // GET: Workflow/Create
+        // GET: OvertimeRequest/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Workflow/Create
+        // POST: OvertimeRequest/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Workflow workflow)
+        public ActionResult Create(IFormCollection collection)
         {
             try
             {
-                iworkflow.Add(workflow);
+                // TODO: Add insert logic here
 
                 return RedirectToAction(nameof(Index));
             }
@@ -57,13 +52,13 @@ namespace Overtime.Controllers
             }
         }
 
-        // GET: Workflow/Edit/5
+        // GET: OvertimeRequest/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Workflow/Edit/5
+        // POST: OvertimeRequest/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -80,21 +75,21 @@ namespace Overtime.Controllers
             }
         }
 
-        // GET: Workflow/Delete/5
+        // GET: OvertimeRequest/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Workflow/Delete/5
+        // POST: OvertimeRequest/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, Workflow workflow)
+        public ActionResult Delete(int id, IFormCollection collection)
         {
             try
             {
-                iworkflow.Remove(id);
-                
+                // TODO: Add delete logic here
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -102,6 +97,5 @@ namespace Overtime.Controllers
                 return View();
             }
         }
-
     }
 }

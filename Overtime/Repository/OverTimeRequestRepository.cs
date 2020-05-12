@@ -16,23 +16,24 @@ namespace Overtime.Repository
             db = _db;
         }
 
-        public IEnumerable<OverTimeRequest> GetRequests => db.OverTimeRequests;
+        public IEnumerable<OverTimeRequest> GetOvertimeRequests => db.OverTimeRequest;
+
 
         public void Add(OverTimeRequest overTimeRequest)
         {
-            db.OverTimeRequests.Add(overTimeRequest);
+            db.OverTimeRequest.Add(overTimeRequest);
         }
 
         public OverTimeRequest GetOverTimeRequest(int id)
         {
-           OverTimeRequest overTimeRequest= db.OverTimeRequests.Find(id);
+           OverTimeRequest overTimeRequest= db.OverTimeRequest.Find(id);
             return overTimeRequest;
         }
 
         public void Remove(int id)
         {
-            OverTimeRequest overTimeRequest = db.OverTimeRequests.Find(id);
-            db.OverTimeRequests.Remove(overTimeRequest);
+            OverTimeRequest overTimeRequest = db.OverTimeRequest.Find(id);
+            db.OverTimeRequest.Remove(overTimeRequest);
         }
     }
 }

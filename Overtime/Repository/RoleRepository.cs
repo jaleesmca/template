@@ -9,7 +9,7 @@ namespace Overtime.Repository
 {
     public class RoleRepository : IRole
     {
-        private DBContext db;
+        private readonly DBContext db;
 
         public RoleRepository(DBContext _db)
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Overtime.Services
 {
-    interface IWorkflowDetail
+    public interface IWorkflowDetail
     {
         IEnumerable<WorkflowDetail> GetWorkFlowDetails { get; }
         WorkflowDetail GetWorkFlowDetail(int id);
@@ -14,5 +14,7 @@ namespace Overtime.Services
         void Add(WorkflowDetail workflow);
 
         void Remove(int id);
+
+        IEnumerable<WorkflowDetail> GetWorkFlowDetailsByWorkFlow(int Workflow);
     }
 }
