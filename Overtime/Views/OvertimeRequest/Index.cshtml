@@ -30,17 +30,12 @@
                 @Html.DisplayNameFor(model => model.rq_remarks)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.rq_status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.rq_active_yn)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.rq_cre_by)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.rq_cre_date)
             </th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -63,12 +58,6 @@
                 @Html.DisplayFor(modelItem => item.rq_remarks)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.rq_status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.rq_active_yn)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.rq_cre_by)
             </td>
             <td>
@@ -76,8 +65,10 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.rq_id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.rq_id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.rq_id">Delete</a>
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.rq_id">Send</a>
             </td>
         </tr>
 }

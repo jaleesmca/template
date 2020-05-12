@@ -22,6 +22,7 @@ namespace Overtime.Repository
         public void Add(OverTimeRequest overTimeRequest)
         {
             db.OverTimeRequest.Add(overTimeRequest);
+            db.SaveChanges();
         }
 
         public OverTimeRequest GetOverTimeRequest(int id)
@@ -34,6 +35,7 @@ namespace Overtime.Repository
         {
             OverTimeRequest overTimeRequest = db.OverTimeRequest.Find(id);
             db.OverTimeRequest.Remove(overTimeRequest);
+            db.SaveChanges();
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Overtime.Models;
 using Overtime.Services;
 
 namespace Overtime.Controllers
@@ -38,12 +39,11 @@ namespace Overtime.Controllers
         // POST: OvertimeRequest/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(OverTimeRequest overTimeRequest)
         {
             try
             {
-                // TODO: Add insert logic here
-
+                ioverTimeRequest.Add(overTimeRequest);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -55,7 +55,8 @@ namespace Overtime.Controllers
         // GET: OvertimeRequest/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            
+            return View(ioverTimeRequest.GetOverTimeRequest(id));
         }
 
         // POST: OvertimeRequest/Edit/5
