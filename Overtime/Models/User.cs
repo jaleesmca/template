@@ -11,11 +11,14 @@ namespace Overtime.Models
     {
         [Key]
         public int u_id { get; set; }
+
+        [Display(Name = "Username")]
         public string u_name
         {
             get; set;
         }
 
+        [Display(Name = "Password")]
         public string u_password { get; set; }
 
         public int u_role_id { get; set; }

@@ -14,5 +14,6 @@ namespace Overtime.Services
         void Add(User user);
 
         void Remove(int id);
+        User getUserbyUsername(string u_name);
     }
 }

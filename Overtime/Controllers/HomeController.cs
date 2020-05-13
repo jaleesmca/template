@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Overtime.Models;
@@ -20,6 +21,9 @@ namespace Overtime.Controllers
 
         public IActionResult Index()
         {
+            String _user = "Admin";
+            HttpContext.Session.SetString("User", _user);
+            ViewBag.Name = HttpContext.Session.GetString("User");
             return View();
         }
 
