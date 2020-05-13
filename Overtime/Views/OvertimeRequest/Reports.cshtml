@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Overtime.Models.OverTimeRequest>
+
+@{
+    ViewData["Title"] = "Reports";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Reports</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_doc_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_workflow_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_dep_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_start_time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_no_of_hours)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_remarks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_active_yn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_cre_by)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_cre_date)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_doc_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_workflow_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_dep_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_start_time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_no_of_hours)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_remarks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_active_yn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_cre_by)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_cre_date)
+            </td>
+           
+        </tr>
+}
+    </tbody>
+</table>

@@ -23,7 +23,33 @@ namespace Overtime.Repository
             db.SaveChanges();
         }
 
-        public WorkflowDetail GetWorkFlowDetail(int id)
+        public int getMaxOfWorkflow(int workflow)
+        {
+            int maxPriority = db.WorkflowDetails.Where(s => s.wd_workflow_id == workflow).Select(p => p.wd_priority).DefaultIfEmpty(0).Max();
+            return maxPriority;
+        }
+
+        public int getMinOfWorkFlow(int workflow)
+        {
+            int minPriority = db.WorkflowDetails.Where(s => s.wd_workflow_id == workflow).Select(p => p.wd_priority).DefaultIfEmpty(0).Min();
+            return minPriority;
+        }
+        public int getNextWorkflow(int workflow, int current)
+        {
+            System.Diagnostics.Debug.WriteLine(current+" "+workflow);
+            int next = db.WorkflowDetails.Where(s => s.wd_workflow_id == workflow &&s.wd_priority>current)
+                .OrderBy(p => p.wd_priority).Select(p => p.wd_priority).FirstOrDefault();
+            return next;
+        }
+
+        public int getPreviousWorkflow(int workflow, int current)
+        {
+            int previous = db.WorkflowDetails.Where(s => s.wd_workflow_id == workflow && s.wd_priority < current)
+                .OrderByDescending(p => p.wd_priority).Select(p => p.wd_priority).FirstOrDefault();
+            return previous;
+
+        }
+            public WorkflowDetail GetWorkFlowDetail(int id)
         {
             WorkflowDetail workflowDetail = db.WorkflowDetails.Find(id);
             return workflowDetail;
@@ -32,8 +58,6 @@ namespace Overtime.Repository
         public IEnumerable<WorkflowDetail> GetWorkFlowDetailsByWorkFlow(int Wf_id)
         {
             IEnumerable<WorkflowDetail> workflow = db.WorkflowDetails.Where(s => s.wd_workflow_id == Wf_id);
-            
-            Console.WriteLine(workflow);
             return workflow;
         }
 

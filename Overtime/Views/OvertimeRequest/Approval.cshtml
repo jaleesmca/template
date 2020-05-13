@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<Overtime.Models.OverTimeRequest>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Approval";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>My Requests</h1>
+<h1>Approval</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,7 +13,7 @@
 <table class="table">
     <thead>
         <tr>
-
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.rq_description)
             </th>
@@ -30,21 +30,27 @@
                 @Html.DisplayNameFor(model => model.rq_remarks)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.rq_status)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.rq_cre_by)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.rq_cre_date)
             </th>
             <th></th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <form asp-action="Send">
-
-
+            
+                <td>
+                    <form asp-action="Reject">
+                        <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                        <input type="submit" value="Reject" class="btn btn-primary" />
+                    </form>
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.rq_description)
                 </td>
@@ -61,21 +67,23 @@
                     @Html.DisplayFor(modelItem => item.rq_remarks)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.rq_active_yn)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.rq_cre_by)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.rq_cre_date)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.rq_id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.rq_id">Delete</a>
+                    <form asp-action="Send">
+                        <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                        <input  type="hidden" name="from" class="form-control" value="Approval" />
+                        <input type="submit" value="Send" class="btn btn-primary" />
+                    </form>
                 </td>
-                <td>
-                    <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
-                    <input type="hidden" name="from" class="form-control" value="Index" />
-                    <input type="submit" value="Send" class="btn btn-primary" />
-                </td>
-            </form>
+            
+
         </tr>
 }
     </tbody>

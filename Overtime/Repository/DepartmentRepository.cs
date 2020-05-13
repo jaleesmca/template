@@ -37,5 +37,10 @@ namespace Overtime.Repository
             db.SaveChanges();
            
         }
+
+        public void Update(Department department)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

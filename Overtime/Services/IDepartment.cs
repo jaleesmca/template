@@ -14,5 +14,7 @@ namespace Overtime.Services
         void Add(Department department);
 
         void Remove(int id);
+
+        void Update(Department department);
     }
 }

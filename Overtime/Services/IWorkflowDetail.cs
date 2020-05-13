@@ -16,5 +16,12 @@ namespace Overtime.Services
         void Remove(int id);
 
         IEnumerable<WorkflowDetail> GetWorkFlowDetailsByWorkFlow(int Workflow);
+
+        int getMinOfWorkFlow(int workflow);
+        int getMaxOfWorkflow(int workflow);
+
+        int getNextWorkflow(int workflow, int current);
+
+        int getPreviousWorkflow(int workflow, int current);
     }
 }

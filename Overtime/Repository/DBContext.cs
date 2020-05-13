@@ -20,5 +20,6 @@ namespace Overtime.Repository
         public DbSet<WorkflowDetail> WorkflowDetails { get; set; }
         public DbSet<WorkflowTracker> workflowTrackers { get; set; }
         public DbSet<OverTimeRequest> OverTimeRequest { get; set; }
+        public DbSet<Documents> Documents { get; set; }
     }
 }

@@ -14,6 +14,8 @@ namespace Overtime.Models
 
         public int rq_doc_id { get; set; }
 
+        public int rq_workflow_id { get; set; }
+
         [Display(Name = "Description")]
         public string rq_description { get; set; }
 

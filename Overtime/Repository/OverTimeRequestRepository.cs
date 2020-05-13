@@ -18,11 +18,20 @@ namespace Overtime.Repository
 
         public IEnumerable<OverTimeRequest> GetOvertimeRequests => db.OverTimeRequest;
 
+        public IEnumerable<OverTimeRequest> getMyOvertimeRequests => db.OverTimeRequest.Where(s=> s.rq_status==0 &&s.rq_cre_by==12);
+
+        public object getRequestForApprovals => 
+            db.OverTimeRequest.Where(s => s.rq_status == 1 && s.rq_cre_by == 12);
 
         public void Add(OverTimeRequest overTimeRequest)
         {
             db.OverTimeRequest.Add(overTimeRequest);
             db.SaveChanges();
+        }
+
+        public void Approve(int id)
+        {
+          
         }
 
         public OverTimeRequest GetOverTimeRequest(int id)
@@ -36,6 +45,13 @@ namespace Overtime.Repository
             OverTimeRequest overTimeRequest = db.OverTimeRequest.Find(id);
             db.OverTimeRequest.Remove(overTimeRequest);
             db.SaveChanges();
+        }
+
+        public void Update(OverTimeRequest overTimeRequest)
+        {
+            db.OverTimeRequest.Update(overTimeRequest);
+            db.SaveChanges();
+
         }
     }
 }

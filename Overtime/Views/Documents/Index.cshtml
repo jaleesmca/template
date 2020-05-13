@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Overtime.Models.Documents>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.dc_description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dc_workflow_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dc_active_yn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dc_cre_by)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dc_cre_date)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.dc_description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dc_workflow_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dc_active_yn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dc_cre_by)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dc_cre_date)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.dc_id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.dc_id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
