@@ -21,17 +21,22 @@ namespace Overtime.Models
         [Display(Name = "Password")]
         public string u_password { get; set; }
 
+        [Display(Name = "Role")]
         public int u_role_id { get; set; }
 
         [NotMapped]
         public string u_role_name { get; set; }
 
+        [Display(Name = "Department")]
         public int u_dep_id { get; set; }
 
+        [Display(Name = "Active")]
         public string u_active_yn { get; set; }
 
+        [Display(Name = "Created by")]
         public int u_cre_by { get; set; }
 
+        [Display(Name = "Created Date")]
         [DataType(DataType.Date)]
         public DateTime u_cre_date { get; set; }
 

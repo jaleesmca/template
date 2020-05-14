@@ -49,16 +49,16 @@
                                         </div>
                                         <div class="form-group">
                                             <label asp-for="u_password" class="small text-light mb-1"></label>
-                                            <input asp-for="u_password" class="form-control py-4" />
+                                            <input asp-for="u_password" class="form-control py-4" type="password"/>
                                             <span asp-validation-for="u_password" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox"><input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" /><label class="custom-control-label text-light" for="rememberPasswordCheck">Remember password</label></div>
                                         </div>
                                         <div class="form-group align-items-end justify-content-between mt-4 mb-0">
                                             <input type="submit" value="Login" class="btn btn-primary" />
                                         </div>
-
+                                        <div class="form-group align-items-end justify-content-between mt-4 mb-0">
+                                            <label  class="small mb-1 text-danger">@ViewBag.Message</label> 
+                                        </div>
+                                       
                                     </form>
 
                                 </div>

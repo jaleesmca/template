@@ -18,10 +18,10 @@ namespace Overtime.Repository
 
         public IEnumerable<OverTimeRequest> GetOvertimeRequests => db.OverTimeRequest;
 
-        public IEnumerable<OverTimeRequest> getMyOvertimeRequests => db.OverTimeRequest.Where(s=> s.rq_status==0 &&s.rq_cre_by==12);
+        public IEnumerable<OverTimeRequest> getMyOvertimeRequests => db.OverTimeRequest.Where(s=> s.rq_status==0 &&s.rq_cre_by==5);
 
         public object getRequestForApprovals => 
-            db.OverTimeRequest.Where(s => s.rq_status == 1 && s.rq_cre_by == 12);
+            db.OverTimeRequest.Where(s => s.rq_status == 1 && s.rq_cre_by == 5);
 
         public void Add(OverTimeRequest overTimeRequest)
         {

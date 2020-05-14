@@ -1,4 +1,6 @@
-﻿using Overtime.Models;
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using Overtime.Models;
 using Overtime.Services;
 using System;
 using System.Collections.Generic;
@@ -23,6 +25,7 @@ namespace Overtime.Repository
             db.Users.Add(user);
             db.SaveChanges();
         }
+
 
         public User GetUser(int id)
         {

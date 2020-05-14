@@ -11,12 +11,15 @@ namespace Overtime.Models
 
         [Key]
         public int w_id { get; set; }
+
+        [Display(Name = "Workflow")]
         public string w_description { get; set; }
 
+        [Display(Name = "Active")]
         public string w_active_yn { get; set; }
-
+        [Display(Name = "Created by")]
         public int w_cre_by { get; set; }
-
+        [Display(Name = "Created Date")]
         [DataType(DataType.Date)]
         public DateTime w_cre_date { get; set; }
     }

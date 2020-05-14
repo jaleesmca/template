@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Overtime.Models;
 
 namespace Overtime.Controllers
@@ -21,10 +22,37 @@ namespace Overtime.Controllers
 
         public IActionResult Index()
         {
-            String _user = "Admin";
-            HttpContext.Session.SetString("User", _user);
-            ViewBag.Name = HttpContext.Session.GetString("User");
-            return View();
+            if(getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }else
+            {
+               
+                ViewBag.Name = getCurrentUser().u_name;
+                return View();
+            }
+   
+        }
+
+        private User getCurrentUser()
+        {
+            try
+            {
+                if (HttpContext.Session.GetString("User") == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
+                    return user;
+                }
+
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public IActionResult Privacy()
@@ -37,5 +65,11 @@ namespace Overtime.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        public IActionResult Logout()
+        {
+            HttpContext.Session.SetString("User", "");
+            return RedirectToAction("Index", "Login");
+        }
+
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Overtime.Models;
 using Overtime.Services;
 
@@ -19,19 +20,43 @@ namespace Overtime.Controllers
         // GET: Department
         public ActionResult Index()
         {
-            return View(idepartment.GetDepartments);
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+
+                return View(idepartment.GetDepartments);
+            }
         }
 
         // GET: Department/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+
+                return View();
+            }
         }
 
         // GET: Department/Create
         public ActionResult Create()
         {
-            return View();
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+
+                return View();
+            }
         }
 
         // POST: Department/Create
@@ -39,22 +64,38 @@ namespace Overtime.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Department department)
         {
-            try
+            if (getCurrentUser() == null)
             {
-                idepartment.Add(department);
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Login");
             }
-            catch
+            else
             {
-                return View();
+
+                try
+                {
+                    idepartment.Add(department);
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
             }
         }
 
         // GET: Department/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+
+                return View();
+            }
         }
 
         // POST: Department/Edit/5
@@ -62,23 +103,39 @@ namespace Overtime.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
-            try
+            if (getCurrentUser() == null)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Login");
             }
-            catch
+            else
             {
-                return View();
+
+                try
+                {
+                    // TODO: Add update logic here
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
             }
         }
 
         // GET: Department/Delete/5
         public ActionResult Delete(int id)
         {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
 
-            return View(idepartment.GetDepartment(id));
+
+                return View(idepartment.GetDepartment(id));
+            }
         }
 
         // POST: Department/Delete/5
@@ -86,15 +143,44 @@ namespace Overtime.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Department department)
         {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+
+                try
+                {
+                    idepartment.Remove(id);
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
+            }
+        }
+        private User getCurrentUser()
+        {
             try
             {
-                idepartment.Remove(id);
+                if (HttpContext.Session.GetString("User") == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
+                    ViewBag.Name = user.u_name;
+                    return user;
+                }
 
-                return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return null;
             }
         }
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Overtime.Models;
 using Overtime.Repository;
 using Overtime.Services;
@@ -18,6 +19,7 @@ namespace Overtime.Controllers
 
         public WorkflowController(IWorkflow _iworkflow, IRole _irole, IWorkflowDetail _iworkflowDetail)
         {
+
             iworkflow = _iworkflow;
             irole = _irole;
             iworkflowDetail = _iworkflowDetail;
@@ -25,19 +27,41 @@ namespace Overtime.Controllers
 
         public ActionResult Index(int id)
         {
-            ViewBag.RoleList = (irole.GetRoles);
-            return View(iworkflow.GetWorkflows);
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.RoleList = (irole.GetRoles);
+                return View(iworkflow.GetWorkflows);
+            }
         }
         // GET: Workflow/Details/5
         public ActionResult Details(int id)
         {
-            return View(iworkflowDetail.GetWorkFlowDetailsByWorkFlow(id));
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View(iworkflowDetail.GetWorkFlowDetailsByWorkFlow(id));
+            }
         }
 
         // GET: Workflow/Create
         public ActionResult Create()
         {
-            return View();
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+
+                return View();
+            }
         }
 
         // POST: Workflow/Create
@@ -45,22 +69,41 @@ namespace Overtime.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Workflow workflow)
         {
-            try
+            if (getCurrentUser() == null)
             {
-                iworkflow.Add(workflow);
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Login");
             }
-            catch
+            else
             {
-                return View();
+
+                try
+                {
+                    workflow.w_active_yn = "Y";
+                    workflow.w_cre_by = getCurrentUser().u_id;
+                    workflow.w_cre_date = DateTime.Now;
+                    iworkflow.Add(workflow);
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
             }
         }
 
         // GET: Workflow/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+
+                return View();
+            }
         }
 
         // POST: Workflow/Edit/5
@@ -68,22 +111,38 @@ namespace Overtime.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
-            try
+            if (getCurrentUser() == null)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Login");
             }
-            catch
+            else
             {
-                return View();
+
+                try
+                {
+                    // TODO: Add update logic here
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
             }
         }
 
         // GET: Workflow/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+
+                return View();
+            }
         }
 
         // POST: Workflow/Delete/5
@@ -91,17 +150,45 @@ namespace Overtime.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Workflow workflow)
         {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+
+                try
+                {
+                    iworkflow.Remove(id);
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
+            }
+        }
+        private User getCurrentUser()
+        {
             try
             {
-                iworkflow.Remove(id);
-                
-                return RedirectToAction(nameof(Index));
+                if (HttpContext.Session.GetString("User") == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
+                    ViewBag.Name = user.u_name;
+                    return user;
+                }
+
             }
             catch
             {
-                return View();
+                return null;
             }
         }
-
     }
 }

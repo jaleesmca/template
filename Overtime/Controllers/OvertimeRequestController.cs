@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Overtime.Models;
 using Overtime.Services;
 
@@ -25,19 +26,40 @@ namespace Overtime.Controllers
         // GET: OvertimeRequest
         public ActionResult Index()
         {
-            return View(ioverTimeRequest.getMyOvertimeRequests);
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View(ioverTimeRequest.getMyOvertimeRequests);
+            }
         }
 
         // GET: OvertimeRequest/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         // GET: OvertimeRequest/Create
         public ActionResult Create()
         {
-            return View();
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         // POST: OvertimeRequest/Create
@@ -45,28 +67,41 @@ namespace Overtime.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(OverTimeRequest overTimeRequest)
         {
-            try
+            if (getCurrentUser() == null)
             {
-                overTimeRequest.rq_doc_id=1;
-                overTimeRequest.rq_workflow_id=1;
-                overTimeRequest.rq_status = 0;
-                overTimeRequest.rq_cre_by = 12;
-                overTimeRequest.rq_cre_date = DateTime.Now;
-                ioverTimeRequest.Add(overTimeRequest);
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Login");
             }
-            catch
+            else
             {
-                return View();
+                try
+                {
+                    overTimeRequest.rq_doc_id = 1;
+                    overTimeRequest.rq_workflow_id = 1;
+                    overTimeRequest.rq_status = 0;
+                    overTimeRequest.rq_cre_by = getCurrentUser().u_id;
+                    overTimeRequest.rq_cre_date = DateTime.Now;
+                    ioverTimeRequest.Add(overTimeRequest);
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
             }
         }
 
         // GET: OvertimeRequest/Edit/5
         public ActionResult Edit(int id)
         {
-            
-            return View(ioverTimeRequest.GetOverTimeRequest(id));
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View(ioverTimeRequest.GetOverTimeRequest(id));
+            }
         }
 
         // POST: OvertimeRequest/Edit/5
@@ -74,22 +109,36 @@ namespace Overtime.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
-            try
+            if (getCurrentUser() == null)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Login");
             }
-            catch
+            else
             {
-                return View();
+                try
+                {
+                    // TODO: Add update logic here
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
             }
         }
 
         // GET: OvertimeRequest/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         // POST: OvertimeRequest/Delete/5
@@ -97,50 +146,107 @@ namespace Overtime.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            try
+            if (getCurrentUser() == null)
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Login");
             }
-            catch
+            else
             {
-                return View();
+                try
+                {
+                    // TODO: Add delete logic here
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
             }
         }
         [HttpPost]
         public ActionResult Send(int id,String from)
         {
-            OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
-            WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
-            WorkflowTracker workflowTracker = new WorkflowTracker();
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
+                WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
+                WorkflowTracker workflowTracker = new WorkflowTracker();
 
-            int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
-            overTimeRequest.rq_status = nextStatus;
-            ioverTimeRequest.Update(overTimeRequest);
-            return RedirectToAction(from);
+                int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
+                overTimeRequest.rq_status = nextStatus;
+                ioverTimeRequest.Update(overTimeRequest);
+                return RedirectToAction(from);
+            }
 
         }
         public ActionResult Approval()
         {
-            return View(ioverTimeRequest.getRequestForApprovals);
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View(ioverTimeRequest.getRequestForApprovals);
+            }
         }
         [HttpPost]
         public ActionResult Reject(int id)
         {
-            OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
-            WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
-            WorkflowTracker workflowTracker = new WorkflowTracker();
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
+                WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
+                WorkflowTracker workflowTracker = new WorkflowTracker();
 
-            int previousStatus = iworkflowDetail.getPreviousWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
-            overTimeRequest.rq_status = previousStatus;
-            ioverTimeRequest.Update(overTimeRequest);
-            return RedirectToAction("Approval");
+                int previousStatus = iworkflowDetail.getPreviousWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
+                overTimeRequest.rq_status = previousStatus;
+                ioverTimeRequest.Update(overTimeRequest);
+                return RedirectToAction("Approval");
+            }
 
         }
         public ActionResult Reports()
         {
-            return View(ioverTimeRequest.GetOvertimeRequests);
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View(ioverTimeRequest.GetOvertimeRequests);
+            }
+        }
+        private User getCurrentUser()
+        {
+            try
+            {
+                if (HttpContext.Session.GetString("User") == null)
+                {
+
+                    return null;
+                }
+                else
+                {
+                    User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
+                    ViewBag.Name = user.u_name;
+                    return user;
+                }
+
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

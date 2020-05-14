@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Overtime.Models;
 using Overtime.Services;
 
@@ -20,6 +21,7 @@ namespace Overtime.Controllers
         // GET: WorkflowDetail
         public ActionResult Index()
         {
+
             return View();
         }
 
@@ -39,17 +41,25 @@ namespace Overtime.Controllers
         [HttpPost]
         public ActionResult Create(IFormCollection collection)
         {
-            WorkflowDetail workflowDetail = new WorkflowDetail();
-            workflowDetail.wd_role_id = Convert.ToInt32(collection["wd_role_id"]);
-            workflowDetail.wd_priority = Convert.ToInt32(collection["wd_priority"]);
-            workflowDetail.wd_workflow_id = Convert.ToInt32(collection["wd_workflow_id"]);
-            workflowDetail.wd_cre_by = 12;
-            workflowDetail.wd_cre_date = DateTime.Now;
-            workflowDetail.wd_active_yn = "Y";
-            int id = workflowDetail.wd_workflow_id;
-            iworkflowDetail.Add(workflowDetail);
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                WorkflowDetail workflowDetail = new WorkflowDetail();
+                workflowDetail.wd_role_id = Convert.ToInt32(collection["wd_role_id"]);
+                workflowDetail.wd_priority = Convert.ToInt32(collection["wd_priority"]);
+                workflowDetail.wd_workflow_id = Convert.ToInt32(collection["wd_workflow_id"]);
+                workflowDetail.wd_cre_by = getCurrentUser().u_id;
+                workflowDetail.wd_cre_date = DateTime.Now;
+                workflowDetail.wd_active_yn = "Y";
+                int id = workflowDetail.wd_workflow_id;
+                iworkflowDetail.Add(workflowDetail);
 
-           return View(iworkflowDetail.GetWorkFlowDetailsByWorkFlow(id));
+
+                return View(iworkflowDetail.GetWorkFlowDetailsByWorkFlow(id));
+            }
         }
     
 
@@ -96,6 +106,26 @@ namespace Overtime.Controllers
             catch
             {
                 return View();
+            }
+        }
+        private User getCurrentUser()
+        {
+            try
+            {
+                if (HttpContext.Session.GetString("User") == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
+                    return user;
+                }
+
+            }
+            catch
+            {
+                return null;
             }
         }
     }
