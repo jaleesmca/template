@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h2>Create</h2>
 
 <h4>Documents</h4>
 <hr />
@@ -20,10 +20,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="dc_workflow_id" class="control-label"></label>
-                <input asp-for="dc_workflow_id" class="form-control" />
+                <select asp-for="dc_workflow_id" class="form-control" asp-items="@(new SelectList(ViewBag.WorkflowList,"w_id","w_description"))"></select>
                 <span asp-validation-for="dc_workflow_id" class="text-danger"></span>
             </div>
-            
+           
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

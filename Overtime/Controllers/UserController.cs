@@ -34,7 +34,7 @@ namespace Overtime.Controllers
             else
             {
 
-                return View(iuser.GetUsers);
+                return View(iuser.GetUsersList());
             }
             
         }
@@ -97,6 +97,8 @@ namespace Overtime.Controllers
             }
             else
             {
+                ViewBag.RoleList = (irole.GetRoles);
+                ViewBag.DepartmentList = (idepartment.GetDepartments);
                 return View(iuser.GetUser(id));
             }
         }

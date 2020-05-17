@@ -9,6 +9,7 @@ namespace Overtime.Models
     public class Role
     {
         [Key]
+        [Display(Name = "Role Id")]
         public int r_id { get; set; }
 
         [Display(Name = "Role")]

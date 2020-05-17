@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h2>Role</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,6 +13,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.r_id)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.r_description)
             </th>
@@ -32,6 +35,9 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.r_id)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.r_description)
             </td>
             <td>
@@ -44,8 +50,8 @@
                 @Html.DisplayFor(modelItem => item.r_cre_date)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.r_id">Edit</a> 
-               <a asp-action="Delete" asp-route-id="@item.r_id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.r_id">Edit</a>
+                <a asp-action="Delete" asp-route-id="@item.r_id">Delete</a>
             </td>
         </tr>
 }

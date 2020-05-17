@@ -44,3 +44,26 @@ function saveWorkFlowDetails() {
         }
     });
 }
+function overTimeRequestReport() {
+    var data = new FormData();
+    data.append("no_of_hours", $("#rq_no_of_hours").val());
+    data.append("rq_dep_id", $("#rq_dep_id").val());
+    data.append("rq_start_time", $("#rq_start_time").val());
+    data.append("rq_remarks", $("#rq_remarks").val());
+    data.append("rq_role_id", $("#role_id").val());
+    data.append("rq_cre_by", $("#rq_cre_by").val());
+    $.ajax({
+        url: "/OvertimeRequest/CustomReport",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#container").html(response);
+            $('#mytable').DataTable();
+        },
+        error: function () {
+        }
+    });
+}

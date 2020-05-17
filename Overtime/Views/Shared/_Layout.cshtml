@@ -4,12 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Overtime</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/styles.css" />
-    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
-
+    <link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/responsive.bootstrap.min.css" rel="stylesheet" />
 </head>
 
 <body class="sb-nav-fixed">
@@ -30,7 +29,7 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                    <a class="dropdown-item" href="#">Settings</a><a class="dropdown-item" href="#">Activity Log</a>
+                    <a class="dropdown-item" href="/Home/Reset">Change Password</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/Home/Logout">Logout</a>
                 </div>
@@ -122,6 +121,11 @@
         <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="~/js/scripts.js" asp-append-version="true"></script>
         <script src="~/js/myscript.js" asp-append-version="true"></script>
+        <script src="~/js/jquery.dataTables.min.js"></script>
+        <script src="~/js/dataTables.bootstrap.min.js"></script>
+        <script src="~/js/dataTables.responsive.min.js"></script>
+        <script src="~/js/responsive.bootstrap.min.js"></script>
+        <script src="~/js/all.min.js" crossorigin="anonymous"></script>
         @RenderSection("Scripts", required: false)
 </body>
 </html>

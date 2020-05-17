@@ -56,9 +56,24 @@ namespace Overtime.Repository
         }
 
         public IEnumerable<WorkflowDetail> GetWorkFlowDetailsByWorkFlow(int Wf_id)
-        {
-            IEnumerable<WorkflowDetail> workflow = db.WorkflowDetails.Where(s => s.wd_workflow_id == Wf_id);
-            return workflow;
+        { var query = from wd in db.WorkflowDetails
+                        join r in db.Roles
+                          on wd.wd_role_id equals r.r_id
+                        where wd.wd_workflow_id == Wf_id
+                        select new WorkflowDetail
+                        {
+                            wd_id = wd.wd_id,
+                            wd_workflow_id=wd.wd_workflow_id,
+                            wd_role_id = wd.wd_role_id,
+                            wd_role_description=r.r_description,
+                            wd_priority=wd.wd_priority,
+                            wd_cre_by=wd.wd_cre_by,
+                            wd_active_yn=wd.wd_active_yn,
+                            wd_cre_date=wd.wd_cre_date
+                            
+                        };
+
+            return query;
         }
 
         public void Remove(int id)

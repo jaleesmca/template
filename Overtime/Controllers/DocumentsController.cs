@@ -13,9 +13,11 @@ namespace Overtime.Controllers
     public class DocumentsController : Controller
     {
         private readonly IDocuments idocuments;
-        public DocumentsController(IDocuments _idocuments)
+        private readonly IWorkflow iworkflow;
+        public DocumentsController(IDocuments _idocuments,IWorkflow _iworkflow)
         {
             idocuments = _idocuments;
+            iworkflow = _iworkflow;
         }
         // GET: Documents
         public ActionResult Index()
@@ -50,12 +52,13 @@ namespace Overtime.Controllers
         {
             if (getCurrentUser() == null)
             {
+              
                 return RedirectToAction("Index", "Login");
             }
             else
             {
 
-
+                ViewBag.WorkflowList = iworkflow.GetWorkflows;
                 return View();
             }
         }

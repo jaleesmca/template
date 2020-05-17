@@ -15,12 +15,21 @@ namespace Overtime.Controllers
         private readonly IOverTimeRequest ioverTimeRequest;
         private readonly IWorkflowDetail iworkflowDetail;
         private readonly IWorkflowTracker iworkflowTracker;
+        private readonly IDepartment idepartment;
+        private readonly IDocuments idocuments;
+        private readonly IRole irole;
+        private readonly IUser iuser;
 
-        public OvertimeRequestController(IOverTimeRequest _ioverTimeReques, IWorkflowDetail _iworkflowDetail, IWorkflowTracker _iworkflowTracker)
+        public OvertimeRequestController(IOverTimeRequest _ioverTimeReques, IWorkflowDetail _iworkflowDetail,
+            IWorkflowTracker _iworkflowTracker,IDepartment _idepartment,IDocuments _idocuments,IRole _irole,IUser _iuser)
         {
             ioverTimeRequest = _ioverTimeReques;
             iworkflowDetail= _iworkflowDetail;
             iworkflowTracker= _iworkflowTracker;
+            idepartment = _idepartment;
+            idocuments = _idocuments;
+            irole = _irole;
+            iuser = _iuser;
         }
 
         // GET: OvertimeRequest
@@ -32,7 +41,7 @@ namespace Overtime.Controllers
             }
             else
             {
-                return View(ioverTimeRequest.getMyOvertimeRequests);
+                return View(ioverTimeRequest.GetMyOvertimeRequests(getCurrentUser().u_id));
             }
         }
 
@@ -54,10 +63,12 @@ namespace Overtime.Controllers
         {
             if (getCurrentUser() == null)
             {
+               
                 return RedirectToAction("Index", "Login");
             }
             else
             {
+                ViewBag.DepartmentList = (idepartment.GetDepartments);
                 return View();
             }
         }
@@ -75,8 +86,9 @@ namespace Overtime.Controllers
             {
                 try
                 {
-                    overTimeRequest.rq_doc_id = 1;
-                    overTimeRequest.rq_workflow_id = 1;
+                    Documents documents = idocuments.GetDocument(1);
+                    overTimeRequest.rq_doc_id = documents.dc_id;
+                    overTimeRequest.rq_workflow_id = documents.dc_workflow_id;
                     overTimeRequest.rq_status = 0;
                     overTimeRequest.rq_cre_by = getCurrentUser().u_id;
                     overTimeRequest.rq_cre_date = DateTime.Now;
@@ -173,6 +185,7 @@ namespace Overtime.Controllers
             }
             else
             {
+                Documents documents =idocuments.GetDocument(1);
                 OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
                 WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
                 WorkflowTracker workflowTracker = new WorkflowTracker();
@@ -192,7 +205,7 @@ namespace Overtime.Controllers
             }
             else
             {
-                return View(ioverTimeRequest.getRequestForApprovals);
+                return View(ioverTimeRequest.GetRequestForApprovals(getCurrentUser().u_id));
             }
         }
         [HttpPost]
@@ -223,10 +236,20 @@ namespace Overtime.Controllers
             }
             else
             {
-                return View(ioverTimeRequest.GetOvertimeRequests);
+                ViewBag.RoleList = (irole.GetRoles);
+                ViewBag.UserList = (iuser.GetUsersList());
+                ViewBag.DepartmentList = (idepartment.GetDepartments);
+                return View();
             }
         }
-        private User getCurrentUser()
+        [HttpPost]
+        public ActionResult CustomReport(int rq_dep_id,DateTime rq_start_time,int no_of_hours, int role_id, int rq_cre_by,DateTime rq_cre_date,string approve)
+        {
+            System.Diagnostics.Debug.WriteLine(rq_dep_id+" "+ rq_start_time+" "+ no_of_hours+" "+ role_id+" "+ rq_cre_by+" "+ rq_cre_date+" "+ approve);
+            return View(ioverTimeRequest.GetReports(rq_dep_id,rq_start_time, no_of_hours, role_id,rq_cre_by,rq_cre_date,approve));
+
+        }
+            private User getCurrentUser()
         {
             try
             {

@@ -12,7 +12,7 @@ namespace Overtime.Models
         [Key]
         public int w_id { get; set; }
 
-        [Display(Name = "Workflow")]
+        [Display(Name = "Workflow name")]
         public string w_description { get; set; }
 
         [Display(Name = "Active")]

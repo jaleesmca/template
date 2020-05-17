@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h2>User</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,6 +13,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.u_id)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.u_name)
             </th>
@@ -23,13 +26,19 @@
                 @Html.DisplayNameFor(model => model.u_role_id)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.u_role_description)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.u_dep_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.u_dep_description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.u_active_yn)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.u_cre_by)
+                @Html.DisplayNameFor(model => model.u_cre_by_Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.u_cre_date)
@@ -41,6 +50,9 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.u_id)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.u_name)
             </td>
             <td>
@@ -50,19 +62,25 @@
                 @Html.DisplayFor(modelItem => item.u_role_id)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.u_role_description)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.u_dep_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.u_dep_description)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.u_active_yn)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.u_cre_by)
+                @Html.DisplayFor(modelItem => item.u_cre_by_Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.u_cre_date)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.u_id">Edit</a> |
+                <a asp-action="Edit" asp-route-id="@item.u_id">Edit</a>|
                 <a asp-action="Delete" asp-route-id="@item.u_id">Delete</a>
             </td>
         </tr>

@@ -12,6 +12,9 @@
                 @Html.DisplayNameFor(model => model.wd_role_id)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.wd_role_description)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.wd_priority)
             </th>
             <th>
@@ -28,27 +31,30 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.wd_workflow_id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.wd_role_id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.wd_priority)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.wd_active_yn)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.wd_cre_by)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.wd_cre_date)
-                </td>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.wd_workflow_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.wd_role_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.wd_role_description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.wd_priority)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.wd_active_yn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.wd_cre_by)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.wd_cre_date)
+            </td>
 
-            </tr>
+        </tr>
         }
     </tbody>
 </table>

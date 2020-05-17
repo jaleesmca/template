@@ -26,17 +26,24 @@ namespace Overtime.Controllers
         {
             try
             {
-                User newuser=iuser.getUserbyUsername(user.u_name);
-                if (newuser.u_password.Equals(user.u_password))
+                if (user.u_name!=null&&user.u_password!=null)
                 {
-                    newuser.u_password = null;
-                    string JsonStr = JsonConvert.SerializeObject(newuser);
-                    HttpContext.Session.SetString("User", JsonStr);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
+                    User newuser = iuser.getUserbyUsername(user.u_name);
+                    if (newuser.u_password.Equals(user.u_password))
+                    {
+                        newuser.u_password = null;
+                        string JsonStr = JsonConvert.SerializeObject(newuser);
+                        HttpContext.Session.SetString("User", JsonStr);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        ViewBag.Message = "User Name and Password are incurrect!!!";
+                        return View("Index");
+                    }
+                }else
                 {
-                    ViewBag.Message = "User Name and Password are incurrect!!!";
+                    ViewBag.Message = "Please enter username and Password";
                     return View("Index");
                 }
                 
