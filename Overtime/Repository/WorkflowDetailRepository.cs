@@ -36,7 +36,6 @@ namespace Overtime.Repository
         }
         public int getNextWorkflow(int workflow, int current)
         {
-            System.Diagnostics.Debug.WriteLine(current+" "+workflow);
             int next = db.WorkflowDetails.Where(s => s.wd_workflow_id == workflow &&s.wd_priority>current)
                 .OrderBy(p => p.wd_priority).Select(p => p.wd_priority).FirstOrDefault();
             return next;
@@ -60,7 +59,8 @@ namespace Overtime.Repository
                         join r in db.Roles
                           on wd.wd_role_id equals r.r_id
                         where wd.wd_workflow_id == Wf_id
-                        select new WorkflowDetail
+                        orderby wd.wd_priority 
+                      select new WorkflowDetail
                         {
                             wd_id = wd.wd_id,
                             wd_workflow_id=wd.wd_workflow_id,
@@ -74,6 +74,28 @@ namespace Overtime.Repository
                         };
 
             return query;
+        }
+
+        public WorkflowDetail getWorkflowDetlByWorkflowCodeAndPriority(int wd_id, int priority)
+        {
+           var query= from wd in db.WorkflowDetails
+            join r in db.Roles
+              on wd.wd_role_id equals r.r_id
+            where (wd.wd_workflow_id == wd_id && wd.wd_priority == priority) 
+            orderby wd.wd_cre_date descending
+            select new WorkflowDetail
+            {
+                wd_id = wd.wd_id,
+                wd_workflow_id = wd.wd_workflow_id,
+                wd_role_id = wd.wd_role_id,
+                wd_role_description = r.r_description,
+                wd_priority = wd.wd_priority,
+                wd_cre_by = wd.wd_cre_by,
+                wd_active_yn = wd.wd_active_yn,
+                wd_cre_date = wd.wd_cre_date
+
+            };
+            return query.FirstOrDefault<WorkflowDetail>();
         }
 
         public void Remove(int id)

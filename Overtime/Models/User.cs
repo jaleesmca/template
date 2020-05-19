@@ -9,9 +9,13 @@ namespace Overtime.Models
 {
     public class User
     {
+
         [Key]
         [Display(Name = "Id")]
         public int u_id { get; set; }
+
+        [Display(Name = "Full Name")]
+        public string u_full_name{ get; set;}
 
         [Display(Name = "Username")]
         public string u_name
@@ -35,6 +39,10 @@ namespace Overtime.Models
         [NotMapped]
         [Display(Name = "Dep Name")]
         public string u_dep_description { get; set; }
+
+        [Display(Name = "is Admin")]
+        public string u_is_admin { get; set; }
+
 
         [Display(Name = "Active")]
         public string u_active_yn { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,8 +20,12 @@ namespace Overtime.Models
         [Display(Name = "Description")]
         public string rq_description { get; set; }
 
-        [Display(Name = "Department")]
+        [Display(Name = "Dep Id")]
         public int rq_dep_id { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Department")]
+        public string rq_dep_description { get; set; }
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Start From")]
@@ -32,13 +37,21 @@ namespace Overtime.Models
         [Display(Name = "Remarks")]
         public string rq_remarks { get; set; }
 
-
+        [Display(Name = "Status code")]
         public int rq_status { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Status description")]
+        public string rq_status_desc { get; set; }
 
         public string rq_active_yn { get; set; }
 
-        [Display(Name = "Cre By")]
+        [Display(Name = "Cre by id")]
         public int rq_cre_by { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Cre By")]
+        public int rq_cre_by_name { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Cre Date")]

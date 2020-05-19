@@ -29,10 +29,20 @@ namespace Overtime.Repository
             return workflowTracker;
         }
 
+        public IEnumerable<WorkflowTracker> GetWorkflowTrackersbyDocument(int rowid, int doc_id, int workflow)
+        {
+            var query = from u in db.workflowTrackers
+                        .Where(s => s.wt_workflow_id == workflow && s.wt_doc_id==doc_id&& s.wt_fun_doc_id== rowid)
+                        select u;
+
+            return query;
+        }
+
         public void Remove(int id)
         {
             WorkflowTracker workflowTracker = db.workflowTrackers.Find(id);
             db.workflowTrackers.Remove(workflowTracker);
         }
+        
     }
 }

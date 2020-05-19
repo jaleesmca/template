@@ -13,7 +13,9 @@
 <table class="table">
     <thead>
         <tr>
-
+            <th>
+                @Html.DisplayNameFor(model => model.rq_id)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.rq_description)
             </th>
@@ -42,9 +44,11 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <form asp-action="Send">
+            
 
-
+                <td>
+                    @Html.DisplayFor(modelItem => item.rq_id)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.rq_description)
                 </td>
@@ -67,15 +71,17 @@
                     @Html.DisplayFor(modelItem => item.rq_cre_date)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.rq_id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.rq_id">Delete</a>
+                    <a asp-action="Edit" asp-route-from ="Index" asp-route-id="@item.rq_id">Edit</a>|
+                    <a asp-action="Delete" asp-route-from ="Index" asp-route-id="@item.rq_id">Delete</a>
                 </td>
                 <td>
-                    <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
-                    <input type="hidden" name="from" class="form-control" value="Index" />
-                    <input type="submit" value="Send" class="btn btn-primary" />
+                    <form asp-action="Initiate">
+                        <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                        <input type="hidden" name="from" class="form-control" value="Index" />
+                        <input type="submit" value="Initiate" class="btn btn-primary" />
+                    </form>
                 </td>
-            </form>
+            
         </tr>
 }
     </tbody>

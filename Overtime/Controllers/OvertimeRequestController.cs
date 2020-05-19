@@ -104,14 +104,17 @@ namespace Overtime.Controllers
         }
 
         // GET: OvertimeRequest/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id, string from)
         {
             if (getCurrentUser() == null)
             {
+                
                 return RedirectToAction("Index", "Login");
             }
             else
             {
+                
+                ViewBag.from = from;
                 return View(ioverTimeRequest.GetOverTimeRequest(id));
             }
         }
@@ -119,7 +122,7 @@ namespace Overtime.Controllers
         // POST: OvertimeRequest/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, OverTimeRequest overTimeRequest, string from)
         {
             if (getCurrentUser() == null)
             {
@@ -129,12 +132,28 @@ namespace Overtime.Controllers
             {
                 try
                 {
-                    // TODO: Add update logic here
+                    OverTimeRequest Requests = ioverTimeRequest.GetOverTimeRequest(id);
+                    Requests.rq_description = overTimeRequest.rq_description;
+                    Requests.rq_dep_id = overTimeRequest.rq_dep_id;
+                    Requests.rq_start_time = overTimeRequest.rq_start_time;
+                    Requests.rq_no_of_hours = overTimeRequest.rq_no_of_hours;
+                    Requests.rq_remarks = overTimeRequest.rq_remarks;
+                    ioverTimeRequest.Update(Requests);
+                    if (from.Equals("Approval"))
+                    {
+                       
+                        return RedirectToAction("Approval");
+                       
+                    }else
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
 
-                    return RedirectToAction(nameof(Index));
+                   
                 }
-                catch
+                catch(Exception e)
                 {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
                     return View();
                 }
             }
@@ -149,14 +168,15 @@ namespace Overtime.Controllers
             }
             else
             {
-                return View();
+                
+                return View(ioverTimeRequest.GetOverTimeRequest(id));
             }
         }
 
         // POST: OvertimeRequest/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, OverTimeRequest overTimeRequest)
         {
             if (getCurrentUser() == null)
             {
@@ -166,7 +186,7 @@ namespace Overtime.Controllers
             {
                 try
                 {
-                    // TODO: Add delete logic here
+                    ioverTimeRequest.Remove(id);
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -177,7 +197,7 @@ namespace Overtime.Controllers
             }
         }
         [HttpPost]
-        public ActionResult Send(int id,String from)
+        public ActionResult Initiate(int id, String from)
         {
             if (getCurrentUser() == null)
             {
@@ -185,14 +205,69 @@ namespace Overtime.Controllers
             }
             else
             {
+
+                Documents documents = idocuments.GetDocument(1);
+                OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
+                WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
+                int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
+
+                WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, nextStatus);
+                WorkflowTracker workflowTracker = new WorkflowTracker();
+                workflowTracker.wt_doc_id = documents.dc_id;
+                workflowTracker.wt_fun_doc_id = overTimeRequest.rq_id;
+                workflowTracker.wt_status = overTimeRequest.rq_status;
+                workflowTracker.wt_workflow_id = overTimeRequest.rq_workflow_id;
+                workflowTracker.wt_role_id = getCurrentUser().u_role_id;
+                workflowTracker.wt_role_description = getCurrentUser().u_role_description;
+                workflowTracker.wt_status_to = nextStatus;
+                workflowTracker.wt_assign_role = workflowDetail.wd_role_id;
+                workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
+                workflowTracker.wt_approve_status = "Initiate";
+                workflowTracker.wt_cre_by = getCurrentUser().u_id;
+                workflowTracker.wt_cre_by_name = getCurrentUser().u_name;
+                workflowTracker.wt_cre_date = DateTime.Now;
+                iworkflowTracker.Add(workflowTracker);
+                overTimeRequest.rq_status = nextStatus;
+                ioverTimeRequest.Update(overTimeRequest);
+
+                return RedirectToAction(from);
+            }
+
+        }
+        [HttpPost]
+        public ActionResult Approve(int id,String from)
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+
                 Documents documents =idocuments.GetDocument(1);
                 OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
                 WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
-                WorkflowTracker workflowTracker = new WorkflowTracker();
-
                 int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
+                
+                WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, nextStatus);
+                WorkflowTracker workflowTracker = new WorkflowTracker();
+                workflowTracker.wt_doc_id=documents.dc_id;
+                workflowTracker.wt_fun_doc_id = overTimeRequest.rq_id;
+                workflowTracker.wt_status = overTimeRequest.rq_status;
+                workflowTracker.wt_workflow_id = overTimeRequest.rq_workflow_id;
+                workflowTracker.wt_role_id = getCurrentUser().u_role_id;
+                workflowTracker.wt_role_description = getCurrentUser().u_role_description;
+                workflowTracker.wt_status_to = nextStatus;
+                workflowTracker.wt_assign_role = workflowDetail.wd_role_id;
+                workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
+                workflowTracker.wt_approve_status = "Approved";
+                workflowTracker.wt_cre_by = getCurrentUser().u_id;
+                workflowTracker.wt_cre_by_name = getCurrentUser().u_name;
+                workflowTracker.wt_cre_date = DateTime.Now;
+                iworkflowTracker.Add(workflowTracker);
                 overTimeRequest.rq_status = nextStatus;
                 ioverTimeRequest.Update(overTimeRequest);
+                
                 return RedirectToAction(from);
             }
 
@@ -220,8 +295,24 @@ namespace Overtime.Controllers
                 OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
                 WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
                 WorkflowTracker workflowTracker = new WorkflowTracker();
-
+                Documents documents = idocuments.GetDocument(1);
                 int previousStatus = iworkflowDetail.getPreviousWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
+                WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, previousStatus);
+                workflowTracker.wt_doc_id = documents.dc_id;
+                workflowTracker.wt_fun_doc_id = overTimeRequest.rq_id;
+                workflowTracker.wt_status = overTimeRequest.rq_status;
+                workflowTracker.wt_workflow_id = overTimeRequest.rq_workflow_id;
+                workflowTracker.wt_role_id = getCurrentUser().u_role_id;
+                workflowTracker.wt_role_description = getCurrentUser().u_role_description;
+                workflowTracker.wt_status_to = previousStatus;
+                workflowTracker.wt_assign_role = workflowDetail.wd_role_id;
+                workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
+                workflowTracker.wt_approve_status = "rejected";
+                workflowTracker.wt_cre_by = getCurrentUser().u_id;
+                workflowTracker.wt_cre_by_name = getCurrentUser().u_name;
+                workflowTracker.wt_cre_date = DateTime.Now;
+                iworkflowTracker.Add(workflowTracker);
+
                 overTimeRequest.rq_status = previousStatus;
                 ioverTimeRequest.Update(overTimeRequest);
                 return RedirectToAction("Approval");
@@ -262,6 +353,7 @@ namespace Overtime.Controllers
                 {
                     User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
                     ViewBag.Name = user.u_name;
+                    ViewBag.isAdmin = user.u_is_admin;
                     return user;
                 }
 

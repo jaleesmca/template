@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Overtime.Models;
 using Overtime.Services;
 using System.Diagnostics;
+using Overtime.Repository;
 
 namespace Overtime.Controllers
 {
@@ -31,8 +32,10 @@ namespace Overtime.Controllers
                 return RedirectToAction("Index", "Login");
             }else
             {
-               
+
                 ViewBag.Name = getCurrentUser().u_name;
+                ViewBag.isAdmin = getCurrentUser().u_is_admin;
+
                 return View();
             }
    
@@ -50,6 +53,7 @@ namespace Overtime.Controllers
                 {
                     User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
                     ViewBag.Name =user.u_name;
+                    ViewBag.isAdmin = user.u_is_admin;
                     return user;
                 }
 
@@ -99,7 +103,9 @@ namespace Overtime.Controllers
                 if (u_password.Equals(u_confirm))
                 {
                     User user = getCurrentUser();
-                    user.u_password = u_password;
+                    var key = "shdfg2323g3g4j3879sdfh2j3237w8eh";
+                    var encryptedString = AesOperaions.EncryptString(key, u_password);
+                    user.u_password = encryptedString.ToString();
                     iuser.Update(user);
                     return RedirectToAction("Index", "Login");
                 }

@@ -108,6 +108,13 @@ namespace Overtime.Controllers
                 return View();
             }
         }
+        [HttpPost]
+        public ActionResult Status(int Workflow ,int status)
+        {
+
+            ViewBag.status = status;
+            return View(iworkflowDetail.GetWorkFlowDetailsByWorkFlow(Workflow));
+        }
         private User getCurrentUser()
         {
             try

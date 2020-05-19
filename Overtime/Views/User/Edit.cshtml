@@ -13,6 +13,11 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="u_id" />
             <div class="form-group">
+                <label asp-for="u_full_name" class="control-label"></label>
+                <input asp-for="u_full_name" class="form-control" />
+                <span asp-validation-for="u_full_name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="u_name" class="control-label"></label>
                 <input asp-for="u_name" class="form-control" />
                 <span asp-validation-for="u_name" class="text-danger"></span>
@@ -32,11 +37,19 @@
                 <span asp-validation-for="u_dep_id" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="u_is_admin" class="control-label"></label>
+                <select asp-for="u_is_admin" class="form-control">
+                    <option selected value="N">N</option>
+                    <option value="Y">Y</option>
+                </select>
+                <span asp-validation-for="u_is_admin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="u_active_yn" class="control-label"></label>
                 <input asp-for="u_active_yn" class="form-control" />
                 <span asp-validation-for="u_active_yn" class="text-danger"></span>
             </div>
-           
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

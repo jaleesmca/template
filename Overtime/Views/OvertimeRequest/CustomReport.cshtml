@@ -17,6 +17,8 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.rq_id);
+</th><th>
                 @Html.DisplayNameFor(model => model.rq_description)
             </th>
             <th>
@@ -32,11 +34,9 @@
                 @Html.DisplayNameFor(model => model.rq_remarks)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.rq_status)
+                History
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.rq_active_yn)
-            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.rq_cre_by)
             </th>
@@ -48,7 +48,7 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-          
+            <th> @Html.DisplayFor(modelitem => item.rq_id)</th>
             <td>
                 @Html.DisplayFor(modelItem => item.rq_description)
             </td>
@@ -65,13 +65,13 @@
                 @Html.DisplayFor(modelItem => item.rq_remarks)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.rq_status)
+                <button type="button" onclick="workflowHistory(@Html.DisplayFor(modelItem => item.rq_id)
+                                                              ,@Html.DisplayFor(modelItem => item.rq_doc_id),
+                                                               @Html.DisplayFor(modelItem => item.rq_workflow_id),
+                                                               @Html.DisplayFor(modelItem => item.rq_status))">View</button>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.rq_active_yn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.rq_cre_by)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.rq_cre_date)

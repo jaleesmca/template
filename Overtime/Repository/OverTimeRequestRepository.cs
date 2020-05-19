@@ -83,6 +83,7 @@ namespace Overtime.Repository
                             rq_doc_id = u.rq_doc_id,
                             rq_description = u.rq_description,
                             rq_dep_id = u.rq_dep_id,
+                            rq_dep_description=d.d_description,
                             rq_active_yn = u.rq_active_yn,
                             rq_start_time = u.rq_start_time,
                             rq_no_of_hours = u.rq_no_of_hours,

@@ -1,5 +1,4 @@
-﻿
-CREATE TABLE [dbo].[Department](
+﻿CREATE TABLE [dbo].[Departments](
 	[d_id] [int] IDENTITY(1,1) NOT NULL,
 	[d_description] [varchar](50) NULL,
 	[d_active_yn] [varchar](1) NULL,
@@ -12,7 +11,74 @@ CREATE TABLE [dbo].[Department](
 ) ON [PRIMARY]
 GO
 
-CREATE TABLE [dbo].[Role](
+CREATE TABLE [dbo].[Documents](
+	[dc_id] [int] IDENTITY(1,1) NOT NULL,
+	[dc_description] [varchar](25) NULL,
+	[dc_workflow_id] [int] NULL,
+	[dc_active_yn] [varchar](1) NULL,
+	[dc_cre_by] [int] NULL,
+	[dc_cre_date] [datetime] NULL,
+ CONSTRAINT [PK_Documents] PRIMARY KEY CLUSTERED 
+(
+	[dc_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[OverTimeRequest](
+	[rq_id] [int] IDENTITY(1,1) NOT NULL,
+	[rq_doc_id] [int] NULL,
+	[rq_workflow_id] [int] NULL,
+	[rq_description] [varchar](max) NULL,
+	[rq_dep_id] [int] NULL,
+	[rq_start_time] [datetime] NOT NULL,
+	[rq_no_of_hours] [int] NOT NULL,
+	[rq_remarks] [varchar](max) NULL,
+	[rq_status] [int] NULL,
+	[rq_active_yn] [varchar](1) NULL,
+	[rq_cre_by] [int] NULL,
+	[rq_cre_date] [datetime] NULL,
+ CONSTRAINT [PK_Request] PRIMARY KEY CLUSTERED 
+(
+	[rq_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+USE [OverTime]
+GO
+
+/****** Object:  Table [dbo].[Roles]    Script Date: 5/19/2020 9:02:39 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Roles](
+	[r_id] [int] IDENTITY(1,1) NOT NULL,
+	[r_description] [varchar](50) NULL,
+	[r_active_yn] [varchar](1) NULL,
+	[r_cre_by] [int] NULL,
+	[r_cre_date] [datetime] NULL,
+ CONSTRAINT [PK_Role] PRIMARY KEY CLUSTERED 
+(
+	[r_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+USE [OverTime]
+GO
+
+/****** Object:  Table [dbo].[Roles]    Script Date: 5/19/2020 9:02:39 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Roles](
 	[r_id] [int] IDENTITY(1,1) NOT NULL,
 	[r_description] [varchar](50) NULL,
 	[r_active_yn] [varchar](1) NULL,
@@ -26,51 +92,14 @@ CREATE TABLE [dbo].[Role](
 GO
 
 
-
-
-CREATE TABLE [dbo].[Request](
-	[rq_id] [int] IDENTITY(1,1) NOT NULL,
-	[rq_doc_id] [int] null,
-	[rq_description] [varchar](max) null,
-	[rq_dep_id] [int] NULL,
-	[rq_start_time] [datetime] NOT NULL,
-	[rq_no_of_hours] [int] NOT NULL,
-	[rq_remarks][varchar](max) null,
-	[rq_status] [int] null,
-	[rq_active_yn] [varchar](1) NULL,
-	[rq_cre_by] [int] NULL,
-	[rq_cre_date] [datetime] NULL,
- CONSTRAINT [PK_Request] PRIMARY KEY CLUSTERED 
-(
-	[rq_id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-
-CREATE TABLE [dbo].[Workflow_tracker](
-	[wt_id] [int] IDENTITY(1,1) NOT NULL,
-	[wt_doc_id] int NULL,
-	[wt_workflow_id] [int] NULL,
-	[wt_role_id] int null,
-	[wt_assigned_to] int null,
-	[wf_remarks] varchar(max) null,
-	[wf_pro_status] varchar(20) null,
-	[wt_cre_by] [int] NULL,
-	[wt_cre_date] [datetime] NULL,
- CONSTRAINT [PK_Workflow_tracker] PRIMARY KEY CLUSTERED 
-(
-	[wt_id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-CREATE TABLE [dbo].[User](
+CREATE TABLE [dbo].[Users](
 	[u_id] [int] IDENTITY(1,1) NOT NULL,
-	[u_name] [varchar](50) NULL,
-	[u_password] [varchar](50) NULL,
-	[u_role_id] [int] NULL,
-	[u_dep_id] [int] NULL,
+	[u_full_name] [varchar](50) NOT NULL,
+	[u_name] [varchar](50) NOT NULL,
+	[u_password] [varchar](50) NOT NULL,
+	[u_role_id] [int] NOT NULL,
+	[u_dep_id] [int] NOT NULL,
+	[u_is_admin] [varchar](1) NULL,
 	[u_active_yn] [varchar](1) NULL,
 	[u_cre_by] [int] NULL,
 	[u_cre_date] [datetime] NULL,
@@ -81,10 +110,19 @@ CREATE TABLE [dbo].[User](
 ) ON [PRIMARY]
 GO
 
+USE [OverTime]
+GO
 
-CREATE TABLE [dbo].[Workflow_Detail](
+/****** Object:  Table [dbo].[WorkflowDetails]    Script Date: 5/19/2020 9:03:16 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[WorkflowDetails](
 	[wd_id] [int] IDENTITY(1,1) NOT NULL,
-	[wd_workflow_id] [varchar](50) NULL,
+	[wd_workflow_id] [int] NULL,
 	[wd_role_id] [int] NOT NULL,
 	[wd_priority] [int] NOT NULL,
 	[wd_active_yn] [varchar](1) NULL,
@@ -97,16 +135,71 @@ CREATE TABLE [dbo].[Workflow_Detail](
 ) ON [PRIMARY]
 GO
 
+USE [OverTime]
+GO
 
-CREATE TABLE [dbo].[document](
-	[d_id] [int] IDENTITY(1,1) NOT NULL,
-	[d_description] [varchar](50) NULL,
-	[wd_active_yn] [varchar](1) NULL,
-	[wd_cre_by] [int] NULL,
-	[wd_cre_date] [datetime] NULL,
- CONSTRAINT [PK_document] PRIMARY KEY CLUSTERED 
+/****** Object:  Table [dbo].[Workflows]    Script Date: 5/19/2020 9:03:28 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Workflows](
+	[w_id] [int] IDENTITY(1,1) NOT NULL,
+	[w_description] [varchar](50) NULL,
+	[w_active_yn] [varchar](1) NULL,
+	[w_cre_by] [int] NULL,
+	[w_cre_date] [datetime] NULL,
+ CONSTRAINT [PK_Workflow] PRIMARY KEY CLUSTERED 
 (
-	[d_id] ASC
+	[w_id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
+GO
+
+
+
+CREATE TABLE [dbo].[WorkflowTrackers](
+	[wt_id] [int] IDENTITY(1,1) NOT NULL,
+	[wt_fun_doc_id] [int] NULL,
+	[wt_doc_id] [int] NULL,
+	[wt_workflow_id] [int] NULL,
+	[wt_role_id] [int] NULL,
+	[wt_role_description] [varchar](40) NULL,
+	[wt_status] [int] NULL,
+	[wt_status_to] [int] NULL,
+	[wt_assign_role] [int] NULL,
+	[wt_assigned_role_name] [varchar](40) NULL,
+	[wt_remarks] [varchar](max) NULL,
+	[wt_approve_status] [varchar](20) NULL,
+	[wt_cre_by] [int] NULL,
+	[wt_cre_by_name] [varchar](250) NULL,
+	[wt_cre_date] [datetime] NULL,
+ CONSTRAINT [PK_Workflow_tracker] PRIMARY KEY CLUSTERED 
+(
+	[wt_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+
+USE [OverTime]
+GO
+
+
+//for first user   username :admin password:admin
+INSERT INTO [dbo].[Users]
+           ([u_full_name]
+           ,[u_name]
+           ,[u_password]
+           ,[u_role_id]
+           ,[u_dep_id]
+           ,[u_is_admin]
+           ,[u_active_yn]
+           ,[u_cre_by]
+           ,[u_cre_date])
+     VALUES
+           ('1','admin','admin','E0NKGG2SGlAes+qQ8pwwhg==','1',	'1','Y',,'Y','1','2020-01-01 00:00:00.000')
 GO

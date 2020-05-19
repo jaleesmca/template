@@ -9,62 +9,54 @@
 <div class="container">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
 
                 <div class="form-group">
                     <label asp-for="rq_dep_id"  class="control-label"></label>
-                    <select asp-for="rq_dep_id" id="rq_dep_id" class="form-control" asp-items="@(new SelectList(ViewBag.DepartmentList,"d_id","d_description"))"></select>
+                    <select asp-for="rq_dep_id" id="rq_dep_id" class="form-control" asp-items="@(new SelectList(ViewBag.DepartmentList,"d_id","d_description"))">
+                        <option value="">All</option>
+                    </select>
                     <span asp-validation-for="rq_dep_id" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label asp-for="rq_start_time" class="control-label"></label>
                     <input asp-for="rq_start_time"id="rq_start_time" class="form-control" />
                     <span asp-validation-for="rq_start_time" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label asp-for="rq_no_of_hours" class="control-label"></label>
                     <input asp-for="rq_no_of_hours" id="rq_no_of_hours"class="form-control" />
                     <span asp-validation-for="rq_no_of_hours" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label asp-for="rq_remarks" class="control-label"></label>
-                    <input asp-for="rq_remarks" id="rq_remarks" class="form-control" />
-                    <span asp-validation-for="rq_remarks" class="text-danger"></span>
-                </div>
-            </div>
+            
         </div>
         <div class="row">
             
-            <div class="col-md-3">
-                <div class="form-group">
-                    <div class="form-group">
-                        <label for="role_id" class="control-label">Status</label>
-                        <select asp="role_id" id="role_id" class="form-control" asp-items="@(new SelectList(ViewBag.RoleList,"r_id","r_description"))"></select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
+           
+            <div class="col-md-4">
                 <div class="form-group">
                     <label asp-for="rq_cre_by" class="control-label"></label>
-                    <select asp="rq_cre_by" id="rq_cre_by" class="form-control" asp-items="@(new SelectList(ViewBag.UserList,"u_id","u_name"))"></select>
+                    <select asp="rq_cre_by" id="rq_cre_by" class="form-control" asp-items="@(new SelectList(ViewBag.UserList,"u_id","u_name"))">
+                        <option value="">All</option>
+                    </select>
                     <span asp-validation-for="rq_cre_by" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label asp-for="rq_cre_date" class="control-label"></label>
                     <input asp-for="rq_cre_date" id="rq_cre_date" class="form-control" />
                     <span asp-validation-for="rq_cre_date" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-1">
-                <div class="form-group" style="vertical-align:central">
+            <div class="col-md-4">
+                <div class="form-group" align="justify">
+                    <label class="control-label"></label>
                     <input type="submit" onclick="overTimeRequestReport();" class="btn btn-primary" />
                 </div>
             </div>      

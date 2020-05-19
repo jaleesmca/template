@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Overtime.Models;
+using Overtime.Repository;
 using Overtime.Services;
 
 namespace Overtime.Controllers
@@ -55,6 +56,7 @@ namespace Overtime.Controllers
             }
             else
             {
+
                 ViewBag.RoleList = (irole.GetRoles);
                 ViewBag.DepartmentList = (idepartment.GetDepartments);
             }
@@ -74,15 +76,40 @@ namespace Overtime.Controllers
             {
                 try
                 {
-                    user.u_cre_by = getCurrentUser().u_id;
-                    user.u_cre_date = DateTime.Now;
-                    user.u_active_yn = "Y";
-                    iuser.Add(user);
+                    if (user.u_dep_id != 0 && user.u_role_id != 0)
+                    {
+                        User usercheck = iuser.getUserbyUsername(user.u_name);
+                        if (usercheck == null)
+                        {
+                            var key = "shdfg2323g3g4j3879sdfh2j3237w8eh";
+                            var encryptedString = AesOperaions.EncryptString(key, user.u_password);
+                            user.u_password = encryptedString.ToString();
+                            user.u_cre_by = getCurrentUser().u_id;
+                            user.u_cre_date = DateTime.Now;
+                            user.u_active_yn = "Y";
+                            iuser.Add(user);
+                            return RedirectToAction(nameof(Index));
+                        }
+                        else
+                        {
+                            ViewBag.RoleList = (irole.GetRoles);
+                            ViewBag.DepartmentList = (idepartment.GetDepartments);
+                            ViewBag.Message = "Username already exsist";
+                            return View();
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Please enter all column";
+                        return View();
+                    }
 
-                    return RedirectToAction(nameof(Index));
+                    
                 }
                 catch
                 {
+                    ViewBag.RoleList = (irole.GetRoles);
+                    ViewBag.DepartmentList = (idepartment.GetDepartments);
                     return View();
                 }
             }
@@ -99,13 +126,15 @@ namespace Overtime.Controllers
             {
                 ViewBag.RoleList = (irole.GetRoles);
                 ViewBag.DepartmentList = (idepartment.GetDepartments);
-                return View(iuser.GetUser(id));
+                User user = iuser.GetUser(id);
+                user.u_password = null;
+                return View(user);
             }
         }
         // POST: User/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, User user)
         {
             if (getCurrentUser() == null)
             {
@@ -115,8 +144,10 @@ namespace Overtime.Controllers
             {
                 try
                 {
-                    // TODO: Add update logic here
-
+                    var key = "shdfg2323g3g4j3879sdfh2j3237w8eh";
+                    var encryptedString = AesOperaions.EncryptString(key, user.u_password);
+                    user.u_password = encryptedString.ToString();
+                    iuser.Update(user);
                     return RedirectToAction(nameof(Index));
                 }
                 catch
@@ -179,6 +210,7 @@ namespace Overtime.Controllers
                 {
                     User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
                     ViewBag.Name = user.u_name;
+                    ViewBag.isAdmin = user.u_is_admin;
                     return user;
                 }
 

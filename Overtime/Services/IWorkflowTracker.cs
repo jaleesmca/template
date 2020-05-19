@@ -14,5 +14,6 @@ namespace Overtime.Services
         void Add(WorkflowTracker workflowTracker);
 
         void Remove(int id);
+        IEnumerable<WorkflowTracker> GetWorkflowTrackersbyDocument(int rowid, int doc_id, int workflow);
     }
 }

@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Overtime.Models.WorkflowTracker>
+
+@{
+    Layout = null;
+}
+
+<div class="container-fluid">
+        <div id="cont">
+
+        </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.wt_role_description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.wt_assigned_role_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.wt_approve_status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.wt_cre_by_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.wt_cre_date)
+            </th>
+            
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.wt_role_description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.wt_assigned_role_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.wt_approve_status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.wt_cre_by_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.wt_cre_date)
+            </td>
+           
+        </tr>
+}
+    </tbody>
+</table>
+        </div>

@@ -17,11 +17,12 @@
                 @Html.DisplayNameFor(model => model.u_id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.u_name)
+                @Html.DisplayNameFor(model => model.u_full_name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.u_password)
+                @Html.DisplayNameFor(model => model.u_name)
             </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.u_role_id)
             </th>
@@ -33,6 +34,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.u_dep_description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.u_is_admin)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.u_active_yn)
@@ -53,11 +57,12 @@
                 @Html.DisplayFor(modelItem => item.u_id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.u_name)
+                @Html.DisplayFor(modelItem => item.u_full_name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.u_password)
+                @Html.DisplayFor(modelItem => item.u_name)
             </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.u_role_id)
             </td>
@@ -69,6 +74,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.u_dep_description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.u_is_admin)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.u_active_yn)

@@ -23,5 +23,6 @@ namespace Overtime.Services
         int getNextWorkflow(int workflow, int current);
 
         int getPreviousWorkflow(int workflow, int current);
+        WorkflowDetail getWorkflowDetlByWorkflowCodeAndPriority(int wd_id, int priority);
     }
 }
