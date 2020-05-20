@@ -15,5 +15,6 @@ namespace Overtime.Services
 
         void Remove(int id);
         void Update(Documents documents);
+        public IEnumerable<Documents> GetDocumentsList();
     }
 }

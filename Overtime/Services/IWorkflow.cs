@@ -14,5 +14,6 @@ namespace Overtime.Services
         void Add(Workflow workflow);
 
         void Remove(int id);
+        void Update(Workflow workflow1);
     }
 }

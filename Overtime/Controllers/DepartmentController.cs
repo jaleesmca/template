@@ -73,6 +73,9 @@ namespace Overtime.Controllers
 
                 try
                 {
+                    department.d_active_yn = "Y";
+                    department.d_cre_by = 12;
+                    department.d_cre_date = DateTime.Now;
                     idepartment.Add(department);
 
                     return RedirectToAction(nameof(Index));
@@ -94,14 +97,14 @@ namespace Overtime.Controllers
             else
             {
 
-                return View();
+                return View(idepartment.GetDepartment(id));
             }
         }
 
         // POST: Department/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Department department)
         {
             if (getCurrentUser() == null)
             {
@@ -112,6 +115,9 @@ namespace Overtime.Controllers
 
                 try
                 {
+                    Department department1 = idepartment.GetDepartment(id);
+                    department1.d_description = department.d_description;
+                    idepartment.Update(department1);
                     // TODO: Add update logic here
 
                     return RedirectToAction(nameof(Index));

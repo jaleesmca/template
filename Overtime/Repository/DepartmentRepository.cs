@@ -40,7 +40,8 @@ namespace Overtime.Repository
 
         public void Update(Department department)
         {
-            throw new NotImplementedException();
+            db.Update(department);
+            db.SaveChanges();
         }
     }
 }

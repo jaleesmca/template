@@ -31,7 +31,8 @@ namespace Overtime.Repository
 
         public int getMinOfWorkFlow(int workflow)
         {
-            int minPriority = db.WorkflowDetails.Where(s => s.wd_workflow_id == workflow).Select(p => p.wd_priority).DefaultIfEmpty(0).Min();
+            int minPriority = db.WorkflowDetails.Where(s => s.wd_workflow_id == workflow).
+                Select(p => p.wd_priority).Min();
             return minPriority;
         }
         public int getNextWorkflow(int workflow, int current)

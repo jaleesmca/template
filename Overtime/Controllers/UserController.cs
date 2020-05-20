@@ -144,14 +144,25 @@ namespace Overtime.Controllers
             {
                 try
                 {
+                    User temp_user = iuser.GetUser(id);
+                    
                     var key = "shdfg2323g3g4j3879sdfh2j3237w8eh";
                     var encryptedString = AesOperaions.EncryptString(key, user.u_password);
-                    user.u_password = encryptedString.ToString();
-                    iuser.Update(user);
+                    temp_user.u_full_name = user.u_full_name;
+                    temp_user.u_name = user.u_name;
+                    temp_user.u_is_admin = user.u_is_admin;
+                    temp_user.u_role_id = user.u_role_id;
+                    temp_user.u_active_yn = user.u_active_yn;
+                    temp_user.u_password = encryptedString.ToString();
+                    iuser.Update(temp_user);
+
                     return RedirectToAction(nameof(Index));
                 }
-                catch
+                catch(Exception ex)
                 {
+                    ViewBag.RoleList = (irole.GetRoles);
+                    ViewBag.DepartmentList = (idepartment.GetDepartments);
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
                     return View();
                 }
                

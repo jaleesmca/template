@@ -22,19 +22,42 @@ namespace Overtime.Repository
 
         public IEnumerable<OverTimeRequest> GetMyOvertimeRequests(int Currentuserid)
         {
-            
+
             return db.OverTimeRequest.Where(s => s.rq_status == 0 && s.rq_cre_by == Currentuserid);
         }
 
 
-        public IEnumerable<OverTimeRequest> GetRequestForApprovals(int id) {
-            var query = from r in db.OverTimeRequest
+        public IEnumerable<OverTimeRequest> GetRequestForApprovals(int id)
+        {
+
+            var query = from u in db.OverTimeRequest
                         join w in db.WorkflowDetails
-                          on r.rq_workflow_id equals w.wd_workflow_id
+                          on u.rq_workflow_id equals w.wd_workflow_id
+                        join d in db.Departments
+                        on u.rq_dep_id equals d.d_id
                         join m in db.Users
                           on w.wd_role_id equals m.u_role_id
-                        where r.rq_status == w.wd_priority where m.u_id== id
-                        select r;
+                        join j in db.Users
+                        on w.wd_cre_by equals j.u_id
+                        where u.rq_status == w.wd_priority
+                        where m.u_id == id
+                        select new OverTimeRequest
+                        {
+                            rq_id = u.rq_id,
+                            rq_workflow_id = u.rq_workflow_id,
+                            rq_doc_id = u.rq_doc_id,
+                            rq_description = u.rq_description,
+                            rq_dep_id = u.rq_dep_id,
+                            rq_dep_description = d.d_description,
+                            rq_active_yn = u.rq_active_yn,
+                            rq_start_time = u.rq_start_time,
+                            rq_no_of_hours = u.rq_no_of_hours,
+                            rq_status = u.rq_status,
+                            rq_remarks = u.rq_remarks,
+                            rq_cre_by = u.rq_cre_by,
+                            rq_cre_by_name = j.u_full_name,
+                            rq_cre_date = u.rq_cre_date,
+                        };
             return query;
         }
 
@@ -46,12 +69,12 @@ namespace Overtime.Repository
 
         public void Approve(int id)
         {
-          
+
         }
 
         public OverTimeRequest GetOverTimeRequest(int id)
         {
-           OverTimeRequest overTimeRequest= db.OverTimeRequest.Find(id);
+            OverTimeRequest overTimeRequest = db.OverTimeRequest.Find(id);
             return overTimeRequest;
         }
 
@@ -76,6 +99,7 @@ namespace Overtime.Repository
                           on u.rq_dep_id equals d.d_id
                         join k in db.Users
                          on u.rq_cre_by equals k.u_id
+                         orderby u.rq_id descending
                         select new OverTimeRequest
                         {
                             rq_id = u.rq_id,
@@ -83,20 +107,21 @@ namespace Overtime.Repository
                             rq_doc_id = u.rq_doc_id,
                             rq_description = u.rq_description,
                             rq_dep_id = u.rq_dep_id,
-                            rq_dep_description=d.d_description,
+                            rq_dep_description = d.d_description,
                             rq_active_yn = u.rq_active_yn,
                             rq_start_time = u.rq_start_time,
                             rq_no_of_hours = u.rq_no_of_hours,
                             rq_status = u.rq_status,
-                            rq_remarks=u.rq_remarks,
+                            rq_remarks = u.rq_remarks,
                             rq_cre_by = u.rq_cre_by,
+                            rq_cre_by_name = k.u_full_name,
                             rq_cre_date = u.rq_cre_date,
                         };
             if (rq_dep_id != 0)
                 query = query.Where(x => x.rq_dep_id == rq_dep_id);
             if (no_of_hours != 0)
                 query = query.Where(x => x.rq_no_of_hours == no_of_hours);
-            if (!rq_start_time.ToString().Equals ("1/1/0001 12:00:00 AM"))
+            if (!rq_start_time.ToString().Equals("1/1/0001 12:00:00 AM"))
                 query = query.Where(x => x.rq_start_time == rq_start_time);
             if (rq_cre_by != 0)
                 query = query.Where(x => x.rq_cre_by == rq_cre_by);

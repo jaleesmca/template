@@ -29,7 +29,7 @@ namespace Overtime.Controllers
             else
             {
 
-                return View(idocuments.GetDocuments);
+                return View(idocuments.GetDocumentsList());
             }
         }
 
@@ -100,7 +100,7 @@ namespace Overtime.Controllers
             }
             else
             {
-
+                ViewBag.WorkflowList = iworkflow.GetWorkflows;
                 return View(idocuments.GetDocument(id));
             }
         }
@@ -110,6 +110,7 @@ namespace Overtime.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Documents documents)
         {
+            
             if (getCurrentUser() == null)
             {
                 return RedirectToAction("Index", "Login");
@@ -119,12 +120,15 @@ namespace Overtime.Controllers
 
                 try
                 {
-                    idocuments.Update(documents);
-
+                    Documents documents1 = idocuments.GetDocument(id);
+                    documents1.dc_workflow_id = documents.dc_workflow_id;
+                    documents1.dc_description = documents.dc_description;
+                    idocuments.Update(documents1);
                     return RedirectToAction(nameof(Index));
                 }
-                catch
+                catch(Exception ex)
                 {
+                    ViewBag.WorkflowList = iworkflow.GetWorkflows;
                     return View();
                 }
             }

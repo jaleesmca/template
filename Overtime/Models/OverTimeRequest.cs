@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Overtime.Controllers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -29,6 +30,7 @@ namespace Overtime.Models
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Start From")]
+        [CustomValidator]
         public DateTime rq_start_time { get; set; }
 
         [Display(Name = "Hours")]
@@ -51,7 +53,7 @@ namespace Overtime.Models
 
         [NotMapped]
         [Display(Name = "Cre By")]
-        public int rq_cre_by_name { get; set; }
+        public string rq_cre_by_name { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Cre Date")]

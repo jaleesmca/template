@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.rq_description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.rq_dep_id)
+                @Html.DisplayNameFor(model => model.rq_dep_description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.rq_start_time)
@@ -38,7 +38,7 @@
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.rq_cre_by)
+                @Html.DisplayNameFor(model => model.rq_cre_by_name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.rq_cre_date)
@@ -53,7 +53,7 @@
                 @Html.DisplayFor(modelItem => item.rq_description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.rq_dep_id)
+                @Html.DisplayFor(modelItem => item.rq_dep_description)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.rq_start_time)
@@ -71,7 +71,7 @@
                                                                @Html.DisplayFor(modelItem => item.rq_status))">View</button>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.rq_active_yn)
+                @Html.DisplayFor(modelItem => item.rq_cre_by_name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.rq_cre_date)

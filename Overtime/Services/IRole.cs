@@ -14,5 +14,6 @@ namespace Overtime.Services
         void Add(Role role);
 
         void Remove(int id);
+        void Update(Role role1);
     }
 }

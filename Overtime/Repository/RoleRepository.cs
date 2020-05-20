@@ -37,5 +37,11 @@ namespace Overtime.Repository
             db.Roles.Remove(role);
             db.SaveChanges();
         }
+
+        public void Update(Role role1)
+        {
+            db.Update(role1);
+            db.SaveChanges();
+        }
     }
 }

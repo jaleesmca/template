@@ -109,8 +109,9 @@ namespace Overtime.Controllers
             {
                 try
                 {
-
-                    irole.Add(role);
+                    Role role1 = irole.GetRole(id);
+                    role1.r_description = role.r_description;
+                    irole.Update(role1);
                     return RedirectToAction(nameof(Index));
                 }
                 catch

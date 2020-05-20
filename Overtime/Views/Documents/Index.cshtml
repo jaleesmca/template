@@ -14,10 +14,16 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.dc_id)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.dc_description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.dc_workflow_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.doc_workflow_name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.dc_active_yn)
@@ -35,10 +41,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.dc_id)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.dc_description)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.dc_workflow_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.doc_workflow_name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.dc_active_yn)

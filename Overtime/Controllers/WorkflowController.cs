@@ -102,14 +102,14 @@ namespace Overtime.Controllers
             else
             {
 
-                return View();
+                return View(iworkflow.GetWorkflow(id));
             }
         }
 
         // POST: Workflow/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Workflow workflow)
         {
             if (getCurrentUser() == null)
             {
@@ -120,7 +120,9 @@ namespace Overtime.Controllers
 
                 try
                 {
-                    // TODO: Add update logic here
+                    Workflow workflow1 = iworkflow.GetWorkflow(id);
+                    workflow1.w_description = workflow.w_description;
+                    iworkflow.Update(workflow1);
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -141,7 +143,7 @@ namespace Overtime.Controllers
             else
             {
 
-                return View();
+                return View(iworkflow.GetWorkflow(id));
             }
         }
 

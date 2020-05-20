@@ -33,6 +33,13 @@ namespace Overtime.Repository
         {
             Workflow workflow = db.Workflows.Find(id);
             db.Workflows.Remove(workflow);
+            db.SaveChanges();
+        }
+
+        public void Update(Workflow workflow1)
+        {
+            db.Workflows.Update(workflow1);
+            db.SaveChanges();
         }
     }
 }
