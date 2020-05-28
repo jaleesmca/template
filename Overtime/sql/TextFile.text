@@ -1,4 +1,8 @@
-﻿CREATE TABLE [dbo].[Departments](
+﻿server=WIN-ANJTH7VKK6N;database=OvertimeModule;Trusted_Connection=true,MultipleActiveResultSets=True
+ConnectionStr": "Server=DESKTOP-31MB9N8\\SQLEXPRESS;Database=OverTime;Trusted_Connection=True;MultipleActiveResultSets=True"
+
+
+CREATE TABLE [dbo].[Departments](
 	[d_id] [int] IDENTITY(1,1) NOT NULL,
 	[d_description] [varchar](50) NULL,
 	[d_active_yn] [varchar](1) NULL,

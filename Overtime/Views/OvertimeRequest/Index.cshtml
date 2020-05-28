@@ -8,11 +8,17 @@
 <h2>My Requests</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-warning">Create New</a>
 </p>
-<table class="table">
+
+<hr />
+
+<table class="table  table-responsive text-nowrap" id="mytable" style="width:100%">
     <thead>
         <tr>
+            <td>
+
+            </td>
             <th>
                 @Html.DisplayNameFor(model => model.rq_id)
             </th>
@@ -20,7 +26,7 @@
                 @Html.DisplayNameFor(model => model.rq_description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.rq_dep_id)
+                @Html.DisplayNameFor(model => model.rq_dep_description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.rq_start_time)
@@ -32,9 +38,6 @@
                 @Html.DisplayNameFor(model => model.rq_remarks)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.rq_cre_by)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.rq_cre_date)
             </th>
             <th></th>
@@ -42,9 +45,12 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Delete" class="btn btn-danger" asp-route-from="Index" asp-route-id="@item.rq_id">Delete</a>
+                </td>
 
                 <td>
                     @Html.DisplayFor(modelItem => item.rq_id)
@@ -53,7 +59,7 @@
                     @Html.DisplayFor(modelItem => item.rq_description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.rq_dep_id)
+                    @Html.DisplayFor(modelItem => item.rq_dep_description)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.rq_start_time)
@@ -65,15 +71,10 @@
                     @Html.DisplayFor(modelItem => item.rq_remarks)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.rq_cre_by)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.rq_cre_date)
                 </td>
                 <td>
-
-                    <a asp-action="Edit" asp-route-from ="Index" asp-route-id="@item.rq_id">Edit</a>|
-                    <a asp-action="Delete" asp-route-from ="Index" asp-route-id="@item.rq_id">Delete</a>
+                    <a asp-action="Edit" class="btn btn-info" asp-route-from="Index" asp-route-id="@item.rq_id">Edit</a> 
                 </td>
                 <td>
                     <form asp-action="Initiate">
@@ -82,8 +83,87 @@
                         <input type="submit" value="Initiate" class="btn btn-primary" />
                     </form>
                 </td>
-            
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr />
+
+<h2>On process Requests</h2>
+
+<hr />
+
+<table class="table  table-responsive text-nowrap" id="table2" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_dep_description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_start_time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_no_of_hours)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_remarks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_cre_by_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_cre_date)
+            </th>
+            <th>
+                Approval History
+            </th>
         </tr>
-}
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.MyOnProcessRequests)
+        {
+            <tr>
+                <td>
+                    @item.rq_id
+                </td>
+                <td>
+                    @item.rq_description
+                </td>
+                <td>
+                    @item.rq_dep_description
+                </td>
+                <td>
+                    @item.rq_start_time
+                </td>
+                <td>
+                    @item.rq_no_of_hours
+                </td>
+                <td>
+                    @item.rq_remarks
+                </td>
+                <td>
+                    @item.rq_cre_by_name
+                </td>
+                <td>
+                    @item.rq_cre_date
+                </td>
+                <td>
+                    <button type="button" class="btn btn-success" onclick="workflowHistory(@item.rq_id
+                                                              ,@item.rq_doc_id,
+                                                               @item.rq_workflow_id,
+                                                               @item.rq_status)">
+                        View
+                    </button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

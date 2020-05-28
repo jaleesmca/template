@@ -41,6 +41,7 @@ namespace Overtime.Controllers
             }
             else
             {
+                ViewBag.MyOnProcessRequests=ioverTimeRequest.GetMyOnProcessRequests(getCurrentUser().u_id);
                 return View(ioverTimeRequest.GetMyOvertimeRequests(getCurrentUser().u_id));
             }
         }
@@ -390,7 +391,7 @@ namespace Overtime.Controllers
                 else
                 {
                     User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
-                    ViewBag.Name = user.u_name;
+                    ViewBag.Name = user.u_full_name;
                     ViewBag.isAdmin = user.u_is_admin;
                     return user;
                 }
@@ -400,6 +401,27 @@ namespace Overtime.Controllers
             {
                 return null;
             }
+        }
+
+        public ActionResult Consolidate()
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.RoleList = (irole.GetRoles);
+                ViewBag.UserList = (iuser.GetUsersList());
+                ViewBag.DepartmentList = (idepartment.GetDepartments);
+                return View();
+            }
+        }
+        [HttpPost]
+        public ActionResult ConsolidatedReports(int rq_dep_id, DateTime startDate, DateTime endDate,int rq_cre_by)
+        {
+
+            return View(ioverTimeRequest.getConsolidated(rq_dep_id, startDate, endDate,rq_cre_by));
         }
     }
 }

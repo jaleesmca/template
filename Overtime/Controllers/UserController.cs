@@ -220,7 +220,7 @@ namespace Overtime.Controllers
                 else
                 {
                     User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
-                    ViewBag.Name = user.u_name;
+                    ViewBag.Name = user.u_full_name;
                     ViewBag.isAdmin = user.u_is_admin;
                     return user;
                 }

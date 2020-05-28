@@ -6,10 +6,10 @@
 }
 
 <h2>Reports</h2>
-<div class="container">
+<div class="container padding">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
 
                 <div class="form-group">
                     <label asp-for="rq_dep_id"  class="control-label"></label>
@@ -19,14 +19,14 @@
                     <span asp-validation-for="rq_dep_id" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label asp-for="rq_start_time" class="control-label"></label>
                     <input asp-for="rq_start_time"id="rq_start_time" class="form-control" />
                     <span asp-validation-for="rq_start_time" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label asp-for="rq_no_of_hours" class="control-label"></label>
                     <input asp-for="rq_no_of_hours" id="rq_no_of_hours"class="form-control" />
@@ -38,7 +38,7 @@
         <div class="row">
             
            
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label asp-for="rq_cre_by" class="control-label"></label>
                     <select asp="rq_cre_by" id="rq_cre_by" class="form-control" asp-items="@(new SelectList(ViewBag.UserList,"u_id","u_name"))">
@@ -47,14 +47,14 @@
                     <span asp-validation-for="rq_cre_by" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label asp-for="rq_cre_date" class="control-label"></label>
                     <input asp-for="rq_cre_date" id="rq_cre_date" class="form-control" />
                     <span asp-validation-for="rq_cre_date" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group" align="justify">
                     <label class="control-label"></label>
                     <input type="submit" onclick="overTimeRequestReport();" class="btn btn-primary" />

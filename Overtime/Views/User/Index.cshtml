@@ -10,7 +10,8 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+
+<table class="table  table-responsive text-nowrap" id="mytable" style="width:100%">
     <thead>
         <tr>
             <th>
@@ -51,47 +52,52 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.u_id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.u_full_name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.u_name)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.u_id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.u_full_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.u_name)
+                </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.u_role_id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.u_role_description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.u_dep_id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.u_dep_description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.u_is_admin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.u_active_yn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.u_cre_by_Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.u_cre_date)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.u_id">Edit</a>|
-                <a asp-action="Delete" asp-route-id="@item.u_id">Delete</a>
-            </td>
-        </tr>
-}
+                <td>
+                    @Html.DisplayFor(modelItem => item.u_role_id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.u_role_description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.u_dep_id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.u_dep_description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.u_is_admin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.u_active_yn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.u_cre_by_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.u_cre_date)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.u_id">Edit</a>|
+                    <a asp-action="Delete" asp-route-id="@item.u_id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+<script>
+    $('#mytable').DataTable();
+</script>
+

@@ -3387,7 +3387,6 @@ input[type=button].btn-block {
 .input-group-append .btn + .input-group-text,
 .input-group-append .input-group-text + .input-group-text,
 .input-group-append .input-group-text + .btn {
-  margin-left: -1px;
 }
 
 .input-group-prepend {
@@ -10211,4 +10210,10 @@ body {
 }
 .sb-sidenav-light .sb-sidenav-footer {
   background-color: #e9ecef;
+}
+
+.tablecss {
+    position: relative;
+    padding: 10px 8px !important;
+    font-size: 13px !important;
 }

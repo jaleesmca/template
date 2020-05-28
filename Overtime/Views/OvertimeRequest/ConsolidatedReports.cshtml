@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Overtime.Models.OvCustomModel>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+
+    <table class="table table-striped" id="mytable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.id);
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.emp_dep_id);
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.emp_name);
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.work_hours);
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <th> @Html.DisplayFor(modelitem => item.emp_id)</th>
+                <th> @Html.DisplayFor(modelitem => item.emp_dep_id)</th>
+                <th> @Html.DisplayFor(modelitem => item.emp_name)</th>
+                <th> @Html.DisplayFor(modelitem => item.work_hours)</th>
+            </tr>
+            }
+        </tbody>
+
+</body>
+</html>

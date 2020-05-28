@@ -21,5 +21,7 @@ namespace Overtime.Services
 
         void Approve(int id);
         void Update(OverTimeRequest overTimeRequest);
+        IEnumerable<OvCustomModel> getConsolidated(int rq_dep_id, DateTime startDate, DateTime endDate, int rq_cre_by);
+        dynamic GetMyOnProcessRequests(int u_id);
     }
 }

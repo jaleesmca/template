@@ -7,7 +7,7 @@
 
 <h2>Approval</h2>@ViewBag.Message
 
-<table class="table">
+<table class="table  table-responsive text-nowrap" id="mytable" style="width:100%">
     <thead>
         <tr>
             <th></th>
@@ -48,7 +48,7 @@
                 <td>
                     <form asp-action="Reject">
                         <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
-                        <input type="submit" value="Reject" class="btn btn-primary" />
+                        <input type="submit" value="Reject" class="btn btn-danger" />
                     </form>
                 </td>
                 <td>
@@ -77,13 +77,13 @@
                     @Html.DisplayFor(modelItem => item.rq_cre_date)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-from="Approval" asp-route-id="@item.rq_id">Edit</a>
+                    <a asp-action="Edit" asp-route-from="Approval" class="btn btn-info" asp-route-id="@item.rq_id">Edit</a>
                 </td>
                 <td>
                     <form asp-action="Approve" id="form1">
                         <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
                         <input type="hidden" name="from" class="form-control" value="Approval" />
-                        <input type="submit" value="Approve" class="btn btn-primary" />
+                        <input type="submit" value="Approve" class="btn btn-success" />
                     </form>
                 </td>
 

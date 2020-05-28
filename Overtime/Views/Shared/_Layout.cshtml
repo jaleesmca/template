@@ -6,7 +6,12 @@
     <title>@ViewData["Title"] - Overtime</title>
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/styles.css" />
-    <link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-theme.min.css" rel="stylesheet" />
+
+
+    <!-- Optional theme -->
+    <!-- Latest compiled and minified JavaScript -->
     <link href="~/css/dataTables.bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/responsive.bootstrap.min.css" rel="stylesheet" />
 </head>
@@ -18,10 +23,7 @@
         </button><!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
             <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
-                </div>
+
             </div>
         </form>
         <!-- Navbar-->
@@ -74,17 +76,15 @@
                             Follow Up
                         </a>
                         <div class="sb-sidenav-menu-heading">Reports</div>
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayout" aria-expanded="false" aria-controls="collapseLayout">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                             Overtime
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                        <div class="collapse" id="collapseLayout" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="/OverTimeRequest/Reports">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                    Detail report
-                                </a>
+                                <a class="nav-link" href="/OverTimeRequest/Reports">Detailed</a>
+                                <a class="nav-link" href="/OverTimeRequest/Consolidate">Consolidated</a>
                             </nav>
                         </div>
 
@@ -99,8 +99,7 @@
 
         <div id="layoutSidenav_content">
             <main>
-                <div class="container-fluid">
-
+                <div class="container" style="padding-left:15px">
                     @RenderBody()
                 </div>
             </main>
@@ -128,17 +127,21 @@
             </div>
         </div>
     </div>
-   
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="~/js/scripts.js" asp-append-version="true"></script>
-        <script src="~/js/myscript.js" asp-append-version="true"></script>
-        <script src="~/js/jquery.dataTables.min.js"></script>
-        <script src="~/js/dataTables.bootstrap.min.js"></script>
-        <script src="~/js/dataTables.responsive.min.js"></script>
-        <script src="~/js/responsive.bootstrap.min.js"></script>
-        <script src="~/js/all.min.js" crossorigin="anonymous"></script>
-        @RenderSection("Scripts", required: false)
-    </body>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/scripts.js" asp-append-version="true"></script>
+    <script src="~/js/myscript.js" asp-append-version="true"></script>
+    <script src="~/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/js/dataTables.responsive.min.js"></script>
+    <script src="~/js/responsive.bootstrap.min.js"></script>
+    <script src="~/js/all.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    @RenderSection("Scripts", required: false)
+
+</body>
+
 </html>

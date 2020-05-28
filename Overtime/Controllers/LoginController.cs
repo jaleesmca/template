@@ -47,13 +47,13 @@ namespace Overtime.Controllers
                         }
                         else
                         {
-                            ViewBag.Message = "User Name and Password are incurrect!!!";
+                            ViewBag.Message = "User Name and Password are incrrect!!!";
                             return View("Index");
                         }
                     }
                     else
                     {
-                        ViewBag.Message = "User Name and Password are incurrect!!!";
+                        ViewBag.Message = "User Name and Password are incorrect!!!";
                         return View("Index");
                     }
                 }else
