@@ -9,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Overtime.Models;
 using Overtime.Services;
-using System.Diagnostics;
 using Overtime.Repository;
 
 namespace Overtime.Controllers
@@ -35,6 +34,7 @@ namespace Overtime.Controllers
 
                 ViewBag.Name = getCurrentUser().u_full_name;
                 ViewBag.isAdmin = getCurrentUser().u_is_admin;
+               
 
                 return View();
             }

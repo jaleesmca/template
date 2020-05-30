@@ -126,7 +126,7 @@ namespace Overtime.Controllers
                     idocuments.Update(documents1);
                     return RedirectToAction(nameof(Index));
                 }
-                catch(Exception ex)
+                catch
                 {
                     ViewBag.WorkflowList = iworkflow.GetWorkflows;
                     return View();

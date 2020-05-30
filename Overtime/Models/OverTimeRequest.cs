@@ -33,6 +33,11 @@ namespace Overtime.Models
         [CustomValidator]
         public DateTime rq_start_time { get; set; }
 
+
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Start From")]
+        public DateTime? rq_end_time { get; set; }
+
         [Display(Name = "Hours")]
         public int rq_no_of_hours { get; set; }
 
@@ -47,6 +52,18 @@ namespace Overtime.Models
         public string rq_status_desc { get; set; }
 
         public string rq_active_yn { get; set; }
+
+        [Display(Name = "Request For")]
+        public int rq_cre_for { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Request For ID")]
+        public string rq_cre_for_emp_id { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Request For name")]
+        public string rq_cre_for_name { get; set; }
+
 
         [Display(Name = "Cre by id")]
         public int rq_cre_by { get; set; }

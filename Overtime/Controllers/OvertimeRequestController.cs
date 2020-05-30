@@ -125,6 +125,7 @@ namespace Overtime.Controllers
             {
                 
                 ViewBag.from = from;
+                ViewBag.DepartmentList = (idepartment.GetDepartments);
                 return View(ioverTimeRequest.GetOverTimeRequest(id));
             }
         }
@@ -167,7 +168,8 @@ namespace Overtime.Controllers
                         else
                         {
                         ViewBag.from = from;
-                            return View();
+                        ViewBag.DepartmentList = (idepartment.GetDepartments);
+                        return View();
                         }
                     }
                     catch (Exception e)
@@ -311,6 +313,7 @@ namespace Overtime.Controllers
             }
             else
             {
+                
                 return View(ioverTimeRequest.GetRequestForApprovals(getCurrentUser().u_id));
             }
         }
@@ -423,5 +426,75 @@ namespace Overtime.Controllers
 
             return View(ioverTimeRequest.getConsolidated(rq_dep_id, startDate, endDate,rq_cre_by));
         }
+
+        [HttpPost]
+        public IEnumerable<string> UsersName(string name)
+        {
+
+            return iuser.getUsersNames(name);
+        }
+
+
+        public ActionResult Start()
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.DepartmentList = (idepartment.GetDepartments);
+                ViewBag.MyOnProcessRequests = ioverTimeRequest.GetMyLiveOvertimeRequest(getCurrentUser().u_id);
+                return View();
+                
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult StartOverTime(OverTimeRequest overTimeRequest)
+        {
+           
+                if (getCurrentUser() == null)
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+                else
+                {
+                    try
+                    {
+                    IEnumerable<OverTimeRequest> active = ioverTimeRequest.GetMyLiveOvertimeRequest(getCurrentUser().u_id);
+
+                    if (active.Count() == 0)
+                    {
+
+                        Documents documents = idocuments.GetDocument(1);
+                        overTimeRequest.rq_doc_id = documents.dc_id;
+                        overTimeRequest.rq_workflow_id = documents.dc_workflow_id;
+                        overTimeRequest.rq_status = 0;
+                        overTimeRequest.rq_start_time = DateTime.Now;
+                        overTimeRequest.rq_end_time = null;
+                        overTimeRequest.rq_cre_for = getCurrentUser().u_id;
+                        overTimeRequest.rq_cre_by = getCurrentUser().u_id;
+                        overTimeRequest.rq_cre_date = DateTime.Now;
+                        ioverTimeRequest.Add(overTimeRequest);
+
+                        return RedirectToAction(nameof(Start));
+                        }
+                        else
+                        {
+                            ViewBag.Message="You have Active OverTime Request!!";
+                            return RedirectToAction(nameof(Start));
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                        ViewBag.DepartmentList = (idepartment.GetDepartments);
+                        return RedirectToAction(nameof(Start));
+                    }
+                }
+            
+        }
     }
+ 
 }

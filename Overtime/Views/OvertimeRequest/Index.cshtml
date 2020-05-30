@@ -16,12 +16,16 @@
 <table class="table  table-responsive text-nowrap" id="mytable" style="width:100%">
     <thead>
         <tr>
-            <td>
+            <th>
 
-            </td>
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.rq_id)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_cre_for_name)
+            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.rq_description)
             </th>
@@ -47,44 +51,47 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    <a asp-action="Delete" class="btn btn-danger" asp-route-from="Index" asp-route-id="@item.rq_id">Delete</a>
-                </td>
+        <tr>
+            <td>
+                <a asp-action="Delete" class="btn btn-danger" asp-route-from="Index" asp-route-id="@item.rq_id">Delete</a>
+            </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.rq_id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.rq_description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.rq_dep_description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.rq_start_time)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.rq_no_of_hours)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.rq_remarks)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.rq_cre_date)
-                </td>
-                <td>
-                    <a asp-action="Edit" class="btn btn-info" asp-route-from="Index" asp-route-id="@item.rq_id">Edit</a> 
-                </td>
-                <td>
-                    <form asp-action="Initiate">
-                        <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
-                        <input type="hidden" name="from" class="form-control" value="Index" />
-                        <input type="submit" value="Initiate" class="btn btn-primary" />
-                    </form>
-                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_cre_for_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_dep_description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_start_time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_no_of_hours)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_remarks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rq_cre_date)
+            </td>
+            <td>
+                <a asp-action="Edit" class="btn btn-info" asp-route-from="Index" asp-route-id="@item.rq_id">Edit</a>
+            </td>
+            <td>
+                <form asp-action="Initiate">
+                    <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                    <input type="hidden" name="from" class="form-control" value="Index" />
+                    <input type="submit" value="Initiate" class="btn btn-primary" />
+                </form>
+            </td>
 
-            </tr>
+        </tr>
         }
     </tbody>
 </table>
@@ -100,6 +107,9 @@
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.rq_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_cre_for_name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.rq_description)
@@ -130,40 +140,43 @@
     <tbody>
         @foreach (var item in ViewBag.MyOnProcessRequests)
         {
-            <tr>
-                <td>
-                    @item.rq_id
-                </td>
-                <td>
-                    @item.rq_description
-                </td>
-                <td>
-                    @item.rq_dep_description
-                </td>
-                <td>
-                    @item.rq_start_time
-                </td>
-                <td>
-                    @item.rq_no_of_hours
-                </td>
-                <td>
-                    @item.rq_remarks
-                </td>
-                <td>
-                    @item.rq_cre_by_name
-                </td>
-                <td>
-                    @item.rq_cre_date
-                </td>
-                <td>
-                    <button type="button" class="btn btn-success" onclick="workflowHistory(@item.rq_id
+        <tr>
+            <td>
+                @item.rq_id
+            </td>
+            <td>
+                @item.rq_cre_for_name
+            </td>
+            <td>
+                @item.rq_description
+            </td>
+            <td>
+                @item.rq_dep_description
+            </td>
+            <td>
+                @item.rq_start_time
+            </td>
+            <td>
+                @item.rq_no_of_hours
+            </td>
+            <td>
+                @item.rq_remarks
+            </td>
+            <td>
+                @item.rq_cre_by_name
+            </td>
+            <td>
+                @item.rq_cre_date
+            </td>
+            <td>
+                <button type="button" class="btn btn-success" onclick="workflowHistory(@item.rq_id
                                                               ,@item.rq_doc_id,
                                                                @item.rq_workflow_id,
                                                                @item.rq_status)">
-                        View
-                    </button>
-                </td>
-            </tr>
+                    View
+                </button>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

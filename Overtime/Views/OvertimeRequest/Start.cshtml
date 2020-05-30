@@ -1,0 +1,109 @@
+﻿@model Overtime.Models.OverTimeRequest
+
+@{
+    ViewData["Title"] = "Start";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Start Overtime</h1>
+<div class="container-fluid">
+
+
+    <div class="card">
+        <div class="card-body">
+           
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="StartOverTime">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label asp-for="rq_description" class="control-label"></label>
+                        <input asp-for="rq_description" class="form-control" />
+                        <span asp-validation-for="rq_description" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label asp-for="rq_dep_id" class="control-label"></label>
+                        <select asp-for="rq_dep_id" class="form-control" asp-items="@(new SelectList(ViewBag.DepartmentList,"d_id","d_description"))"></select>
+                        <span asp-validation-for="rq_dep_id" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-2" style="align-content:center">
+                    <div class="form-group">
+                        <input type="submit" value="Start Now" class="btn btn-success" />
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+            </div>
+        <hr />
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.rq_id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.rq_dep_description)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.rq_description)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.rq_start_time)
+                                    </th>
+                                    <th>
+
+                                    </th>
+                                    <th>
+
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.MyOnProcessRequests)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.rq_id
+                                        </td>
+                                        <td>
+                                            @item.rq_description
+                                        </td>
+                                        <td>
+                                            @item.rq_dep_description
+                                        </td>
+                                        <td>
+                                            @item.rq_start_time
+                                        </td>
+                                        <td>
+                                            <label id="demo"></label>
+
+                                        </td>
+                                        <td>
+                                            <form asp-action="Initiate">
+                                                <input type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                                                <input type="hidden" name="from" class="form-control" value="Index" />
+                                                <input type="submit" value="End Work" class="btn btn-danger" />
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+<script>
+ 
+</script>

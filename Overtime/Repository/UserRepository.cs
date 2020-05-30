@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MailKit.Search;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using NHibernate.Linq;
 using Overtime.Models;
 using Overtime.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,6 +17,25 @@ namespace Overtime.Repository
         private DBContext db;
 
         public IEnumerable<User> GetUsers => db.Users;
+
+        public IEnumerable<EmpInfo> getUsersEmployeeDetails()
+        {
+            var quary=from u in db.Users
+            join r in db.Roles
+              on u.u_role_id equals r.r_id
+            join d in db.Departments
+              on u.u_dep_id equals d.d_id
+            join k in db.Users
+             on u.u_cre_by equals k.u_id
+            where r.r_active_yn == "Y"
+            select new EmpInfo
+            {
+                id = u.u_id,
+                code = u.u_name,
+                name = u.u_full_name
+            };
+            return quary;
+        }
 
         public UserRepository(DBContext _db)
         {
@@ -107,6 +129,22 @@ namespace Overtime.Repository
         {
             db.Users.Update(user);
             db.SaveChanges();
+        }
+
+        public IEnumerable<string> getUsersNames(string name)
+        {
+            /*  var query = from u in db.Users
+                          where SqlMethods.Like(u.u_full_name, "%" + name + "%")
+                          select u.u_full_name;*/
+
+
+            var query = from u in db.Users
+                        where u.u_full_name.Contains(name)
+                        select u.u_name+"-"+u.u_full_name;
+          
+
+
+            return query;
         }
     }
 }

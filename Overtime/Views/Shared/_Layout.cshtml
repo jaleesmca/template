@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="~/css/styles.css" />
     <link href="~/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/bootstrap-theme.min.css" rel="stylesheet" />
-
+    <link href="~/css/jquery-ui.min.css" rel="stylesheet" />
+   
 
     <!-- Optional theme -->
     <!-- Latest compiled and minified JavaScript -->
@@ -18,7 +19,8 @@
 
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand" href="index.html">A2C Services LLC</a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#">
+        <a class="navbar-brand" href="index.html">A2C Services LLC</a>
+        <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#">
             <i class="fas fa-bars"></i>
         </button><!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
@@ -71,6 +73,10 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Create Request
                         </a>
+                        <a class="nav-link" href="/OverTimeRequest/Start">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                            Start OverTime
+                        </a>
                         <a class="nav-link" href="/OverTimeRequest/Approval">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Follow Up
@@ -84,7 +90,7 @@
                         <div class="collapse" id="collapseLayout" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="/OverTimeRequest/Reports">Detailed</a>
-                                <a class="nav-link" href="/OverTimeRequest/Consolidate">Consolidated</a>
+
                             </nav>
                         </div>
 
@@ -137,9 +143,10 @@
     <script src="~/js/dataTables.responsive.min.js"></script>
     <script src="~/js/responsive.bootstrap.min.js"></script>
     <script src="~/js/all.min.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <script src="~/js/moment.min.js"></script>
+    <script src="~/js/daterangepicker.min.js"></script>
+    <link href="~/css/daterangepicker.css" rel="stylesheet" />
+    <script src="~/js/jquery-ui.js"></script>
     @RenderSection("Scripts", required: false)
 
 </body>

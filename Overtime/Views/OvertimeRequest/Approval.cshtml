@@ -12,8 +12,12 @@
         <tr>
             <th></th>
             <th>
+                @Html.DisplayNameFor(model => model.rq_cre_for_name)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.rq_description)
             </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.rq_dep_id)
             </th>
@@ -50,6 +54,9 @@
                         <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
                         <input type="submit" value="Reject" class="btn btn-danger" />
                     </form>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.rq_cre_for_name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.rq_description)
