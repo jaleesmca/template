@@ -150,6 +150,7 @@ namespace Overtime.Controllers
                             Requests.rq_description = overTimeRequest.rq_description;
                             Requests.rq_dep_id = overTimeRequest.rq_dep_id;
                             Requests.rq_start_time = overTimeRequest.rq_start_time;
+                            Requests.rq_end_time = overTimeRequest.rq_end_time;
                             Requests.rq_no_of_hours = overTimeRequest.rq_no_of_hours;
                             Requests.rq_remarks = overTimeRequest.rq_remarks;
                             ioverTimeRequest.Update(Requests);
@@ -444,7 +445,8 @@ namespace Overtime.Controllers
             else
             {
                 ViewBag.DepartmentList = (idepartment.GetDepartments);
-                ViewBag.MyOnProcessRequests = ioverTimeRequest.GetMyLiveOvertimeRequest(getCurrentUser().u_id);
+                ViewBag.MyLiveOvertimeRequest = ioverTimeRequest.GetMyLiveOvertimeRequest(getCurrentUser().u_id);
+                ViewBag.MyOnProcessRequests = ioverTimeRequest.GetMyOnProcessRequests(getCurrentUser().u_id);
                 return View();
                 
             }
@@ -495,6 +497,81 @@ namespace Overtime.Controllers
                 }
             
         }
+        [HttpPost]
+        public ActionResult EndWork(int id, String from)
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+
+                Documents documents = idocuments.GetDocument(1);
+                OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
+                WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
+                int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
+
+                WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, nextStatus);
+                WorkflowTracker workflowTracker = new WorkflowTracker();
+                workflowTracker.wt_doc_id = documents.dc_id;
+                workflowTracker.wt_fun_doc_id = overTimeRequest.rq_id;
+                workflowTracker.wt_status = overTimeRequest.rq_status;
+                workflowTracker.wt_workflow_id = overTimeRequest.rq_workflow_id;
+                workflowTracker.wt_role_id = getCurrentUser().u_role_id;
+                workflowTracker.wt_role_description = getCurrentUser().u_role_description;
+                workflowTracker.wt_status_to = nextStatus;
+                workflowTracker.wt_assign_role = workflowDetail.wd_role_id;
+                workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
+                workflowTracker.wt_approve_status = "WorkDone";
+                workflowTracker.wt_cre_by = getCurrentUser().u_id;
+                workflowTracker.wt_cre_by_name = getCurrentUser().u_name;
+                workflowTracker.wt_cre_date = DateTime.Now;
+                iworkflowTracker.Add(workflowTracker);
+                overTimeRequest.rq_status = nextStatus;
+                overTimeRequest.rq_end_time=DateTime.Now;
+                ioverTimeRequest.Update(overTimeRequest);
+
+                return RedirectToAction(nameof(Start));
+            }
+
+        }
+        public ActionResult LiveMonitoring()
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.CurrentDate = DateTime.Now;
+                return View(ioverTimeRequest.GetAllLiveOvertimeRequest(getCurrentUser().u_id));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Hold(int id)
+        {
+           
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                 OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
+
+                /*overTimeRequest.rq_hold_yn = "Y";
+                overTimeRequest.rq_hold_by = getCurrentUser().u_id;
+                overTimeRequest.rq_hold_by_name= getCurrentUser().u_name;
+                overTimeRequest.rq_hold_date = DateTime.Now;
+                ioverTimeRequest.Update(overTimeRequest);*/
+                return RedirectToAction(nameof(LiveMonitoring));
+
+            }
+
+        }
+
     }
- 
+
 }

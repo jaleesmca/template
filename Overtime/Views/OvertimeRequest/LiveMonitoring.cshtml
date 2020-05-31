@@ -1,0 +1,159 @@
+﻿@model IEnumerable<Overtime.Models.OverTimeRequest>
+
+@{
+    ViewData["Title"] = "LiveMonitoring";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="page-header">
+        <h2>Overtime</h2>
+    </div>
+
+</div>
+<div class="container-fluid" id="liveMonitoring" >
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table  table-responsive text-nowrap" id="mytable" >
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.rq_id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.rq_cre_for_emp_id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.rq_cre_for_name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.rq_description)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.rq_dep_description)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.rq_start_time)
+                                    </th>
+                                    <th>
+                                        Overtime
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.rq_remarks)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.rq_cre_date)
+                                    </th>
+                                    <th>
+
+                                    </th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody id="mon_row">
+                                @foreach (var item in Model)
+                                {
+                                    if (item.rq_hold_yn != "Y")
+                                    {
+                                     <tr class="a">
+                                    <td>
+                                        <input type="hidden"  class="b" value="@Html.DisplayFor(modelItem => item.rq_id)" />
+                                        @Html.DisplayFor(modelItem => item.rq_id)
+                                    </td>
+                                    <td>
+                                        Employee ID
+                                    </td>
+                                    <td>
+                                        Name
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.rq_description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.rq_dep_description)
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="starttime" id="@string.Format("starttime{0}", @item.rq_id)" value="@Html.DisplayFor(modelItem => item.rq_start_time)" />
+                                        @Html.DisplayFor(modelItem => item.rq_start_time)
+                                    </td>
+                                    <td>
+                                        <label type="text" align="right" name="Duration" id="@string.Format("Duration{0}", @item.rq_id)" />
+
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.rq_remarks)
+                                    </td>
+
+
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.rq_cre_date)
+                                    </td>
+                                    <td>
+                                        <form asp-action="Hold" >
+                                            <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                                            <input type="submit" value="Hold" class="btn btn-danger" />
+                                        </form>
+                                    </td>
+
+                                  </tr>
+                                    }
+                                    else
+                                    {
+                            <tr class="a" style="background-color:red">
+                                <td>
+                                    <input type="hidden" class="b" value="@Html.DisplayFor(modelItem => item.rq_id)" />
+                                    @Html.DisplayFor(modelItem => item.rq_id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.rq_cre_for_emp_id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.rq_cre_for_name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.rq_description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.rq_dep_description)
+                                </td>
+                                <td>
+                                    <input type="hidden" name="starttime" id="@string.Format("starttime{0}", @item.rq_id)" value="@Html.DisplayFor(modelItem => item.rq_start_time)" />
+                                    @Html.DisplayFor(modelItem => item.rq_start_time)
+                                </td>
+                                <td>
+                                    <input type="text" name="Duration" id="@string.Format("Duration{0}", @item.rq_id)" />
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.rq_remarks)
+                                </td>
+
+
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.rq_cre_date)
+                                </td>
+                                <td>
+                                    <form asp-action="Hold" >
+                                        <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                                        <input type="submit" value="Hold" class="btn btn-danger" />
+                                    </form>
+                                </td>
+
+                            </tr>
+                                    }
+
+
+
+                                }
+                                    </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+

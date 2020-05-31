@@ -1,6 +1,4 @@
 ﻿$(document).ready(function () {
-    $('#mytable').DataTable();
-    $('#table2').DataTable();
     $('#forWhom').change(function() {
         if (!$(this).is(":checked")) {
             var returnVal = confirm("Are you sure?");
@@ -11,7 +9,20 @@
         }
               
     });
-    setInterval(myTimer, 1000);
+    if ($("#demo").length) {
+        setInterval(myTimer, 1000);
+    }
+    if ($("#liveMonitoring").length) {
+       setInterval(loadTimeForAllTr, 1000);
+        //loadTimeForAllTr();
+    }
+    if ($("#mytable").length) {
+        $('#mytable').DataTable();
+    }
+    if ($("#table2").length) {
+        $('#table2').DataTable();
+    }
+    
     $("#name").autocomplete({
 
         source: function (req, resp) {
@@ -236,8 +247,9 @@ $(function () {
 
 
 function myTimer() {
-var date1 = new Date();
-var date2 = new Date("2020/05/29 21:59:00");
+ var date1 = new Date();
+  //  var date2 = Date.parse("2020/05/29 21:59:00");
+    var date2 = Date.parse($("#lbl_start").text());
 var delta = Math.abs(date1 - date2) / 1000;
 
 // calculate (and subtract) whole days
@@ -254,6 +266,42 @@ delta -= minutes * 60;
 
 // what's left is seconds
 var seconds = delta % 60;
-document.getElementById("demo").innerHTML = days + ": " + hours + ":" + minutes + ":" + Math.round(seconds);
+    document.getElementById("demo").innerHTML = days + ": " + hours + ":" + minutes + ":" + Math.round(seconds);
 }
 
+
+function loadTimeForAllTr() {
+
+    if ($("#mytable").length) {
+        
+        $("tr.a").each(function (i, tr) {
+            var value = $(this).find("input.b").val();
+           
+            var date1 = new Date();
+            //  var date2 = Date.parse("2020/05/29 21:59:00");
+            var date2 = Date.parse($(this).find("#starttime" + value).val() );
+            var delta = Math.abs(date1 - date2) / 1000;
+
+            // calculate (and subtract) whole days
+            var days = Math.floor(delta / 86400);
+            delta -= days * 86400;
+
+            // calculate (and subtract) whole hours
+            var hours = Math.floor(delta / 3600) % 24;
+            delta -= hours * 3600;
+
+            // calculate (and subtract) whole minutes
+            var minutes = Math.floor(delta / 60) % 60;
+            delta -= minutes * 60;
+
+            // what's left is seconds
+            var seconds = delta % 60;
+            $(this).find("#Duration" + value).text(n(days) + ": " + n(hours) + ":" + n(minutes) + ":" + n(Math.round(seconds)));
+        });
+    }
+
+}
+
+function n(n) {
+    return n > 9 ? "" + n : "0" + n;
+}

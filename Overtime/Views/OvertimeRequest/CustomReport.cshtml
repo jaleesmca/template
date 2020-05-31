@@ -27,6 +27,9 @@
                 @Html.DisplayNameFor(model => model.rq_start_time)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.rq_end_time)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.rq_no_of_hours)
             </th>
             <th>
@@ -46,6 +49,10 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
+
+    DateTime end = (DateTime)item.rq_end_time;
+    DateTime now = (DateTime)item.rq_start_time;
+    TimeSpan diff = end.Subtract(now);
         <tr>
             <td> @Html.DisplayFor(modelitem => item.rq_id)</td>
             <td> @Html.DisplayFor(modelitem => item.rq_cre_for_emp_id)</td>
@@ -60,7 +67,12 @@
                 @Html.DisplayFor(modelItem => item.rq_start_time)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.rq_no_of_hours)
+                @Html.DisplayFor(modelItem => item.rq_end_time)
+            </td>
+            <td>
+            
+                @diff.ToString(@"dd\:hh\:mm\:ss")
+           
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.rq_remarks)

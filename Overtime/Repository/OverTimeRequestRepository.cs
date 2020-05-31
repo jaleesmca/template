@@ -43,6 +43,7 @@ namespace Overtime.Repository
                             rq_description = u.rq_description,
                             rq_dep_id = u.rq_dep_id,
                             rq_dep_description = d.d_description,
+                            rq_end_time=u.rq_end_time,
                             rq_active_yn = u.rq_active_yn,
                             rq_start_time = u.rq_start_time,
                             rq_no_of_hours = u.rq_no_of_hours,
@@ -69,6 +70,8 @@ namespace Overtime.Repository
             int minPriority = db.WorkflowDetails.Where(s => s.wd_workflow_id == workflow).
                Select(p => p.wd_priority).Min();
 
+            int next = db.WorkflowDetails.Where(s => s.wd_workflow_id == workflow && s.wd_priority > minPriority)
+                .OrderBy(p => p.wd_priority).Select(p => p.wd_priority).FirstOrDefault();
             System.Diagnostics.Debug.WriteLine(minPriority+"  "+ workflow);
 
             var query = from u in db.OverTimeRequest
@@ -84,7 +87,7 @@ namespace Overtime.Repository
                         on u.rq_cre_for equals x.u_id
                         where u.rq_status == w.wd_priority
                         where m.u_id == id
-                        where u.rq_status != minPriority ? true: u.rq_dep_id==currentUser.u_dep_id
+                        where u.rq_status != next ? true: u.rq_dep_id==currentUser.u_dep_id
                         select new OverTimeRequest
                         {
                             rq_id = u.rq_id,
@@ -95,6 +98,7 @@ namespace Overtime.Repository
                             rq_doc_id = u.rq_doc_id,
                             rq_description = u.rq_description,
                             rq_dep_id = u.rq_dep_id,
+                            rq_end_time = u.rq_end_time,
                             rq_dep_description = d.d_description,
                             rq_active_yn = u.rq_active_yn,
                             rq_start_time = u.rq_start_time,
@@ -121,6 +125,7 @@ namespace Overtime.Repository
 
         public OverTimeRequest GetOverTimeRequest(int id)
         {
+           
             OverTimeRequest overTimeRequest = db.OverTimeRequest.Find(id);
             return overTimeRequest;
         }
@@ -161,6 +166,7 @@ namespace Overtime.Repository
                             rq_dep_id = u.rq_dep_id,
                             rq_dep_description = d.d_description,
                             rq_active_yn = u.rq_active_yn,
+                            rq_end_time = u.rq_end_time,
                             rq_start_time = u.rq_start_time,
                             rq_no_of_hours = u.rq_no_of_hours,
                             rq_status = u.rq_status,
@@ -195,10 +201,9 @@ namespace Overtime.Repository
                         join j in db.Users
                         on u.rq_cre_by equals j.u_id
                         join x in db.Users
-                       on u.rq_cre_for equals x.u_id
+                        on u.rq_cre_for equals x.u_id
                         where u.rq_status !=0
                         where u.rq_cre_by == u_id
-                        where  u.rq_start_time >= DateTime.Now
                         select new OverTimeRequest
                         {
                             rq_id = u.rq_id,
@@ -214,6 +219,7 @@ namespace Overtime.Repository
                             rq_start_time = u.rq_start_time,
                             rq_no_of_hours = u.rq_no_of_hours,
                             rq_status = u.rq_status,
+                            rq_end_time = u.rq_end_time,
                             rq_remarks = u.rq_remarks,
                             rq_cre_by = u.rq_cre_by,
                             rq_cre_by_name = j.u_full_name,
@@ -249,6 +255,42 @@ namespace Overtime.Repository
                             rq_start_time = u.rq_start_time,
                             rq_no_of_hours = u.rq_no_of_hours,
                             rq_status = u.rq_status,
+                            rq_end_time = u.rq_end_time,
+                            rq_remarks = u.rq_remarks,
+                            rq_cre_by = u.rq_cre_by,
+                            rq_cre_by_name = j.u_full_name,
+                            rq_cre_date = u.rq_cre_date,
+                        };
+            return query;
+        }
+
+        public object GetAllLiveOvertimeRequest(int u_id)
+        {
+            var query = from u in db.OverTimeRequest
+                        join d in db.Departments
+                        on u.rq_dep_id equals d.d_id
+                        join j in db.Users
+                        on u.rq_cre_by equals j.u_id
+                        join x in db.Users
+                        on u.rq_cre_for equals x.u_id
+                        where u.rq_status == 0
+                        where u.rq_end_time == null
+                        select new OverTimeRequest
+                        {
+                            rq_id = u.rq_id,
+                            rq_cre_for = u.rq_cre_for,
+                            rq_cre_for_name = x.u_full_name,
+                            rq_cre_for_emp_id = x.u_name,
+                            rq_workflow_id = u.rq_workflow_id,
+                            rq_doc_id = u.rq_doc_id,
+                            rq_description = u.rq_description,
+                            rq_dep_id = u.rq_dep_id,
+                            rq_dep_description = d.d_description,
+                            rq_active_yn = u.rq_active_yn,
+                            rq_start_time = u.rq_start_time,
+                            rq_no_of_hours = u.rq_no_of_hours,
+                            rq_status = u.rq_status,
+                            rq_end_time = u.rq_end_time,
                             rq_remarks = u.rq_remarks,
                             rq_cre_by = u.rq_cre_by,
                             rq_cre_by_name = j.u_full_name,

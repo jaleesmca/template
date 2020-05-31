@@ -35,7 +35,7 @@ namespace Overtime.Models
 
 
         [DataType(DataType.DateTime)]
-        [Display(Name = "Start From")]
+        [Display(Name = "End Time")]
         public DateTime? rq_end_time { get; set; }
 
         [Display(Name = "Hours")]
@@ -53,6 +53,8 @@ namespace Overtime.Models
 
         public string rq_active_yn { get; set; }
 
+
+
         [Display(Name = "Request For")]
         public int rq_cre_for { get; set; }
 
@@ -64,9 +66,21 @@ namespace Overtime.Models
         [Display(Name = "Request For name")]
         public string rq_cre_for_name { get; set; }
 
+        public string rq_hold_yn { get; set; }
+
+        [Display(Name = "hold by id")]
+        public int? rq_hold_by { get; set; }
+
+        [NotMapped]
+        [Display(Name = "hold By Name")]
+        public string rq_hold_by_name { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "hold by Date")]
+        public DateTime? rq_hold_date { get; set; }
 
         [Display(Name = "Cre by id")]
-        public int rq_cre_by { get; set; }
+        public int? rq_cre_by { get; set; }
 
         [NotMapped]
         [Display(Name = "Cre By")]
