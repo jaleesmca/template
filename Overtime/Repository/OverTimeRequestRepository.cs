@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using NHibernate.Util;
 using Overtime.Models;
 using Overtime.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -49,6 +51,9 @@ namespace Overtime.Repository
                             rq_no_of_hours = u.rq_no_of_hours,
                             rq_status = u.rq_status,
                             rq_remarks = u.rq_remarks,
+                            rq_hold_yn = u.rq_hold_yn,
+                            rq_hold_date = u.rq_hold_date,
+                            rq_hold_by = u.rq_hold_by,
                             rq_cre_by = u.rq_cre_by,
                             rq_cre_by_name = j.u_full_name,
                             rq_cre_date = u.rq_cre_date,
@@ -104,6 +109,9 @@ namespace Overtime.Repository
                             rq_start_time = u.rq_start_time,
                             rq_no_of_hours = u.rq_no_of_hours,
                             rq_status = u.rq_status,
+                            rq_hold_yn = u.rq_hold_yn,
+                            rq_hold_date = u.rq_hold_date,
+                            rq_hold_by = u.rq_hold_by,
                             rq_remarks = u.rq_remarks,
                             rq_cre_by = u.rq_cre_by,
                             rq_cre_by_name = j.u_full_name,
@@ -144,7 +152,7 @@ namespace Overtime.Repository
 
         }
 
-        public IEnumerable<OverTimeRequest> GetReports(int rq_dep_id, DateTime rq_start_time, int no_of_hours, int rq_role_id, int rq_cre_by, DateTime rq_cre_date, string approve)
+        public IEnumerable<OverTimeRequest> GetReports(int rq_dep_id, DateTime rq_start_time, DateTime rq_end_time, int no_of_hours, int rq_role_id, int rq_cre_by, DateTime rq_cre_date, string approve)
         {
             var query = from u in db.OverTimeRequest
                         join d in db.Departments
@@ -170,6 +178,9 @@ namespace Overtime.Repository
                             rq_start_time = u.rq_start_time,
                             rq_no_of_hours = u.rq_no_of_hours,
                             rq_status = u.rq_status,
+                            rq_hold_yn = u.rq_hold_yn,
+                            rq_hold_date = u.rq_hold_date,
+                            rq_hold_by = u.rq_hold_by,
                             rq_remarks = u.rq_remarks,
                             rq_cre_by = u.rq_cre_by,
                             rq_cre_by_name = k.u_full_name,
@@ -179,8 +190,8 @@ namespace Overtime.Repository
                 query = query.Where(x => x.rq_dep_id == rq_dep_id);
             if (no_of_hours != 0)
                 query = query.Where(x => x.rq_no_of_hours == no_of_hours);
-            if (!rq_start_time.ToString().Equals("1/1/0001 12:00:00 AM"))
-                query = query.Where(x => x.rq_start_time >= rq_start_time);
+            if (!rq_start_time.ToString().Equals("1/1/0001 12:00:00 AM") && !rq_end_time.ToString().Equals("1/1/0001 12:00:00 AM"))
+                query = query.Where(x => x.rq_start_time >= rq_start_time && rq_start_time<=rq_end_time );
             if (rq_cre_by != 0)
                 query = query.Where(x => x.rq_cre_by == rq_cre_by);
             if (!rq_cre_date.ToString().Equals("1/1/0001 12:00:00 AM"))
@@ -188,9 +199,54 @@ namespace Overtime.Repository
             return query;
         }
 
-        public IEnumerable<OvCustomModel> getConsolidated(int rq_dep_id, DateTime startDate, DateTime endDate, int rq_cre_by)
+        public IEnumerable<OvCustomModel> getConsolidatedAsync(int rq_dep_id, DateTime startDate, DateTime endDate, int rq_cre_for)
         {
-            throw new NotImplementedException();
+            List<OvCustomModel> result = new List<OvCustomModel>();
+            var conn = db.Database.GetDbConnection();
+            try
+            {
+                conn.Open();
+                using (var command = conn.CreateCommand())
+                {
+                    string query = @"select rq_cre_for,u_name,u_full_name,rq_dep_id,d_description,
+                        sum([dbo].[fn_GetTotalWorkingHours](rq_start_time, rq_end_time)) hours
+                        from OverTimeRequest
+                        join Users on rq_cre_for = u_id
+                        join Departments on rq_dep_id = d_id
+                        where[dbo].[get_workflow_min_max](rq_workflow_id, 'max') = rq_status";
+
+                    if(!startDate.ToString().Equals("1/1/0001 12:00:00 AM")&& !endDate.ToString().Equals("1/1/0001 12:00:00 AM"))
+                        query +=" and rq_start_time between '"+ startDate + @"' and '"+ endDate + @"' ";
+                    if (rq_dep_id != 0) query += " and rq_dep_id='"+ rq_dep_id + @"'";
+                    if (rq_cre_for !=0) query += " and rq_cre_for='"+ rq_cre_for + @"'";
+
+                    query += " group by rq_cre_for,u_name,u_full_name,rq_dep_id,d_description";
+                    System.Diagnostics.Debug.WriteLine(query);
+                    command.CommandText = query;
+                    DbDataReader reader = command.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            OvCustomModel ovCustomModel = new OvCustomModel();
+                            ovCustomModel.emp_id = reader.GetInt32(0);
+                            ovCustomModel.emp_name = reader.GetString(1);
+                            ovCustomModel.emp_full_name = reader.GetString(2);
+                            ovCustomModel.emp_dep_id = reader.GetInt32(3);
+                            ovCustomModel.emp_dep_name = reader.GetString(4);
+                            ovCustomModel.work_hours = reader.GetDecimal(5);
+                            result.Add(ovCustomModel);
+                        }
+                    }
+                    reader.Dispose();
+                }
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return result;
         }
 
         public dynamic GetMyOnProcessRequests(int u_id)
@@ -222,6 +278,9 @@ namespace Overtime.Repository
                             rq_end_time = u.rq_end_time,
                             rq_remarks = u.rq_remarks,
                             rq_cre_by = u.rq_cre_by,
+                            rq_hold_yn = u.rq_hold_yn,
+                            rq_hold_date = u.rq_hold_date,
+                            rq_hold_by = u.rq_hold_by,
                             rq_cre_by_name = j.u_full_name,
                             rq_cre_date = u.rq_cre_date,
                         };
@@ -257,6 +316,9 @@ namespace Overtime.Repository
                             rq_status = u.rq_status,
                             rq_end_time = u.rq_end_time,
                             rq_remarks = u.rq_remarks,
+                            rq_hold_yn = u.rq_hold_yn,
+                            rq_hold_date = u.rq_hold_date,
+                            rq_hold_by = u.rq_hold_by,
                             rq_cre_by = u.rq_cre_by,
                             rq_cre_by_name = j.u_full_name,
                             rq_cre_date = u.rq_cre_date,
@@ -292,6 +354,9 @@ namespace Overtime.Repository
                             rq_status = u.rq_status,
                             rq_end_time = u.rq_end_time,
                             rq_remarks = u.rq_remarks,
+                            rq_hold_yn=u.rq_hold_yn,
+                            rq_hold_date=u.rq_hold_date,
+                            rq_hold_by=u.rq_hold_by,
                             rq_cre_by = u.rq_cre_by,
                             rq_cre_by_name = j.u_full_name,
                             rq_cre_date = u.rq_cre_date,

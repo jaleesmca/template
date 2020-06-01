@@ -9,7 +9,7 @@
     <link href="~/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="~/css/jquery-ui.min.css" rel="stylesheet" />
-   
+    <link href="~/css/dataTables.bootstrap.min.css" rel="stylesheet" />
 
     <!-- Optional theme -->
     <!-- Latest compiled and minified JavaScript -->
@@ -69,10 +69,7 @@
                             </div>
                         }
                         <div class="sb-sidenav-menu-heading">OverTime</div>
-                        <a class="nav-link" href="/OverTimeRequest/Index">
-                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                            Create Request
-                        </a>
+                       
                         <a class="nav-link" href="/OverTimeRequest/Start">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Start OverTime
@@ -94,6 +91,7 @@
                         <div class="collapse" id="collapseLayout" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="/OverTimeRequest/Reports">Detailed</a>
+                                <a class="nav-link" href="/OverTimeRequest/Consolidate">Consolidate</a>
 
                             </nav>
                         </div>
@@ -151,6 +149,12 @@
     <script src="~/js/daterangepicker.min.js"></script>
     <link href="~/css/daterangepicker.css" rel="stylesheet" />
     <script src="~/js/jquery-ui.js"></script>
+    <script src="~/js/dataTables.buttons.min.js"></script>
+    <script src="~/js/jszip.min.js"></script>
+    <script src="~/js/pdfmake.min.js"></script>
+    <script src="~/js/vfs_fonts.js"></script>
+
+    <script src="~/js/buttons.html5.min.js"></script>
     @RenderSection("Scripts", required: false)
 
 </body>

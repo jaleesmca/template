@@ -5,7 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Approval</h2>@ViewBag.Message
+<h2>Approval</h2>
+@if (@TempData["errorMessage"] != null)
+{
+<div class="alert alert-danger">
+    <strong>Error!</strong>  <a href="#" class="alert-link">@TempData["errorMessage"]</a>.
+</div>
+}
+
 
 <table class="table  table-responsive text-nowrap" id="mytable" style="width:100%">
     <thead>
@@ -51,13 +58,12 @@
         @foreach (var item in Model)
         {
 
-            
+            if (item.rq_end_time != null)
+            {
                 DateTime end = (DateTime)item.rq_end_time;
                 DateTime now = (DateTime)item.rq_start_time;
                 TimeSpan diff = end.Subtract(now);
-            
-
-            <tr>
+               <tr>
 
                 <td>
                     <form asp-action="Reject">
@@ -109,6 +115,7 @@
 
 
             </tr>
+            }
         }
     </tbody>
 </table>

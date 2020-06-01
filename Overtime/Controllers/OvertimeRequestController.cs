@@ -144,8 +144,7 @@ namespace Overtime.Controllers
                 {
                     try
                     {
-                        if (ModelState.IsValid)
-                        {
+                        
                             OverTimeRequest Requests = ioverTimeRequest.GetOverTimeRequest(id);
                             Requests.rq_description = overTimeRequest.rq_description;
                             Requests.rq_dep_id = overTimeRequest.rq_dep_id;
@@ -165,13 +164,7 @@ namespace Overtime.Controllers
                                 return RedirectToAction(nameof(Index));
                             }
 
-                        }
-                        else
-                        {
-                        ViewBag.from = from;
-                        ViewBag.DepartmentList = (idepartment.GetDepartments);
-                        return View();
-                        }
+                        
                     }
                     catch (Exception e)
                     {
@@ -276,11 +269,16 @@ namespace Overtime.Controllers
                 int second = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, 0);
                 if (overTimeRequest.rq_status == second && getCurrentUser().u_dep_id != overTimeRequest.rq_dep_id)
                 {
-                    ViewBag.Message = "sdfhdsf";
-                   
-                    return RedirectToAction(from);
+                    TempData["errorMessage"] = "You have No permission to Approve";
+                    return RedirectToAction(nameof(Approval));
                 }
-                else
+                else if (overTimeRequest.rq_hold_yn == "Y" &&  overTimeRequest.rq_remarks == null)
+                {
+                   
+                    TempData["errorMessage"] = ("This Document is Hold by Someone , So you must enter Remarks to Approve!!");
+                    return RedirectToAction(nameof(Approval));
+                }
+                else 
                 {
                     WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, nextStatus);
                     WorkflowTracker workflowTracker = new WorkflowTracker();
@@ -377,10 +375,14 @@ namespace Overtime.Controllers
             }
         }
         [HttpPost]
-        public ActionResult CustomReport(int rq_dep_id,DateTime rq_start_time,int no_of_hours, int role_id, int rq_cre_by,DateTime rq_cre_date,string approve)
+        public ActionResult CustomReport(int rq_dep_id,string reportrange, int no_of_hours, int role_id, int rq_cre_by,DateTime rq_cre_date,string approve)
         {
-            System.Diagnostics.Debug.WriteLine(rq_dep_id+" "+ rq_start_time+" "+ no_of_hours+" "+ role_id+" "+ rq_cre_by+" "+ rq_cre_date+" "+ approve);
-            return View(ioverTimeRequest.GetReports(rq_dep_id,rq_start_time, no_of_hours, role_id,rq_cre_by,rq_cre_date,approve));
+            String[] array = reportrange.Split('-');
+
+            DateTime rq_start_time = DateTime.Parse(array[0]);
+            DateTime rq_end_time = DateTime.Parse(array[1] + " 11:59:59 PM");
+
+            return View(ioverTimeRequest.GetReports(rq_dep_id,rq_start_time,rq_end_time, no_of_hours, role_id,rq_cre_by,rq_cre_date,approve));
 
         }
             private User getCurrentUser()
@@ -422,10 +424,13 @@ namespace Overtime.Controllers
             }
         }
         [HttpPost]
-        public ActionResult ConsolidatedReports(int rq_dep_id, DateTime startDate, DateTime endDate,int rq_cre_by)
+        public ActionResult ConsolidatedReports(int rq_dep_id, String reportrange, int rq_cre_for)
         {
+            String[] array = reportrange.Split('-');
 
-            return View(ioverTimeRequest.getConsolidated(rq_dep_id, startDate, endDate,rq_cre_by));
+            DateTime startDate = DateTime.Parse(array[0]);
+            DateTime endDate = DateTime.Parse(array[1]+" 11:59:59 PM");
+            return View(ioverTimeRequest.getConsolidatedAsync(rq_dep_id, startDate, endDate, rq_cre_for));
         }
 
         [HttpPost]
@@ -469,28 +474,32 @@ namespace Overtime.Controllers
                     if (active.Count() == 0)
                     {
 
-                        Documents documents = idocuments.GetDocument(1);
-                        overTimeRequest.rq_doc_id = documents.dc_id;
-                        overTimeRequest.rq_workflow_id = documents.dc_workflow_id;
-                        overTimeRequest.rq_status = 0;
-                        overTimeRequest.rq_start_time = DateTime.Now;
-                        overTimeRequest.rq_end_time = null;
-                        overTimeRequest.rq_cre_for = getCurrentUser().u_id;
-                        overTimeRequest.rq_cre_by = getCurrentUser().u_id;
-                        overTimeRequest.rq_cre_date = DateTime.Now;
-                        ioverTimeRequest.Add(overTimeRequest);
+                       
+                            Documents documents = idocuments.GetDocument(1);
+                            overTimeRequest.rq_doc_id = documents.dc_id;
+                            overTimeRequest.rq_workflow_id = documents.dc_workflow_id;
+                            overTimeRequest.rq_status = 0;
+                            overTimeRequest.rq_start_time = DateTime.Now;
+                            overTimeRequest.rq_end_time = null;
+                            overTimeRequest.rq_cre_for = getCurrentUser().u_id;
+                            overTimeRequest.rq_cre_by = getCurrentUser().u_id;
+                            overTimeRequest.rq_cre_date = DateTime.Now;
+                            ioverTimeRequest.Add(overTimeRequest);
+                            return RedirectToAction(nameof(Start));
+                       
 
-                        return RedirectToAction(nameof(Start));
+                       
                         }
                         else
                         {
-                            ViewBag.Message="You have Active OverTime Request!!";
-                            return RedirectToAction(nameof(Start));
+
+                           TempData["errorMessage"] = "You have been Active OverTime Request!!";
+                           return RedirectToAction(nameof(Start));
                         }
                     }
                     catch(Exception ex)
                     {
-                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                    TempData["errorMessage"] = "Please enter all data";
                         ViewBag.DepartmentList = (idepartment.GetDepartments);
                         return RedirectToAction(nameof(Start));
                     }
@@ -559,13 +568,13 @@ namespace Overtime.Controllers
             }
             else
             {
-                 OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
-
-                /*overTimeRequest.rq_hold_yn = "Y";
+                System.Diagnostics.Debug.WriteLine(id);
+                OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
+                overTimeRequest.rq_hold_yn = "Y";
                 overTimeRequest.rq_hold_by = getCurrentUser().u_id;
                 overTimeRequest.rq_hold_by_name= getCurrentUser().u_name;
                 overTimeRequest.rq_hold_date = DateTime.Now;
-                ioverTimeRequest.Update(overTimeRequest);*/
+                ioverTimeRequest.Update(overTimeRequest);
                 return RedirectToAction(nameof(LiveMonitoring));
 
             }

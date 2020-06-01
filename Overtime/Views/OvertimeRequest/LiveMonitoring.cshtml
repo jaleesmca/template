@@ -44,6 +44,9 @@
                                         @Html.DisplayNameFor(model => model.rq_remarks)
                                     </th>
                                     <th>
+                                        Is Hold
+                                    </th>
+                                    <th>
                                         @Html.DisplayNameFor(model => model.rq_cre_date)
                                     </th>
                                     <th>
@@ -55,9 +58,9 @@
                             <tbody id="mon_row">
                                 @foreach (var item in Model)
                                 {
-                                    if (item.rq_hold_yn != "Y")
+                                    if (item.rq_hold_yn == "Y")
                                     {
-                                     <tr class="a">
+                                     <tr class="a" style="background-color:#fc6f65">
                                     <td>
                                         <input type="hidden"  class="b" value="@Html.DisplayFor(modelItem => item.rq_id)" />
                                         @Html.DisplayFor(modelItem => item.rq_id)
@@ -83,11 +86,13 @@
 
                                     </td>
                                     <td>
+                                        
                                         @Html.DisplayFor(modelItem => item.rq_remarks)
                                     </td>
 
-
-
+                                    <td>
+                                        <a data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.rq_hold_by_name)"> @Html.DisplayFor(modelItem => item.rq_hold_yn)</a>
+                                    </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.rq_cre_date)
                                     </td>
@@ -102,16 +107,16 @@
                                     }
                                     else
                                     {
-                            <tr class="a" style="background-color:red">
+                            <tr class="a">
                                 <td>
                                     <input type="hidden" class="b" value="@Html.DisplayFor(modelItem => item.rq_id)" />
                                     @Html.DisplayFor(modelItem => item.rq_id)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.rq_cre_for_emp_id)
+                                    Employee ID
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.rq_cre_for_name)
+                                    Name
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.rq_description)
@@ -124,20 +129,19 @@
                                     @Html.DisplayFor(modelItem => item.rq_start_time)
                                 </td>
                                 <td>
-                                    <input type="text" name="Duration" id="@string.Format("Duration{0}", @item.rq_id)" />
-
+                                    <label type="text" align="right" name="Duration" id="@string.Format("Duration{0}", @item.rq_id)" />
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.rq_remarks)
                                 </td>
-
-
-
+                                <td>
+                                    <a data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.rq_hold_by_name)"> @Html.DisplayFor(modelItem => item.rq_hold_yn)</a>
+                                </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.rq_cre_date)
                                 </td>
                                 <td>
-                                    <form asp-action="Hold" >
+                                    <form asp-action="Hold">
                                         <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
                                         <input type="submit" value="Hold" class="btn btn-danger" />
                                     </form>

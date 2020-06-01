@@ -9,6 +9,7 @@
         }
               
     });
+    $('[data-toggle="tooltip"]').tooltip(); 
     if ($("#demo").length) {
         setInterval(myTimer, 1000);
     }
@@ -17,10 +18,26 @@
         //loadTimeForAllTr();
     }
     if ($("#mytable").length) {
-        $('#mytable').DataTable();
+        $('#mytable').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ]
+        } );
     }
     if ($("#table2").length) {
-        $('#table2').DataTable();
+        $('#table2').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ]
+        });
     }
     
     $("#name").autocomplete({
@@ -111,9 +128,10 @@ function saveWorkFlowDetails() {
 }
 function overTimeRequestReport() {
     var data = new FormData();
+    alert($("#reportrange").val());
     data.append("no_of_hours", $("#rq_no_of_hours").val());
     data.append("rq_dep_id", $("#rq_dep_id").val());
-    data.append("rq_start_time", $("#rq_start_time").val());
+    data.append("reportrange", $("#reportrange").val());
     data.append("rq_remarks", $("#rq_remarks").val());
     data.append("rq_role_id", $("#role_id").val());
     data.append("rq_cre_by", $("#rq_cre_by").val());
@@ -127,7 +145,15 @@ function overTimeRequestReport() {
         data: data,
         success: function (response) {
             $("#container").html(response);
-            $('#mytable').DataTable();
+            $('#mytable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5'
+                ]
+            });
         },
         error: function () {
         }
@@ -137,9 +163,7 @@ function overTimeRequestReport() {
     var data = new FormData();
     data.append("no_of_hours", $("#rq_no_of_hours").val());
     data.append("rq_dep_id", $("#rq_dep_id").val());
-    data.append("rq_start_time", $("#rq_start_time").val());
-    data.append("rq_remarks", $("#rq_remarks").val());
-    data.append("rq_role_id", $("#role_id").val());
+    data.append("reportrange", $("#reportrange").val());
     data.append("rq_cre_by", $("#rq_cre_by").val());
     data.append("rq_cre_date", $("#rq_cre_date").val());
     $.ajax({
@@ -151,7 +175,15 @@ function overTimeRequestReport() {
         data: data,
         success: function (response) {
             $("#container").html(response);
-            $('#mytable').DataTable();
+            $('#mytable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5'
+                ]
+            });
         },
         error: function () {
         }
@@ -202,7 +234,8 @@ function workflowDetailStatus( workflow,status) {
 function OverTimeConsolidatedReport() {
     var data = new FormData();
     data.append("rq_dep_id", $("#rq_dep_id").val());
-    data.append("rq_cre_by", $("#rq_cre_by").val());
+    data.append("rq_cre_for", $("#rq_cre_for").val());
+    data.append("reportrange", $("#reportrange").val());
     $.ajax({
         url: "/OvertimeRequest/ConsolidatedReports",
         type: "POST",
@@ -212,7 +245,15 @@ function OverTimeConsolidatedReport() {
         data: data,
         success: function (response) {
             $("#container").html(response);
-            $('#mytable').DataTable();
+            $('#mytable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5'
+                ]
+            });
         },
         error: function () {
         }
