@@ -10,14 +10,16 @@ using Overtime.Services;
 
 namespace Overtime.Controllers
 {
-    public class RoleController : Controller
+   
+    public class HoldController : Controller
     {
-        private readonly IRole irole;
-        public RoleController(IRole _irole)
+        private  readonly IHold ihold;
+
+        public HoldController(IHold _ihold)
         {
-            irole = _irole;
+            ihold = _ihold;
         }
-        // GET: Role
+        // GET: Hold
         public ActionResult Index()
         {
             if (getCurrentUser() == null)
@@ -26,11 +28,11 @@ namespace Overtime.Controllers
             }
             else
             {
-                return View(irole.GetRoles);
+                return View();
             }
         }
 
-        // GET: Role/Details/5
+        // GET: Hold/Details/5
         public ActionResult Details(int id)
         {
             if (getCurrentUser() == null)
@@ -43,7 +45,7 @@ namespace Overtime.Controllers
             }
         }
 
-        // GET: Role/Create
+        // GET: Hold/Create
         public ActionResult Create()
         {
             if (getCurrentUser() == null)
@@ -56,10 +58,10 @@ namespace Overtime.Controllers
             }
         }
 
-        // POST: Role/Create
+        // POST: Hold/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Role role)
+        public ActionResult Create(IFormCollection collection)
         {
             if (getCurrentUser() == null)
             {
@@ -69,11 +71,8 @@ namespace Overtime.Controllers
             {
                 try
                 {
+                    // TODO: Add insert logic here
 
-                    role.r_active_yn = "Y";
-                    role.r_cre_by = getCurrentUser().u_id;
-                    role.r_cre_date = DateTime.Now;
-                    irole.Add(role);
                     return RedirectToAction(nameof(Index));
                 }
                 catch
@@ -83,7 +82,7 @@ namespace Overtime.Controllers
             }
         }
 
-        // GET: Role/Edit/5
+        // GET: Hold/Edit/5
         public ActionResult Edit(int id)
         {
             if (getCurrentUser() == null)
@@ -92,14 +91,14 @@ namespace Overtime.Controllers
             }
             else
             {
-                return View(irole.GetRole(id));
+                return View();
             }
         }
 
-        // POST: Role/Edit/5
+        // POST: Hold/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Role role)
+        public ActionResult Edit(int id, IFormCollection collection)
         {
             if (getCurrentUser() == null)
             {
@@ -109,9 +108,8 @@ namespace Overtime.Controllers
             {
                 try
                 {
-                    Role role1 = irole.GetRole(id);
-                    role1.r_description = role.r_description;
-                    irole.Update(role1);
+                    // TODO: Add update logic here
+
                     return RedirectToAction(nameof(Index));
                 }
                 catch
@@ -121,7 +119,7 @@ namespace Overtime.Controllers
             }
         }
 
-        // GET: Role/Delete/5
+        // GET: Hold/Delete/5
         public ActionResult Delete(int id)
         {
             if (getCurrentUser() == null)
@@ -130,14 +128,14 @@ namespace Overtime.Controllers
             }
             else
             {
-                return View(irole.GetRole(id));
+                return View();
             }
         }
 
-        // POST: Role/Delete/5
+        // POST: Hold/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, Role role)
+        public ActionResult Delete(int id, IFormCollection collection)
         {
             if (getCurrentUser() == null)
             {
@@ -147,8 +145,7 @@ namespace Overtime.Controllers
             {
                 try
                 {
-
-                    irole.Remove(id);
+                    // TODO: Add delete logic here
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -158,6 +155,47 @@ namespace Overtime.Controllers
                 }
             }
         }
+        [HttpPost]
+        public ActionResult History(int rowid, int doc_id,string from)
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.from = from;
+                return View(ihold.GetHoldsbyDocument(rowid, doc_id));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Replay(int id, string replay)
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                Hold hold = ihold.GetHold(id);
+                if (replay == null)
+                {
+                    hold.h_replay =String.Empty;
+                }
+                else
+                {
+                    hold.h_replay = replay.Replace("  ", String.Empty);
+                }
+               
+                hold.h_replay_by = getCurrentUser().u_id;
+                hold.h_replay_date = DateTime.Now;
+                ihold.Update(hold);
+                return new EmptyResult();
+
+            }
+        }
+
         private User getCurrentUser()
         {
             try

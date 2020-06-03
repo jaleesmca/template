@@ -186,6 +186,11 @@ namespace Overtime.Controllers
                     User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
                     ViewBag.Name = user.u_full_name;
                     ViewBag.isAdmin = user.u_is_admin;
+                    if (user.u_role_description.Equals("Monitor")) ViewBag.isMonitor = "Y";
+                    else
+                    {
+                        ViewBag.isMonitor = "N";
+                    }
                     return user;
                 }
 

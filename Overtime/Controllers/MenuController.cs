@@ -10,14 +10,14 @@ using Overtime.Services;
 
 namespace Overtime.Controllers
 {
-    public class RoleController : Controller
+    public class MenuController : Controller
     {
-        private readonly IRole irole;
-        public RoleController(IRole _irole)
+        private readonly IMenu imenu;
+        public MenuController(IMenu _imenu)
         {
-            irole = _irole;
+            imenu = _imenu;
         }
-        // GET: Role
+        // GET: Menu
         public ActionResult Index()
         {
             if (getCurrentUser() == null)
@@ -26,24 +26,17 @@ namespace Overtime.Controllers
             }
             else
             {
-                return View(irole.GetRoles);
+                return View(imenu.GetMenus);
             }
         }
 
-        // GET: Role/Details/5
+        // GET: Menu/Details/5
         public ActionResult Details(int id)
         {
-            if (getCurrentUser() == null)
-            {
-                return RedirectToAction("Index", "Login");
-            }
-            else
-            {
-                return View();
-            }
+            return View();
         }
 
-        // GET: Role/Create
+        // GET: Menu/Create
         public ActionResult Create()
         {
             if (getCurrentUser() == null)
@@ -56,10 +49,10 @@ namespace Overtime.Controllers
             }
         }
 
-        // POST: Role/Create
+        // POST: Menu/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Role role)
+        public ActionResult Create(Menu menu)
         {
             if (getCurrentUser() == null)
             {
@@ -69,11 +62,10 @@ namespace Overtime.Controllers
             {
                 try
                 {
+                    menu.m_cre_by = getCurrentUser().u_id;
+                    menu.m_cre_date = DateTime.Now;
+                    imenu.Add(menu);
 
-                    role.r_active_yn = "Y";
-                    role.r_cre_by = getCurrentUser().u_id;
-                    role.r_cre_date = DateTime.Now;
-                    irole.Add(role);
                     return RedirectToAction(nameof(Index));
                 }
                 catch
@@ -83,7 +75,7 @@ namespace Overtime.Controllers
             }
         }
 
-        // GET: Role/Edit/5
+        // GET: Menu/Edit/5
         public ActionResult Edit(int id)
         {
             if (getCurrentUser() == null)
@@ -92,14 +84,14 @@ namespace Overtime.Controllers
             }
             else
             {
-                return View(irole.GetRole(id));
+                return View(imenu.GetMenu(id));
             }
         }
 
-        // POST: Role/Edit/5
+        // POST: Menu/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Role role)
+        public ActionResult Edit(int id, Menu menu)
         {
             if (getCurrentUser() == null)
             {
@@ -109,9 +101,13 @@ namespace Overtime.Controllers
             {
                 try
                 {
-                    Role role1 = irole.GetRole(id);
-                    role1.r_description = role.r_description;
-                    irole.Update(role1);
+                    Menu _menu = imenu.GetMenu(id);
+                    menu.m_description = _menu.m_description;
+                    menu.m_desc_to_show = menu.m_desc_to_show;
+                    menu.m_link = menu.m_link;
+                    menu.m_active_yn = menu.m_active_yn;
+                    imenu.Update(menu);
+
                     return RedirectToAction(nameof(Index));
                 }
                 catch
@@ -121,23 +117,24 @@ namespace Overtime.Controllers
             }
         }
 
-        // GET: Role/Delete/5
+        // GET: Menu/Delete/5
         public ActionResult Delete(int id)
         {
             if (getCurrentUser() == null)
             {
+                
                 return RedirectToAction("Index", "Login");
             }
             else
             {
-                return View(irole.GetRole(id));
+                return View(imenu.GetMenu(id));
             }
         }
 
-        // POST: Role/Delete/5
+        // POST: Menu/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, Role role)
+        public ActionResult Delete(int id, IFormCollection collection)
         {
             if (getCurrentUser() == null)
             {
@@ -147,8 +144,7 @@ namespace Overtime.Controllers
             {
                 try
                 {
-
-                    irole.Remove(id);
+                    imenu.Remove(id);
 
                     return RedirectToAction(nameof(Index));
                 }

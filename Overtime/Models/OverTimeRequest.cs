@@ -59,11 +59,11 @@ namespace Overtime.Models
         public int rq_cre_for { get; set; }
 
         [NotMapped]
-        [Display(Name = "Request For ID")]
+        [Display(Name = "Requester Id")]
         public string rq_cre_for_emp_id { get; set; }
 
         [NotMapped]
-        [Display(Name = "Request For name")]
+        [Display(Name = "Requester Name")]
         public string rq_cre_for_name { get; set; }
 
         public string rq_hold_yn { get; set; }

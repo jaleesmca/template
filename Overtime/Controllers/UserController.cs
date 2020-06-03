@@ -152,8 +152,14 @@ namespace Overtime.Controllers
                     temp_user.u_name = user.u_name;
                     temp_user.u_is_admin = user.u_is_admin;
                     temp_user.u_role_id = user.u_role_id;
+                    temp_user.u_dep_id = user.u_dep_id;
                     temp_user.u_active_yn = user.u_active_yn;
-                    temp_user.u_password = encryptedString.ToString();
+                    if(!user.u_password.ToString().Equals(""))
+                    {
+                        temp_user.u_password = encryptedString.ToString();
+                    }
+                    
+                   
                     iuser.Update(temp_user);
 
                     return RedirectToAction(nameof(Index));
@@ -222,6 +228,11 @@ namespace Overtime.Controllers
                     User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
                     ViewBag.Name = user.u_full_name;
                     ViewBag.isAdmin = user.u_is_admin;
+                    if (user.u_role_id ==999) ViewBag.isMonitor = "Y";
+                    else
+                    {
+                        ViewBag.isMonitor = "N";
+                    }
                     return user;
                 }
 

@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Overtime.Models.Menu>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.m_description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.m_desc_to_show)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.m_link)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.m_parrent_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.m_type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.m_active_yn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.m_cre_by)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.m_cre_date)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.m_description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.m_desc_to_show)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.m_link)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.m_parrent_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.m_type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.m_active_yn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.m_cre_by)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.m_cre_date)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.m_id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.m_id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.m_id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -26,14 +26,18 @@
         }
     </style>
 </head>
-<body >
+<body>
     <video autoplay muted loop id="myVideo">
-        
+
         <source src="~/bg/small-homepage-clip-v2-slo-mo3.mp4" type="video/mp4" />
-      
+
         Your browser does not support HTML5 video.
     </video>
-    <div id="layoutAuthentication" >
+    <div style="display:none;">
+        <input type="text" id="fake_username" />
+        <input type="password" id="fake_password" />
+    </div>
+    <div id="layoutAuthentication">
         <div id="layoutAuthentication_content">
             <main>
                 <div class="container">
@@ -42,25 +46,25 @@
                             <div class="card shadow-lg border-0 rounded-lg mt-5">
                                 <div class="card-header" style="background-color:#21355C"><h3 class="text-center  text-light font-weight-light my-4">Login</h3></div>
                                 <div class="card-body" style="background-color:#21355C">
-                                    <form asp-action="Login">
+                                    <form asp-action="Login" autocomplete="off">
                                         <div asp-validation-summary="ModelOnly" class="text-light"></div>
                                         <div class="form-group">
                                             <label asp-for="u_name" class="small mb-1 text-light"></label>
-                                            <input asp-for="u_name" class="form-control py-4" placeholder="Enter Username" autocomplete="off" />
+                                            <input asp-for="u_name" class="form-control py-4" placeholder="Enter Username" autocomplete="nope" />
                                             <span asp-validation-for="u_name" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
                                             <label asp-for="u_password" class="small text-light mb-1"></label>
-                                            <input asp-for="u_password" class="form-control py-4" type="password" autocomplete="off"/>
+                                            <input asp-for="u_password" class="form-control py-4" type="password" autocomplete="false" />
                                             <span asp-validation-for="u_password" class="text-danger"></span>
                                         </div>
                                         <div class="form-group align-items-end justify-content-between mt-4 mb-0">
                                             <input type="submit" value="Login" class="btn btn-primary" />
                                         </div>
                                         <div class="form-group align-items-end justify-content-between mt-4 mb-0">
-                                            <label class="text-center  text-light font-weight-light my-4" >@ViewBag.Message</label> 
+                                            <label class="text-center  text-light font-weight-light my-4">@ViewBag.Message</label>
                                         </div>
-                                       
+
                                     </form>
 
                                 </div>
@@ -79,6 +83,7 @@
 
         </div>
     </div>
+    <script>$(document).ready(function () { $("input").attr("autocomplete", "off") });</script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

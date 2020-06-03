@@ -1,0 +1,69 @@
+﻿@model Overtime.Models.Menu
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+<h4>Menu</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="m_description" class="control-label"></label>
+                <input asp-for="m_description" class="form-control" />
+                <span asp-validation-for="m_description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="m_desc_to_show" class="control-label"></label>
+                <input asp-for="m_desc_to_show" class="form-control" />
+                <span asp-validation-for="m_desc_to_show" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="m_link" class="control-label"></label>
+                <input asp-for="m_link" class="form-control" />
+                <span asp-validation-for="m_link" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="m_parrent_id" class="control-label"></label>
+                <input asp-for="m_parrent_id" class="form-control" />
+                <span asp-validation-for="m_parrent_id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="m_type" class="control-label"></label>
+                <input asp-for="m_type" class="form-control" />
+                <span asp-validation-for="m_type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="m_active_yn" class="control-label"></label>
+                <input asp-for="m_active_yn" class="form-control" />
+                <span asp-validation-for="m_active_yn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="m_cre_by" class="control-label"></label>
+                <input asp-for="m_cre_by" class="form-control" />
+                <span asp-validation-for="m_cre_by" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="m_cre_date" class="control-label"></label>
+                <input asp-for="m_cre_date" class="form-control" />
+                <span asp-validation-for="m_cre_date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

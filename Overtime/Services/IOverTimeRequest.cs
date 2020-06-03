@@ -25,5 +25,6 @@ namespace Overtime.Services
         dynamic GetMyOnProcessRequests(int u_id);
         IEnumerable<OverTimeRequest> GetMyLiveOvertimeRequest(int u_id);
         object GetAllLiveOvertimeRequest(int u_id);
+        IEnumerable<OverTimeRequest> getAllHoldDocuments();
     }
 }

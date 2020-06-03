@@ -48,50 +48,98 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
 
-    DateTime end = (DateTime)item.rq_end_time;
-    DateTime now = (DateTime)item.rq_start_time;
-    TimeSpan diff = end.Subtract(now);
-        <tr>
-            <td> @Html.DisplayFor(modelitem => item.rq_id)</td>
-            <td> @Html.DisplayFor(modelitem => item.rq_cre_for_emp_id)</td>
-            <td> @Html.DisplayFor(modelitem => item.rq_cre_for_name)</td>
-            <td>
-                @Html.DisplayFor(modelItem => item.rq_description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.rq_dep_description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.rq_start_time)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.rq_end_time)
-            </td>
-            <td>
-            
-                @diff.ToString(@"dd\:hh\:mm\:ss")
-           
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.rq_remarks)
-            </td>
-            <td>
-                <button type="button" class="btn btn-success" onclick="workflowHistory(@Html.DisplayFor(modelItem => item.rq_id)
+            @if (item.rq_end_time != null)
+            {
+
+                DateTime end = (DateTime)item.rq_end_time;
+                DateTime now = (DateTime)item.rq_start_time;
+                TimeSpan diff = end.Subtract(now);
+                <tr>
+                    <td> @Html.DisplayFor(modelitem => item.rq_id)</td>
+                    <td> @Html.DisplayFor(modelitem => item.rq_cre_for_emp_id)</td>
+                    <td> @Html.DisplayFor(modelitem => item.rq_cre_for_name)</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rq_description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rq_dep_description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rq_start_time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rq_end_time)
+                    </td>
+                    <td>
+
+                        @diff.ToString(@"dd\:hh\:mm\:ss")
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rq_remarks)
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-success" onclick="workflowHistory(@Html.DisplayFor(modelItem => item.rq_id)
                                                               ,@Html.DisplayFor(modelItem => item.rq_doc_id),
                                                                @Html.DisplayFor(modelItem => item.rq_workflow_id),
                                                                @Html.DisplayFor(modelItem => item.rq_status))">
-                    View
-                </button>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.rq_cre_by_name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.rq_cre_date)
-            </td>
-        </tr>
-}
+                            View
+                        </button>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rq_cre_by_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rq_cre_date)
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td> @Html.DisplayFor(modelitem => item.rq_id)</td>
+                    <td> @Html.DisplayFor(modelitem => item.rq_cre_for_emp_id)</td>
+                    <td> @Html.DisplayFor(modelitem => item.rq_cre_for_name)</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rq_description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rq_dep_description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rq_start_time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rq_end_time)
+                    </td>
+                    <td>
+
+                       
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rq_remarks)
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-success" onclick="workflowHistory(@Html.DisplayFor(modelItem => item.rq_id)
+                                                              ,@Html.DisplayFor(modelItem => item.rq_doc_id),
+                                                               @Html.DisplayFor(modelItem => item.rq_workflow_id),
+                                                               @Html.DisplayFor(modelItem => item.rq_status))">
+                            View
+                        </button>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rq_cre_by_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rq_cre_date)
+                    </td>
+                </tr>
+            }
+        }
+
     </tbody>
 </table>

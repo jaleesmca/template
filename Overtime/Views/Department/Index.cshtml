@@ -5,60 +5,72 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+    <div class="container">
+        <div class="page-header">
+           <h3>Department</h2>
+        </div>
+    </div>
+    <div class="container">
+        <p>
+            <a asp-action="Create" class="btn btn-warning">Create New</a>
+        </p>
+        </div>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table  table-responsive" id="mytable" width="100%">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.d_id)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.d_description)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.d_active_yn)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.d_cre_by)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.d_cre_date)
+                                </th>
+                                <th></th>
+                                <th></th>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table  class="table  table-responsive" id="mytable" width="100%">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.d_id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.d_description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.d_active_yn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.d_cre_by)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.d_cre_date)
-            </th>
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.d_id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.d_description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.d_active_yn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.d_cre_by)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.d_cre_date)
-            </td>
-            <td>
-                <a asp-action="Edit" class="btn btn-info" asp-route-id="@item.d_id">Edit</a>
-            </td>
-            <td>
-                <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.d_id">Delete</a>
-            </td>
-            <th></th>
-        </tr>
-}
-    </tbody>
-</table>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.d_id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.d_description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.d_active_yn)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.d_cre_by)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.d_cre_date)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" class="btn btn-info" asp-route-id="@item.d_id">Edit</a>
+                                    </td>
+                                    <td>
+                                        <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.d_id">Delete</a>
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>

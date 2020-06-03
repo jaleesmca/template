@@ -29,6 +29,9 @@ CREATE TABLE [dbo].[Documents](
 ) ON [PRIMARY]
 GO
 
+
+old
+---
 CREATE TABLE [dbo].[OverTimeRequest](
 	[rq_id] [int] IDENTITY(1,1) NOT NULL,
 	[rq_doc_id] [int] NULL,
@@ -207,3 +210,164 @@ INSERT INTO [dbo].[Users]
      VALUES
            ('1','admin','admin','E0NKGG2SGlAes+qQ8pwwhg==','1',	'1','Y',,'Y','1','2020-01-01 00:00:00.000')
 GO
+
+
+
+CREATE TABLE [dbo].[RoleMenus](
+	[rm_id] [int] IDENTITY(1,1) NOT NULL,
+	[rm_role_id] [int] NULL,
+	[rm_menu_id] [int] null,
+	[rm_active_yn] [varchar](1) NULL,
+	[rm_cre_by] [int] NULL,
+	[rm_cre_date] [datetime] NULL)
+
+CREATE TABLE [dbo].[Menus](
+	[m_id] [int] IDENTITY(1,1) NOT NULL,
+	[m_description] [varchar](50) Not NULL,
+	[m_desc_to_show][varchar](50) not Null,
+	[m_parrent_id][int] null,
+	[m_link] [varchar](250) null,
+	[m_type] [varchar](25) null,
+	[m_active_yn] [varchar](1) NULL,
+	[m_cre_by] [int] NULL,
+	[m_cre_date] [datetime] NULL)
+
+CREATE TABLE [dbo].[Holds](
+	[h_id] [int] IDENTITY(1,1) NOT NULL,
+	[h_fun_doc_id] [int] NULL,
+	[h_doc_id] [int] NULL,
+	[h_reasons] [varchar](250) NULL,
+	[h_replay] [varchar](250) NULL,
+	[h_replay_by] [int] NULL,
+	[h_replay_date] [datetime] NULL,
+	[h_type] [varchar](20) NULL,
+	[h_cre_by] [int] NULL,
+	[h_cre_date] [datetime] NULL
+) 
+
+--New
+
+CREATE TABLE [dbo].[OverTimeRequest](
+	[rq_id] [int] IDENTITY(1,1) NOT NULL,
+	[rq_doc_id] [int] NULL,
+	[rq_workflow_id] [int] NULL,
+	[rq_cre_for] [int] NULL,
+	[rq_description] [varchar](50) NOT NULL,
+	[rq_dep_id] [int] NULL,
+	[rq_start_time] [datetime] NOT NULL,
+	[rq_end_time] [datetime] NULL,
+	[rq_no_of_hours] [int] NOT NULL,
+	[rq_remarks] [varchar](max) NULL,
+	[rq_status] [int] NULL,
+	[rq_hold_by] [int] NULL,
+	[rq_hold_date] [datetime] NULL,
+	[rq_hold_yn] [varchar](1) NULL,
+	[rq_active_yn] [varchar](1) NULL,
+	[rq_cre_by] [int] NULL,
+	[rq_cre_date] [datetime] NULL)
+
+
+	
+
+	
+CREATE   FUNCTION [dbo].[fn_GetTotalWorkingHours]
+(
+    @DateFrom Datetime,
+    @DateTo Datetime
+)
+RETURNS DECIMAL(18,2)
+AS
+BEGIN
+ 
+DECLARE @TotalWorkDays INT, @TotalTimeDiff DECIMAL(18, 2)
+ 
+SET @TotalWorkDays = DATEDIFF(DAY, @DateFrom, @DateTo);
+SET @TotalTimeDiff =
+(
+    SELECT DATEDIFF(SECOND,
+                   (
+                       SELECT CONVERT(TIME, @DateFrom)
+                   ),
+                   (
+                       SELECT CONVERT(TIME, @DateTo)
+                   )) / 3600.0
+);
+ 
+RETURN  (SELECT(@TotalWorkDays * 24.00) + @TotalTimeDiff)
+ 
+END
+GO
+
+---
+
+
+CREATE   FUNCTION [dbo].[get_Time_Diffence](
+    @from DateTime,@to DateTime,@type varchar(1)
+)
+RETURNS int
+AS 
+BEGIN
+	DECLARE @result int;
+	DECLARE @DateDif DateTime;
+	set @DateDif = @to-@from;
+	if(@type='D')
+		set @result=datediff(dd,0,@DateDif);
+		
+	else if (@type='H') 
+	  set @result=datepart(hour,@DateDif);
+	else if(@type='M')
+	  set @result=datepart(minute,@DateDif);
+	else if (@type='S')
+	  set @result=datepart(second,@DateDif);
+	else return 0;
+	  return @result;
+END;
+GO
+
+---
+
+CREATE FUNCTION [dbo].[get_workflow_min_max](@id int,
+    @type varchar(3)
+)
+RETURNS varchar(50)
+AS 
+BEGIN
+	DECLARE @result VARCHAR(50);
+	if(@type='min')
+	   SET @result = (select min(wd_priority) from WorkflowDetails where wd_workflow_id=@id);
+	else
+	   SET @result = (select max(wd_priority) from WorkflowDetails where wd_workflow_id=@id);
+	return @result;
+END;
+GO
+
+
+
+CREATE FUNCTION [dbo].[getDepartmentName](
+    @id INT
+)
+RETURNS varchar(50)
+AS 
+BEGIN
+	DECLARE @description VARCHAR(50);
+	set @description='';
+	SET @description = (select Top 1 d_description from Departments where d_id=@id);
+	return @description;
+END;
+GO
+
+
+
+CREATE FUNCTION [dbo].[getName](
+    @id INT
+)
+RETURNS varchar(50)
+AS 
+BEGIN
+	DECLARE @name VARCHAR(50);
+	set @name='';
+	SET @name = (select Top 1 u_name+'-'+u_full_name from Users where u_id=@id);
+	return @name;
+END;
+GO
+

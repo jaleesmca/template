@@ -4,114 +4,128 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Index</h2>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table  table-responsive text-nowrap" id="mytable" >
-    <thead>
-        <tr>
-           
-            <th>
-                @Html.DisplayNameFor(model => model.w_id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.w_description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.w_active_yn)
-            </th>
-            <th>
-                View Detail
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.w_cre_by)
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(model => model.w_cre_date)
-            </th>
-            <th>
-
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.w_id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.w_description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.w_active_yn)
-            </td>
-            <th>
-                <button type="button" class="btn btn-success" onclick="openWorkflowDetl(@Html.DisplayFor(modelItem => item.w_id))">
-                    View
-                </button>
-            </th>
-            <td>
-                @Html.DisplayFor(modelItem => item.w_cre_by)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.w_cre_date)
-            </td>
-            <td>
-                <a asp-action="Edit" class="btn btn-info" asp-route-id="@item.w_id">Edit</a>
-            </td>
-            <td>
-                <a asp-action="Delete"  class="btn btn-danger" asp-route-id="@item.w_id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-<div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Workflow Detail</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row">
-
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <input type="hidden" id="wd_workflow_id"  />
-                                <label  class="control-label">Role</label>
-                                <select class="form-control" id="wd_role_id" asp-items="@(new SelectList(ViewBag.RoleList,"r_id","r_description"))"></select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <label>workflow Priority</label>
-                            <input type="number" id="wd_priority" name="wdfRolePriority" class="form-control"
-                                   value="">
-                        </div>
-                        <div class="col-md-3">
-                            <input type="button" id="save" class="btn hover" onclick="saveWorkFlowDetails()"
-                                   style="margin-top: 25px;" value="Save"/>
-                        </div>
-                       
-                    </div>
-                    <div id="modalContainer" style="width:75%;margin-top:20px;">
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
+<div class="container">
+    <div class="page-header">
+       <h3>Workflow</h2>
     </div>
 </div>
- </div>
+<div class="container">
+    <p>
+        <a asp-action="Create" class="btn btn-warning">Create New</a>
+    </p>
+    </div>
+<div class="container-fluid" id="liveMonitoring">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table  table-responsive text-nowrap" id="mytable">
+                            <thead>
+                                <tr>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.w_id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.w_description)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.w_active_yn)
+                                    </th>
+                                    <th>
+                                        View Detail
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.w_cre_by)
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.w_cre_date)
+                                    </th>
+                                    <th>
+
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.w_id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.w_description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.w_active_yn)
+                                        </td>
+                                        <th>
+                                            <button type="button" class="btn btn-success" onclick="openWorkflowDetl(@Html.DisplayFor(modelItem => item.w_id))">
+                                                View
+                                            </button>
+                                        </th>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.w_cre_by)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.w_cre_date)
+                                        </td>
+                                        <td>
+                                            <a asp-action="Edit" class="btn btn-info" asp-route-id="@item.w_id">Edit</a>
+                                        </td>
+                                        <td>
+                                            <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.w_id">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog  modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalCenterTitle">Workflow Detail</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="container">
+                                            <div class="row">
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <input type="hidden" id="wd_workflow_id" />
+                                                        <label class="control-label">Role</label>
+                                                        <select class="form-control" id="wd_role_id" asp-items="@(new SelectList(ViewBag.RoleList,"r_id","r_description"))"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label>workflow Priority</label>
+                                                    <input type="number" id="wd_priority" name="wdfRolePriority" class="form-control"
+                                                           value="">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="button" id="save" class="btn hover" onclick="saveWorkFlowDetails()"
+                                                           style="margin-top: 25px;" value="Save" />
+                                                </div>
+
+                                            </div>
+                                            <div id="modalContainer" style="width:75%;margin-top:20px;">
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

@@ -19,9 +19,10 @@ namespace Overtime.Controllers
         private readonly IDocuments idocuments;
         private readonly IRole irole;
         private readonly IUser iuser;
+        private readonly IHold ihold;
 
         public OvertimeRequestController(IOverTimeRequest _ioverTimeReques, IWorkflowDetail _iworkflowDetail,
-            IWorkflowTracker _iworkflowTracker,IDepartment _idepartment,IDocuments _idocuments,IRole _irole,IUser _iuser)
+            IWorkflowTracker _iworkflowTracker,IDepartment _idepartment,IDocuments _idocuments,IRole _irole,IUser _iuser,IHold _ihold)
         {
             ioverTimeRequest = _ioverTimeReques;
             iworkflowDetail= _iworkflowDetail;
@@ -30,6 +31,7 @@ namespace Overtime.Controllers
             idocuments = _idocuments;
             irole = _irole;
             iuser = _iuser;
+            ihold = _ihold;
         }
 
         // GET: OvertimeRequest
@@ -399,6 +401,11 @@ namespace Overtime.Controllers
                     User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
                     ViewBag.Name = user.u_full_name;
                     ViewBag.isAdmin = user.u_is_admin;
+                    if (user.u_role_description.Equals("Monitor")) ViewBag.isMonitor = "Y";
+                    else
+                    {
+                        ViewBag.isMonitor = "N";
+                    }
                     return user;
                 }
 
@@ -457,7 +464,6 @@ namespace Overtime.Controllers
             }
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult StartOverTime(OverTimeRequest overTimeRequest)
         {
            
@@ -497,9 +503,9 @@ namespace Overtime.Controllers
                            return RedirectToAction(nameof(Start));
                         }
                     }
-                    catch(Exception ex)
+                    catch
                     {
-                    TempData["errorMessage"] = "Please enter all data";
+                        TempData["errorMessage"] = "Please enter all data";
                         ViewBag.DepartmentList = (idepartment.GetDepartments);
                         return RedirectToAction(nameof(Start));
                     }
@@ -554,12 +560,13 @@ namespace Overtime.Controllers
             else
             {
                 ViewBag.CurrentDate = DateTime.Now;
+                ViewBag.AllHoldDocuments = ioverTimeRequest.getAllHoldDocuments();
                 return View(ioverTimeRequest.GetAllLiveOvertimeRequest(getCurrentUser().u_id));
             }
         }
 
         [HttpPost]
-        public ActionResult Hold(int id)
+        public ActionResult Hold(int id,string reason)
         {
            
             if (getCurrentUser() == null)
@@ -568,13 +575,49 @@ namespace Overtime.Controllers
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine(id);
                 OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
                 overTimeRequest.rq_hold_yn = "Y";
                 overTimeRequest.rq_hold_by = getCurrentUser().u_id;
                 overTimeRequest.rq_hold_by_name= getCurrentUser().u_name;
                 overTimeRequest.rq_hold_date = DateTime.Now;
                 ioverTimeRequest.Update(overTimeRequest);
+                Hold hold = new Hold();
+                hold.h_doc_id = overTimeRequest.rq_doc_id;
+                hold.h_fun_doc_id = overTimeRequest.rq_id;
+                hold.h_reasons = reason;
+                hold.h_type = "Hold";
+                hold.h_cre_by = getCurrentUser().u_id;
+                hold.h_cre_date = DateTime.Now;
+                ihold.Add(hold);
+                return RedirectToAction(nameof(LiveMonitoring));
+
+            }
+
+        }
+        [HttpPost]
+        public ActionResult UnHold(int id, string reason)
+        {
+
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
+                overTimeRequest.rq_hold_yn = "N";
+                overTimeRequest.rq_hold_by = getCurrentUser().u_id;
+                overTimeRequest.rq_hold_by_name = getCurrentUser().u_name;
+                overTimeRequest.rq_hold_date = DateTime.Now;
+                ioverTimeRequest.Update(overTimeRequest);
+                Hold hold = new Hold();
+                hold.h_doc_id = overTimeRequest.rq_doc_id;
+                hold.h_fun_doc_id = overTimeRequest.rq_id;
+                hold.h_reasons = reason;
+                hold.h_type = "UnHold";
+                hold.h_cre_by = getCurrentUser().u_id;
+                hold.h_cre_date = DateTime.Now;
+                ihold.Add(hold);
                 return RedirectToAction(nameof(LiveMonitoring));
 
             }

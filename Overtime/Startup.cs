@@ -47,6 +47,9 @@ namespace Overtime
             services.AddTransient<IWorkflowTracker,WorkflowTrackerRepository>();
             services.AddTransient<IOverTimeRequest, OverTimeRequestRepository>();
             services.AddTransient<IDocuments, DocumentsRepository>();
+            services.AddTransient<IHold, HoldRepository>();
+            services.AddTransient<IRoleMenu, RoleMenuRepository>();
+            services.AddTransient<IMenu, MenuRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

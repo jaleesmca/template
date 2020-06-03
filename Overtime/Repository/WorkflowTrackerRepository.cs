@@ -43,6 +43,5 @@ namespace Overtime.Repository
             WorkflowTracker workflowTracker = db.workflowTrackers.Find(id);
             db.workflowTrackers.Remove(workflowTracker);
         }
-        
     }
 }

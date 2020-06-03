@@ -76,7 +76,51 @@
         }
     });
    
+    $('input[type=radio][name=frmTypes]').change(function () {
 
+        load_user_menus();
+    });
+    $('#role').change(function () {
+        load_user_menus()
+    });
+    $('#saveBtn').click(function () {
+        var reqRow = [];
+        $("#multiselect_to option").each(function () {
+            reqRow.push(parseInt($(this).val()));
+        });
+        console.log(reqRow);
+        var $option = $('#username').find('option:selected');
+        var value = $option.val();
+        var type = $('input[name=frmTypes]:checked').val();
+        var data = new FormData();
+
+        data.append('userId', value);
+        data.append('type', type);
+        data.append('docsList', reqRow);
+        $.ajax({
+            url: "/grand/adm/updateUserMenu",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                if (response.status == "Y") {
+                    showSnackBar("snackbar-green", response.message);
+                }
+                else {
+                    showSnackBar("snackbar-red", response.message);
+                }
+                $("#multiselect_to").empty();
+                $("#multiselect").empty();
+            },
+            error: function () {
+                $("#multiselect_to").empty();
+                $("#multiselect").empty();
+                showSnackBar("snackbar-red", "Contact Developer");
+            }
+        });
+    });
 });
 
 
@@ -206,6 +250,7 @@ function workflowHistory(rowid,doc_id,workflow,status) {
             workflowDetailStatus(workflow, status);
             $("#modalContainer").html(response);
             $('#historyModal').modal('show');
+
         },
         error: function () {
         }
@@ -312,7 +357,6 @@ var seconds = delta % 60;
 
 
 function loadTimeForAllTr() {
-
     if ($("#mytable").length) {
         
         $("tr.a").each(function (i, tr) {
@@ -345,4 +389,59 @@ function loadTimeForAllTr() {
 
 function n(n) {
     return n > 9 ? "" + n : "0" + n;
+}
+
+function holdHistory(rowid, doc_id,from) {
+    var data = new FormData();
+    data.append("rowid", rowid);
+    data.append("doc_id", doc_id);
+    data.append("from", from);
+
+    $.ajax({
+        url: "/Hold/History",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#modalContainer").html(response);
+            $('#historyModal').modal('show');
+        },
+        error: function () {
+        }
+    });
+}
+function replayForHold(id) {
+    var data = new FormData();
+    data.append("id", id);
+    data.append("replay", $("#replay" + id).val().replace(/[\n\r]/g, ''));
+    $.ajax({
+        url: "/Hold/Replay",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+        },
+        error: function () {
+        }
+    });
+}
+function hold(id) {
+    var data = prompt("Reason For Blocking?? ", "");
+    if (data != null) {
+        $("#reason" + id).val(data);
+        $("#hold" + id).submit();
+    }
+   
+}
+function unhold(id) {
+    var data = prompt("Reason For Blocking?? ", "");
+    if (data != null) {
+        $("#reason" + id).val(data);
+        $("#unhold" + id).submit();
+    }
+   
 }

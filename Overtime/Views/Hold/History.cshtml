@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Overtime.Models.Hold>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.h_reasons)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.h_type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.h_replay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.h_cre_by_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.h_cre_date)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.h_reasons)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.h_type)
+            </td>
+            @if (ViewBag.from == "Approve")
+            {
+              <td>
+                  <input type="text" class="form-control" id="@string.Format("replay{0}", @item.h_id)" onkeydown="replayForHold(@item.h_id)" value=" @item.h_replay" />
+                     
+              </td>
+            }
+            else
+            {
+                <td>
+                    <table>
+                        <tr>
+                            <td colspan="2">
+                                @Html.DisplayFor(modelItem => item.h_replay)
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.h_replay_by_name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.h_replay_date)
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.h_cre_by_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.h_cre_date)
+            </td>
+
+        </tr>
+}
+    </tbody>
+</table>
+</body>
+</html>
