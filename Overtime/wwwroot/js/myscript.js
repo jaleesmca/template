@@ -445,3 +445,43 @@ function unhold(id) {
     }
    
 }
+
+function load_user_menus() {
+    var $option = $('#role').find('option:selected');
+    var value = $option.val();
+
+    var type = $('input[name=frmTypes]:checked').val();
+    var data = new FormData();
+    data.append('userId', value);
+    data.append('type', type);
+    $.ajax({
+        url: "/RoleMenu/showRoleMenus",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            alert(response);
+            var i;
+            if ($.isEmptyObject(response)) {
+                $("#multiselect_to").empty();
+                $("#multiselect").empty();
+            } else {
+                $('#saveBtn').prop('disabled', false);
+                $("#multiselect").empty();
+                for (i = 0; i < response[0].length; ++i) {
+                    $("#multiselect").append($("<option />").val(response[0][i].docId).text(response[0][i].docName));
+                }
+                $("#multiselect_to").empty();
+                for (i = 0; i < response[1].length; ++i) {
+                    $("#multiselect_to").append($("<option />").val(response[1][i].docId).text(response[1][i].docName));
+                }
+            }
+        },
+        error: function () {
+            $("#multiselect_to").empty();
+            $("#multiselect").empty();
+        }
+    });
+}

@@ -12,7 +12,7 @@
                 <label>User List</label>
                 <div class="form-group">
                     <label  class="control-label"></label>
-                    <select class="form-control" asp-items="@(new SelectList(ViewBag.RoleList,"r_id","r_description"))" id="role">
+                    <select class="form-control" asp-items="@(new SelectList(ViewBag.RoleList,"r_id","r_description"))" id="role" onchange="load_user_menus();">
                         <option value="0">Select Role</option>
                     </select>
                 </div>

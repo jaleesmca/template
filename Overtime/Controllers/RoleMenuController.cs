@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Overtime.Models;
 using Overtime.Services;
 
 namespace Overtime.Controllers
@@ -11,9 +12,11 @@ namespace Overtime.Controllers
     public class RoleMenuController : Controller
     {
         public readonly IRole irole;
-        public RoleMenuController(IRole _irole)
+        public readonly IMenu imenu;
+        public RoleMenuController(IRole _irole,IMenu _imenu)
         {
             irole = _irole;
+            imenu = _imenu;
         }
 
         // GET: RoleMenu
@@ -96,6 +99,14 @@ namespace Overtime.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpPost]
+        public IEnumerable<Menu> showRoleMenus(int role,string type )
+        {
+            IEnumerable<Menu> menus = imenu.getMenulistByRoleAndType(role,type);
+
+            return menus;
         }
     }
 }

@@ -17,5 +17,6 @@ namespace Overtime.Services
         void Remove(int id);
 
         void Update(Menu menu);
+        IEnumerable<Menu> getMenulistByRoleAndType(int role,string type);
     }
 }

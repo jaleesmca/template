@@ -30,6 +30,11 @@ namespace Overtime.Repository
             return menu;
         }
 
+        public IEnumerable<Menu> getMenulistByRoleAndType(int role, string type)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Remove(int id)
         {
             Menu menu = db.Menus.Find(id);
@@ -42,5 +47,6 @@ namespace Overtime.Repository
             db.Update(menu);
             db.SaveChanges();
         }
+        
     }
 }
