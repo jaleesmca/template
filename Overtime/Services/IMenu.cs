@@ -18,5 +18,8 @@ namespace Overtime.Services
 
         void Update(Menu menu);
         IEnumerable<Menu> getMenulistByRoleAndType(int role,string type);
+        IEnumerable<Menu> getMenuListNotMappedByRoleAndType(int role, string type);
+        IEnumerable<Menu> GetMenuList(string type);
+        IEnumerable<Menu> getMenulistByRoleAndTypeAndParrent(int u_role_id, string v, int m_id);
     }
 }

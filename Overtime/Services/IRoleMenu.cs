@@ -17,5 +17,8 @@ namespace Overtime.Services
         void Remove(int id);
 
         void Update(RoleMenu roleMenu);
+        RoleMenu GetRoleMenusByRoleAndMenu(int role, int item);
+        int getCountOfRoleMenuByRoleAndType(int role, string type);
+        void RemoveAllRoleMenu(int role, string type);
     }
 }

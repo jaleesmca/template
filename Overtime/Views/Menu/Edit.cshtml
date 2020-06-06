@@ -31,12 +31,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="m_parrent_id" class="control-label"></label>
-                <input asp-for="m_parrent_id" class="form-control" />
+                <select asp-for="m_parrent_id" class="form-control" asp-items="@(new SelectList(ViewBag.MenuList,"m_id","m_description"))">
+                    <option value="0">Select Parrent</option>
+                </select>
                 <span asp-validation-for="m_parrent_id" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="m_type" class="control-label"></label>
-                <input asp-for="m_type" class="form-control" />
+                <select asp-for="m_type" class="form-control">
+                    <option selected value="Menu">Menu</option>
+                    <option value="MenuItem">MenuItem</option>
+                </select>
                 <span asp-validation-for="m_type" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -44,18 +49,9 @@
                 <input asp-for="m_active_yn" class="form-control" />
                 <span asp-validation-for="m_active_yn" class="text-danger"></span>
             </div>
+           
             <div class="form-group">
-                <label asp-for="m_cre_by" class="control-label"></label>
-                <input asp-for="m_cre_by" class="form-control" />
-                <span asp-validation-for="m_cre_by" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="m_cre_date" class="control-label"></label>
-                <input asp-for="m_cre_date" class="form-control" />
-                <span asp-validation-for="m_cre_date" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" class="btn btn-success" value="Save" class="btn btn-default" />
             </div>
         </form>
     </div>

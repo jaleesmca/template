@@ -20,9 +20,10 @@ namespace Overtime.Controllers
         private readonly IRole irole;
         private readonly IUser iuser;
         private readonly IHold ihold;
+        private readonly IMenu imenu;
 
         public OvertimeRequestController(IOverTimeRequest _ioverTimeReques, IWorkflowDetail _iworkflowDetail,
-            IWorkflowTracker _iworkflowTracker,IDepartment _idepartment,IDocuments _idocuments,IRole _irole,IUser _iuser,IHold _ihold)
+            IWorkflowTracker _iworkflowTracker,IDepartment _idepartment,IDocuments _idocuments,IRole _irole,IUser _iuser,IHold _ihold, IMenu _imenu)
         {
             ioverTimeRequest = _ioverTimeReques;
             iworkflowDetail= _iworkflowDetail;
@@ -32,6 +33,7 @@ namespace Overtime.Controllers
             irole = _irole;
             iuser = _iuser;
             ihold = _ihold;
+            imenu = _imenu;
         }
 
         // GET: OvertimeRequest
@@ -398,6 +400,30 @@ namespace Overtime.Controllers
                 }
                 else
                 {
+
+                    IEnumerable<MenuItems> UserMenus = Enumerable.Empty<MenuItems>();
+
+                    IEnumerable<Menu> menus = imenu.getMenulistByRoleAndType(getCurrentUser().u_role_id, "Menu");
+
+
+
+                    foreach (var menu in menus)
+                    {
+                        MenuItems menuItems = new MenuItems();
+                        menuItems.m_id = menu.m_id;
+                        menuItems.m_description = menu.m_description;
+                        menuItems.m_desc_to_show = menu.m_desc_to_show;
+                        menuItems.m_link = menu.m_link;
+                        menuItems.m_parrent_id = menu.m_parrent_id;
+                        menuItems.m_type = menu.m_type;
+                        menuItems.m_cre_by = menu.m_cre_by;
+                        menuItems.m_active_yn = menu.m_active_yn;
+                        menuItems.m_cre_date = menu.m_cre_date;
+                        menuItems.menuItem = imenu.getMenulistByRoleAndTypeAndParrent(getCurrentUser().u_role_id, "MenuItem", menu.m_id);
+                        UserMenus.Append(menuItems);
+                    }
+                   // ViewBag.MenuList = UserMenus;
+
                     User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
                     ViewBag.Name = user.u_full_name;
                     ViewBag.isAdmin = user.u_is_admin;

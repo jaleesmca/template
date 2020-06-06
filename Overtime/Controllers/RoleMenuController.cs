@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language;
+using Newtonsoft.Json;
+using NHibernate.SqlCommand;
 using Overtime.Models;
 using Overtime.Services;
 
@@ -13,10 +17,12 @@ namespace Overtime.Controllers
     {
         public readonly IRole irole;
         public readonly IMenu imenu;
-        public RoleMenuController(IRole _irole,IMenu _imenu)
+        public readonly IRoleMenu iroleMenu;
+        public RoleMenuController(IRole _irole,IMenu _imenu,IRoleMenu _iroleMenu)
         {
             irole = _irole;
             imenu = _imenu;
+            iroleMenu = _iroleMenu;
         }
 
         // GET: RoleMenu
@@ -102,11 +108,92 @@ namespace Overtime.Controllers
         }
 
         [HttpPost]
-        public IEnumerable<Menu> showRoleMenus(int role,string type )
+        public String showRoleMenus(int role,string type )
         {
+            MenuWrapper menuWrapper = new MenuWrapper();
+            IEnumerable<Menu> AllMenu = imenu.getMenuListNotMappedByRoleAndType(role, type);
             IEnumerable<Menu> menus = imenu.getMenulistByRoleAndType(role,type);
-
-            return menus;
+            menuWrapper.allMenu = AllMenu;
+            menuWrapper.userMenu = menus;
+            return JsonConvert.SerializeObject(menuWrapper);
         }
+
+        [HttpPost]
+        public String saveMenuitems(int role, string type,string menus)
+        {
+
+            if (menus!=null)
+            {
+                int Count = iroleMenu.getCountOfRoleMenuByRoleAndType(role, type);
+                if (Count !=0)
+                {
+                    
+                    iroleMenu.RemoveAllRoleMenu(role, type);
+                    
+                }
+                Count = iroleMenu.getCountOfRoleMenuByRoleAndType(role, type);
+               
+                String[] array = menus.Split(',');
+               
+
+                foreach (var item in array)
+                {
+                    if (item != null)
+                    {
+                        RoleMenu roleMenu1 = iroleMenu.GetRoleMenusByRoleAndMenu(role, int.Parse(item));
+                        if (roleMenu1 == null)
+                        {
+                            RoleMenu roleMenu = new RoleMenu();
+                            roleMenu.rm_role_id = role;
+                            roleMenu.rm_menu_id = int.Parse(item);
+                            roleMenu.rm_active_yn = "Y";
+                            roleMenu.rm_cre_by = getCurrentUser().u_id;
+                            roleMenu.rm_cre_date = DateTime.Now;
+                            iroleMenu.Add(roleMenu);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                int Count = iroleMenu.getCountOfRoleMenuByRoleAndType(role, type);
+                if (Count != 0)
+                {
+                    
+                    iroleMenu.RemoveAllRoleMenu(role, type);
+
+                }
+            }
+            
+            return "success";
+        }
+        private User getCurrentUser()
+        {
+            try
+            {
+                if (HttpContext.Session.GetString("User") == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
+                    ViewBag.Name = user.u_full_name;
+                    ViewBag.isAdmin = user.u_is_admin;
+                    if (user.u_role_description.Equals("Monitor")) ViewBag.isMonitor = "Y";
+                    else
+                    {
+                        ViewBag.isMonitor = "N";
+                    }
+                    return user;
+                }
+
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
     }
 }

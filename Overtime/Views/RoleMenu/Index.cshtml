@@ -12,7 +12,7 @@
                 <label>User List</label>
                 <div class="form-group">
                     <label  class="control-label"></label>
-                    <select class="form-control" asp-items="@(new SelectList(ViewBag.RoleList,"r_id","r_description"))" id="role" onchange="load_user_menus();">
+                    <select class="form-control" asp-items="@(new SelectList(ViewBag.RoleList,"r_id","r_description"))" id="SelectRole" >
                         <option value="0">Select Role</option>
                     </select>
                 </div>
@@ -22,10 +22,10 @@
             <label>Type</label><br>
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-secondary active">
-                    <input type="radio" name="frmTypes" id="option1" autocomplete="off" value="CREATE" checked> Menu
+                    <input type="radio" name="frmTypes" id="option1" autocomplete="off" value="Menu" checked> Menu
                 </label>
                 <label class="btn btn-secondary">
-                    <input type="radio" name="frmTypes" id="option2" autocomplete="off" value="APPROVE">
+                    <input type="radio" name="frmTypes" id="option2" autocomplete="off" value="MenuItem">
                     Menu Item
                 </label>
             </div>
@@ -33,7 +33,7 @@
         <div class="col-md-2">
             <div class="form-group">
                 <label>Save</label>
-                <button type="button" id="saveBtn" class="form-control btn dms-btn" disabled>Save</button>
+                <button type="button" id="saveMenu" class="form-control btn btn btn-success" disabled>Save</button>
             </div>
         </div>
     </div>
@@ -41,7 +41,8 @@
         <div class="col-xs-4">
             <div class="form-group">
                 <label>All Functions</label>
-                <select name="from" id="multiselect" class="form-control" size="8" multiple="multiple">
+                <select name="from" id="multiselect" class="form-control" size="15" multiple="multiple">
+                    
                 </select>
             </div>
         </div>
@@ -66,7 +67,7 @@
         <div class="col-xs-4">
             <div class="form-group">
                 <label>Allowed Functions</label>
-                <select name="to" id="multiselect_to" class="form-control" size="8" multiple="multiple"> </select>
+                <select name="to" id="multiselect_to" class="form-control" size="15" multiple="multiple"> </select>
             </div>
            
         </div>

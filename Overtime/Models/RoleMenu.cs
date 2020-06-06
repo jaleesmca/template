@@ -22,6 +22,8 @@ namespace Overtime.Models
         [Display(Name = "Active")]
         public string rm_active_yn { get; set; }
 
+        public int  rm_cre_by { get; set; }
+
         [NotMapped]
         [Display(Name = "Created by")]
         public string rm_cre_by_Name { get; set; }

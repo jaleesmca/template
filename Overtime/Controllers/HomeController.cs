@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Overtime.Models;
 using Overtime.Services;
 using Overtime.Repository;
+using System.Collections;
 
 namespace Overtime.Controllers
 {
@@ -17,11 +18,13 @@ namespace Overtime.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUser iuser;
+        private readonly IMenu imenu;
 
-        public HomeController(ILogger<HomeController> logger,IUser _iuser)
+        public HomeController(ILogger<HomeController> logger,IUser _iuser,IMenu _imenu)
         {
             _logger = logger;
             iuser = _iuser;
+            imenu = _imenu;
         }
 
         public IActionResult Index()
@@ -34,6 +37,30 @@ namespace Overtime.Controllers
 
                 ViewBag.Name = getCurrentUser().u_full_name;
                 ViewBag.isAdmin = getCurrentUser().u_is_admin;
+
+                List<MenuItems> menulist =new  List<MenuItems>();
+
+                IEnumerable<Menu> menus = imenu.getMenulistByRoleAndType(getCurrentUser().u_role_id,"Menu");
+                
+                foreach (var menu in menus)
+                {
+                    MenuItems menuItems = new MenuItems();
+                    menuItems.m_id = menu.m_id;
+                    menuItems.m_description = menu.m_description;
+                    menuItems.m_desc_to_show = menu.m_desc_to_show;
+                    menuItems.m_link = menu.m_link;
+                    menuItems.m_parrent_id = menu.m_parrent_id;
+                    menuItems.m_type = menu.m_type;
+                    menuItems.m_cre_by = menu.m_cre_by;
+                    menuItems.m_active_yn = menu.m_active_yn;
+                    menuItems.m_cre_date = menu.m_cre_date;
+                    menuItems.menuItem = imenu.getMenulistByRoleAndTypeAndParrent(getCurrentUser().u_role_id, "MenuItem", menu.m_id);
+                    menulist.Add(menuItems);
+                }
+
+                ViewBag.MenuList = menulist;
+                Debug.WriteLine(JsonConvert.SerializeObject(menulist));
+
                 if (getCurrentUser().u_role_description.Equals("Monitor")) ViewBag.isMonitor = "Y";
                 else
                 {

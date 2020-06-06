@@ -41,10 +41,12 @@ namespace Overtime.Controllers
         {
             if (getCurrentUser() == null)
             {
+               
                 return RedirectToAction("Index", "Login");
             }
             else
             {
+                ViewBag.MenuList = imenu.GetMenuList("Menu");
                 return View();
             }
         }
@@ -70,6 +72,7 @@ namespace Overtime.Controllers
                 }
                 catch
                 {
+                    ViewBag.MenuList = imenu.GetMenuList("Menu");
                     return View();
                 }
             }
@@ -84,6 +87,7 @@ namespace Overtime.Controllers
             }
             else
             {
+                ViewBag.MenuList = imenu.GetMenuList("Menu");
                 return View(imenu.GetMenu(id));
             }
         }
@@ -102,16 +106,21 @@ namespace Overtime.Controllers
                 try
                 {
                     Menu _menu = imenu.GetMenu(id);
-                    menu.m_description = _menu.m_description;
-                    menu.m_desc_to_show = menu.m_desc_to_show;
-                    menu.m_link = menu.m_link;
-                    menu.m_active_yn = menu.m_active_yn;
-                    imenu.Update(menu);
+                    _menu.m_description = _menu.m_description;
+                    _menu.m_desc_to_show = menu.m_desc_to_show;
+                    _menu.m_link = menu.m_link;
+                    _menu.m_type = menu.m_type;
+                    _menu.m_parrent_id = menu.m_parrent_id;
+                    _menu.m_active_yn = menu.m_active_yn;
+                    imenu.Update(_menu);
 
                     return RedirectToAction(nameof(Index));
                 }
-                catch
+                catch (Exception ex)
                 {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+
+                    ViewBag.MenuList = imenu.GetMenuList("Menu");
                     return View();
                 }
             }

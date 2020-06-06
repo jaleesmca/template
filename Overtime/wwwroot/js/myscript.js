@@ -1,4 +1,83 @@
 ﻿$(document).ready(function () {
+    $('#saveMenu').click(function () {
+      
+        var reqRow = [];
+        $("#multiselect_to option").each(function () {
+            reqRow.push($(this).val());
+        });
+
+        var value = $('#SelectRole').val();
+        if (value == 0) {
+            alert("Please Choose Role");
+        } else {
+            var type = $('input[name=frmTypes]:checked').val();
+            var data = new FormData();
+
+            data.append('role', value);
+            data.append('type', type);
+            data.append('menus', reqRow);
+            $.ajax({
+                url: "/RoleMenu/saveMenuitems",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                cache: false,
+                data: data,
+                success: function (response) {
+                    alert(response);
+                    $("#multiselect_to").empty();
+                    $("#multiselect").empty();
+                },
+                error: function () {
+                    $("#multiselect_to").empty();
+                    $("#multiselect").empty();
+
+                }
+            });
+        }
+    });
+
+    $("#SelectRole").change(function () {
+        load_user_menus();
+    });
+    $("#multiselect_rightSelected").click(function () {
+        if ($("#multiselect_to option[value='" + $("#multiselect").val()+"']").length ==0) {
+            $("#multiselect_to").append($("<option />").val($("#multiselect option:selected").val()).text($("#multiselect option:selected").text()));
+            $("#multiselect option[value='" + $("#multiselect option:selected").val()+"']").remove();
+        }
+    });
+    $("#multiselect_rightAll").click(function () {
+        if ($('#multiselect option').length != 0) {
+            $("#multiselect_to").empty();
+            $("#multiselect option").each(function () {
+
+                if ($("#multiselect_to option[value='" + $(this).val() + "']").length == 0) {
+                    $("#multiselect_to").append($("<option />").val($(this).val()).text($(this).text()));
+                    $("#multiselect option[value='" + $(this).val() + "']").remove();
+                }
+            });
+        }    
+    });
+    $("#multiselect_leftSelected").click(function () {
+        if ($("#multiselect option[value='" + $("#multiselect_to").val() + "']").length == 0) {
+           
+            $("#multiselect").append($("<option />").val($("#multiselect_to option:selected").val()).text($("#multiselect_to option:selected").text()));
+            $("#multiselect_to option[value='" + $("#multiselect_to option:selected").val() + "']").remove();
+        }
+    });
+    $("#multiselect_leftAll").click(function () {
+        if ($('#multiselect_to option').length != 0) {
+            $("#multiselect").empty();
+            $("#multiselect_to option").each(function () {
+
+                if ($("#multiselect option[value='" + $(this).val() + "']").length == 0) {
+                    $("#multiselect").append($("<option />").val($(this).val()).text($(this).text()));
+                    $("#multiselect_to option[value='" + $(this).val() + "']").remove();
+                }
+            });
+        }
+    });
+    $('.multiselect').multiselect();
     $('#forWhom').change(function() {
         if (!$(this).is(":checked")) {
             var returnVal = confirm("Are you sure?");
@@ -83,46 +162,9 @@
     $('#role').change(function () {
         load_user_menus()
     });
-    $('#saveBtn').click(function () {
-        var reqRow = [];
-        $("#multiselect_to option").each(function () {
-            reqRow.push(parseInt($(this).val()));
-        });
-        console.log(reqRow);
-        var $option = $('#username').find('option:selected');
-        var value = $option.val();
-        var type = $('input[name=frmTypes]:checked').val();
-        var data = new FormData();
+   
 
-        data.append('userId', value);
-        data.append('type', type);
-        data.append('docsList', reqRow);
-        $.ajax({
-            url: "/grand/adm/updateUserMenu",
-            type: "POST",
-            contentType: false,
-            processData: false,
-            cache: false,
-            data: data,
-            success: function (response) {
-                if (response.status == "Y") {
-                    showSnackBar("snackbar-green", response.message);
-                }
-                else {
-                    showSnackBar("snackbar-red", response.message);
-                }
-                $("#multiselect_to").empty();
-                $("#multiselect").empty();
-            },
-            error: function () {
-                $("#multiselect_to").empty();
-                $("#multiselect").empty();
-                showSnackBar("snackbar-red", "Contact Developer");
-            }
-        });
-    });
 });
-
 
 function openWorkflowDetl(id) {
         var data = new FormData();
@@ -144,6 +186,7 @@ function openWorkflowDetl(id) {
             }
         });
 }
+
 function saveWorkFlowDetails() {
     var workflowid = $("#wd_workflow_id").val();
     var role_id = $("#wd_role_id").val();
@@ -170,39 +213,8 @@ function saveWorkFlowDetails() {
         }
     });
 }
-function overTimeRequestReport() {
-    var data = new FormData();
-    alert($("#reportrange").val());
-    data.append("no_of_hours", $("#rq_no_of_hours").val());
-    data.append("rq_dep_id", $("#rq_dep_id").val());
-    data.append("reportrange", $("#reportrange").val());
-    data.append("rq_remarks", $("#rq_remarks").val());
-    data.append("rq_role_id", $("#role_id").val());
-    data.append("rq_cre_by", $("#rq_cre_by").val());
-    data.append("rq_cre_date", $("#rq_cre_date").val());
-    $.ajax({
-        url: "/OvertimeRequest/CustomReport",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $("#container").html(response);
-            $('#mytable').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5'
-                ]
-            });
-        },
-        error: function () {
-        }
-    });
-}
+
+
 function overTimeRequestReport() {
     var data = new FormData();
     data.append("no_of_hours", $("#rq_no_of_hours").val());
@@ -233,6 +245,7 @@ function overTimeRequestReport() {
         }
     });
 }
+
 function workflowHistory(rowid,doc_id,workflow,status) {
     var data = new FormData();
     data.append("rowid", rowid);
@@ -276,6 +289,7 @@ function workflowDetailStatus( workflow,status) {
         }
     });
 }
+
 function OverTimeConsolidatedReport() {
     var data = new FormData();
     data.append("rq_dep_id", $("#rq_dep_id").val());
@@ -447,12 +461,12 @@ function unhold(id) {
 }
 
 function load_user_menus() {
-    var $option = $('#role').find('option:selected');
-    var value = $option.val();
+    var $option = $('#SelectRole').find('option:selected');
+    var role = $option.val();
 
     var type = $('input[name=frmTypes]:checked').val();
     var data = new FormData();
-    data.append('userId', value);
+    data.append('role', role);
     data.append('type', type);
     $.ajax({
         url: "/RoleMenu/showRoleMenus",
@@ -462,26 +476,33 @@ function load_user_menus() {
         cache: false,
         data: data,
         success: function (response) {
-            alert(response);
+            var data = JSON.parse(response);
             var i;
             if ($.isEmptyObject(response)) {
                 $("#multiselect_to").empty();
                 $("#multiselect").empty();
             } else {
-                $('#saveBtn').prop('disabled', false);
-                $("#multiselect").empty();
-                for (i = 0; i < response[0].length; ++i) {
-                    $("#multiselect").append($("<option />").val(response[0][i].docId).text(response[0][i].docName));
-                }
+              
+                $('#saveMenu').prop('disabled', false);
                 $("#multiselect_to").empty();
-                for (i = 0; i < response[1].length; ++i) {
-                    $("#multiselect_to").append($("<option />").val(response[1][i].docId).text(response[1][i].docName));
+                $("#multiselect").empty();
+                for (i = 0; i < data.userMenu.length; ++i) {
+                    $("#multiselect_to").append($("<option />").val(data.userMenu[i].m_id).text(data.userMenu[i].m_description));
+                   
+                }
+                for (i = 0; i < data.allMenu.length; ++i) {
+                    $("#multiselect").append($("<option />").val(data.allMenu[i].m_id).text(data.allMenu[i].m_description));
+
                 }
             }
         },
         error: function () {
+            
             $("#multiselect_to").empty();
             $("#multiselect").empty();
         }
     });
 }
+
+
+
