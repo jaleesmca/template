@@ -4,63 +4,65 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="card">
+    <div class="card-body">
+        <div class="page-header">
+            <h3>Create User</h3>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="u_full_name" class="control-label"></label>
+                                <input asp-for="u_full_name" class="form-control" />
+                                <span asp-validation-for="u_full_name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="u_name" class="control-label"></label>
+                                <input asp-for="u_name" class="form-control" />
+                                <span asp-validation-for="u_name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="u_password" class="control-label"></label>
+                                <input asp-for="u_password" class="form-control" />
+                                <span asp-validation-for="u_password" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="u_role_id" class="control-label"></label>
+                                <select asp-for="u_role_id" class="form-control" asp-items="@(new SelectList(ViewBag.RoleList,"r_id","r_description"))">
+                                    <option value="">Select Role</option>
+                                </select>
+                            </div>
 
-<h2>Create User</h2>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="u_full_name" class="control-label"></label>
-                <input asp-for="u_full_name" class="form-control" />
-                <span asp-validation-for="u_full_name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="u_name" class="control-label"></label>
-                <input asp-for="u_name" class="form-control" />
-                <span asp-validation-for="u_name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="u_password" class="control-label"></label>
-                <input asp-for="u_password" class="form-control" />
-                <span asp-validation-for="u_password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="u_role_id" class="control-label"></label>
-                <select asp-for="u_role_id" class="form-control" asp-items="@(new SelectList(ViewBag.RoleList,"r_id","r_description"))">
-                    <option value="">Select Role</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="u_dep_id" class="control-label"></label>
-                <select asp-for="u_dep_id" class="form-control" asp-items="@(new SelectList(ViewBag.DepartmentList,"d_id","d_description"))">
-                    <option value="">Select department</option>
-                </select>
-                <span asp-validation-for="u_dep_id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="u_is_admin" class="control-label"></label>
-                <select asp-for="u_is_admin" class="form-control">
-                    <option selected value="N">N</option>
-                    <option value="Y">Y</option>
-                </select>
-                <span asp-validation-for="u_is_admin" class="text-danger"></span>
-            </div>
-                <div class="form-group">
-                    <label class="label-danger">@ViewBag.Message</label>
+                            <div class="form-group">
+                                <label asp-for="u_is_admin" class="control-label"></label>
+                                <select asp-for="u_is_admin" class="form-control">
+                                    <option selected value="N">N</option>
+                                    <option value="Y">Y</option>
+                                </select>
+                                <span asp-validation-for="u_is_admin" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="label-danger">@ViewBag.Message</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+
+                <div>
+                    <a asp-action="Index">Back to List</a>
                 </div>
-</form>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+                @section Scripts {
+                    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                }

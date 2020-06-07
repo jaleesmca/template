@@ -32,7 +32,8 @@ namespace Overtime.Repository
         public IEnumerable<WorkflowTracker> GetWorkflowTrackersbyDocument(int rowid, int doc_id, int workflow)
         {
             var query = from u in db.workflowTrackers
-                        .Where(s => s.wt_workflow_id == workflow && s.wt_doc_id==doc_id&& s.wt_fun_doc_id== rowid)
+                        where  u.wt_workflow_id == workflow && u.wt_doc_id == doc_id && u.wt_fun_doc_id == rowid
+                        orderby u.wt_cre_date descending
                         select u;
 
             return query;

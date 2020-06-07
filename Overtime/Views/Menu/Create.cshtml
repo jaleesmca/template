@@ -4,59 +4,64 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="card">
+    <div class="card-body">
+        <div class="page-header">
+            <h3>Create Menu</h3>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="m_description" class="control-label"></label>
+                                <input asp-for="m_description" class="form-control" />
+                                <span asp-validation-for="m_description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="m_desc_to_show" class="control-label"></label>
+                                <input asp-for="m_desc_to_show" class="form-control" />
+                                <span asp-validation-for="m_desc_to_show" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="m_link" class="control-label"></label>
+                                <input asp-for="m_link" class="form-control" />
+                                <span asp-validation-for="m_link" class="text-danger"></span>
+                            </div>
 
-<h2>Create</h2>
+                            <div class="form-group">
+                                <label asp-for="m_parrent_id" class="control-label"></label>
+                                <select asp-for="m_parrent_id" class="form-control" asp-items="@(new SelectList(ViewBag.MenuList,"m_id","m_description"))">
+                                    <option value="">Select Parrent</option>
+                                </select>
+                                <span asp-validation-for="m_parrent_id" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="m_type" class="control-label"></label>
+                                <select asp-for="m_type" class="form-control">
+                                    <option selected value="Menu">Menu</option>
+                                    <option value="MenuItem">MenuItem</option>
+                                </select>
+                                <span asp-validation-for="m_type" class="text-danger"></span>
+                            </div>
 
-<h4>Menu</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="m_description" class="control-label"></label>
-                <input asp-for="m_description" class="form-control" />
-                <span asp-validation-for="m_description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="m_desc_to_show" class="control-label"></label>
-                <input asp-for="m_desc_to_show" class="form-control" />
-                <span asp-validation-for="m_desc_to_show" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="m_link" class="control-label"></label>
-                <input asp-for="m_link" class="form-control" />
-                <span asp-validation-for="m_link" class="text-danger"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="m_parrent_id" class="control-label"></label>
-                <select asp-for="m_parrent_id" class="form-control" asp-items="@(new SelectList(ViewBag.MenuList,"m_id","m_description"))">
-                    <option value="">Select Parrent</option>
-                </select>
-                <span asp-validation-for="m_parrent_id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="m_type" class="control-label"></label>
-                <select asp-for="m_type" class="form-control">
-                    <option selected value="Menu">Menu</option>
-                    <option value="MenuItem">MenuItem</option>
-                </select>
-                <span asp-validation-for="m_type" class="text-danger"></span>
-            </div>
-           
-          
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
-    </div>
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-success" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
+
+                @section Scripts {
+                    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                }
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+</div></div>

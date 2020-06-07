@@ -5,66 +5,74 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+    <div class="card">
+        <div class="card-body">
+            <div class="page-header">
+                <h3>Delete Menu</h3>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="page-header">
+                        <h3>Are you sure you want to delete this?</h3>
+                    </div>
+                    <div>
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.m_description)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.m_description)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.m_desc_to_show)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.m_desc_to_show)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.m_link)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.m_link)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.m_parrent_id)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.m_parrent_id)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.m_type)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.m_type)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.m_active_yn)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.m_active_yn)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.m_cre_by)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.m_cre_by)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.m_cre_date)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.m_cre_date)
+                            </dd>
+                        </dl>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Menu</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.m_description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.m_description)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.m_desc_to_show)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.m_desc_to_show)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.m_link)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.m_link)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.m_parrent_id)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.m_parrent_id)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.m_type)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.m_type)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.m_active_yn)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.m_active_yn)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.m_cre_by)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.m_cre_by)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.m_cre_date)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.m_cre_date)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="m_id" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+                        <form asp-action="Delete">
+                            <input type="hidden" asp-for="m_id" />
+                            <input type="submit" value="Delete" class="btn btn-default" /> |
+                            <a asp-action="Index">Back to List</a>
+                        </form>
+                    </div>
+</div></div>
+</div>
 </div>

@@ -59,7 +59,7 @@ namespace Overtime.Controllers
                 }
 
                 ViewBag.MenuList = menulist;
-                Debug.WriteLine(JsonConvert.SerializeObject(menulist));
+               
 
                 if (getCurrentUser().u_role_description.Equals("Monitor")) ViewBag.isMonitor = "Y";
                 else

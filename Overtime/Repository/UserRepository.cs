@@ -23,8 +23,6 @@ namespace Overtime.Repository
             var quary=from u in db.Users
             join r in db.Roles
               on u.u_role_id equals r.r_id
-            join d in db.Departments
-              on u.u_dep_id equals d.d_id
             join k in db.Users
              on u.u_cre_by equals k.u_id
             where r.r_active_yn == "Y"
@@ -48,8 +46,6 @@ namespace Overtime.Repository
            var query = from u in db.Users
                          join r in db.Roles
                            on u.u_role_id equals r.r_id
-                         join d in db.Departments
-                           on u.u_dep_id equals d.d_id
                          join k in db.Users
                           on u.u_cre_by equals k.u_id
                          where r.r_active_yn =="Y"
@@ -59,10 +55,8 @@ namespace Overtime.Repository
                                     u_password= u.u_password,
                                     u_role_id= u.u_role_id,
                                     u_role_description=r.r_description,
-                                    u_dep_id=u.u_dep_id,
                                     u_active_yn=u.u_active_yn,
                                     u_is_admin=u.u_is_admin,
-                                    u_dep_description=d.d_description,
                                     u_cre_by= u.u_cre_by,
                                     u_cre_by_Name=k.u_name,
                                     u_cre_date= u.u_cre_date};
@@ -91,8 +85,6 @@ namespace Overtime.Repository
             var query = from u in db.Users
                         join r in db.Roles
                           on u.u_role_id equals r.r_id
-                        join d in db.Departments
-                           on u.u_dep_id equals d.d_id
                         join e in db.Users
                         on u.u_cre_by equals e.u_id
                         where u.u_name== u_name
@@ -105,14 +97,11 @@ namespace Overtime.Repository
                            u_is_admin=u.u_is_admin,
                            u_role_id=u.u_role_id,
                            u_role_description=r.r_description,
-                           u_dep_id=u.u_dep_id,
                            u_active_yn=u.u_active_yn,
                            u_cre_by=u.u_cre_by,
                            u_cre_by_Name=e.u_name,
-                           u_cre_date=u.u_cre_date,
-                           u_dep_description=d.d_description
-
-                        };
+                           u_cre_date=u.u_cre_date
+                                                 };
 
             return query.FirstOrDefault<User>();
            

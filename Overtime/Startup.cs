@@ -50,6 +50,7 @@ namespace Overtime
             services.AddTransient<IHold, HoldRepository>();
             services.AddTransient<IRoleMenu, RoleMenuRepository>();
             services.AddTransient<IMenu, MenuRepository>();
+            services.AddTransient<IUserDepartment, UserDeapatmentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

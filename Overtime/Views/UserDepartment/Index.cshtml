@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Overtime.Models.UserDepartment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+    <div class="container-fluid" style="margin-top:10px;">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="page-header">
+                    <h2>Index</h2>
+                </div>
+                <p>
+                    <a class="btn btn-warning" asp-action="Create">Create New</a>
+                </p>
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-responsive" id="mytable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ud_id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ud_user_id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ud_user_name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ud_depart_id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ud_depart_desc)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ud_active_yn)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ud_cre_by)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ud_cre_date)
+                                    </th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ud_id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ud_user_id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ud_user_name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ud_depart_id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ud_depart_desc)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ud_active_yn)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ud_cre_by)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ud_cre_date)
+                                        </td>
+                                        <td>
+                                            <a asp-action="Edit" class="btn btn-info" asp-route-id="@item.ud_id">Edit</a>
+
+                                        </td>
+                                        <td>
+                                            <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.ud_id">delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+

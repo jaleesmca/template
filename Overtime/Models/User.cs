@@ -33,12 +33,7 @@ namespace Overtime.Models
         [Display(Name = "Role Name")]
         public string u_role_description { get; set; }
 
-        [Display(Name = "Dep Id")]
-        public int u_dep_id { get; set; }
-
-        [NotMapped]
-        [Display(Name = "Dep Name")]
-        public string u_dep_description { get; set; }
+      
 
         [Display(Name = "is Admin")]
         public string u_is_admin { get; set; }

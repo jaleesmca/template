@@ -72,18 +72,13 @@ namespace Overtime.Repository
             int workflow = (from u in db.Documents
                             where u.dc_id == 1
                             select u.dc_workflow_id).FirstOrDefault();
-            int minPriority = db.WorkflowDetails.Where(s => s.wd_workflow_id == workflow).
-               Select(p => p.wd_priority).Min();
-
-            int next = db.WorkflowDetails.Where(s => s.wd_workflow_id == workflow && s.wd_priority > minPriority)
-                .OrderBy(p => p.wd_priority).Select(p => p.wd_priority).FirstOrDefault();
-            System.Diagnostics.Debug.WriteLine(minPriority+"  "+ workflow);
-
-            var query = from u in db.OverTimeRequest
+           
+            var  query = from u in db.OverTimeRequest
                         join w in db.WorkflowDetails
                           on u.rq_workflow_id equals w.wd_workflow_id
                         join d in db.Departments
                         on u.rq_dep_id equals d.d_id
+                        join ud in db.UserDepartments on u.rq_dep_id  equals ud.ud_depart_id 
                         join m in db.Users on
                          w.wd_role_id equals m.u_role_id
                         join j in db.Users
@@ -92,8 +87,8 @@ namespace Overtime.Repository
                         on u.rq_cre_for equals x.u_id
                         where u.rq_status == w.wd_priority
                         where m.u_id == id
-                        where u.rq_status != next ? true: u.rq_dep_id==currentUser.u_dep_id
-                        select new OverTimeRequest
+                        where ud.ud_user_id==m.u_id
+                         select new OverTimeRequest
                         {
                             rq_id = u.rq_id,
                             rq_cre_for=u.rq_cre_for,
@@ -117,7 +112,9 @@ namespace Overtime.Repository
                             rq_cre_by_name = j.u_full_name,
                             rq_cre_date = u.rq_cre_date,
                         };
+
             return query;
+          
         }
 
         public void Add(OverTimeRequest overTimeRequest)

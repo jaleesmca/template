@@ -6,28 +6,26 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Overtime.Models;
-using Overtime.Repository;
 using Overtime.Services;
 
 namespace Overtime.Controllers
 {
-    public class WorkflowController : Controller
+    public class UserDepartmentController : Controller
     {
-        private readonly IWorkflow iworkflow;
-        private readonly IRole irole;
-        private readonly IWorkflowDetail iworkflowDetail;
+        private readonly IUserDepartment iuserDepartment;
         private readonly IMenu imenu;
+        private readonly IDepartment idepartment;
+        private readonly IUser iuser;
 
-        public WorkflowController(IWorkflow _iworkflow, IRole _irole, IWorkflowDetail _iworkflowDetail,IMenu _imenu)
+        public UserDepartmentController(IUserDepartment _iuserDepartment,IMenu _imenu, IDepartment _idepartment, IUser _iuser)
         {
-
-            iworkflow = _iworkflow;
-            irole = _irole;
-            iworkflowDetail = _iworkflowDetail;
-            imenu=_imenu;
+            iuserDepartment = _iuserDepartment;
+            imenu = _imenu;
+            idepartment = _idepartment;
+            iuser = _iuser;
         }
-
-        public ActionResult Index(int id)
+        // GET: UserDepartment
+        public ActionResult Index()
         {
             if (getCurrentUser() == null)
             {
@@ -35,24 +33,18 @@ namespace Overtime.Controllers
             }
             else
             {
-                ViewBag.RoleList = (irole.GetRoles);
-                return View(iworkflow.GetWorkflows);
+
+                return View(iuserDepartment.GetUserDepartments);
             }
         }
-        // GET: Workflow/Details/5
+
+        // GET: UserDepartment/Details/5
         public ActionResult Details(int id)
         {
-            if (getCurrentUser() == null)
-            {
-                return RedirectToAction("Index", "Login");
-            }
-            else
-            {
-                return View(iworkflowDetail.GetWorkFlowDetailsByWorkFlow(id));
-            }
+            return View();
         }
 
-        // GET: Workflow/Create
+        // GET: UserDepartment/Create
         public ActionResult Create()
         {
             if (getCurrentUser() == null)
@@ -61,15 +53,16 @@ namespace Overtime.Controllers
             }
             else
             {
-
+                ViewBag.UserList = (iuser.GetUsers);
+                ViewBag.DepartmentList = (idepartment.GetDepartments);
                 return View();
             }
         }
 
-        // POST: Workflow/Create
+        // POST: UserDepartment/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Workflow workflow)
+        public ActionResult Create(UserDepartment userDepartment)
         {
             if (getCurrentUser() == null)
             {
@@ -77,24 +70,41 @@ namespace Overtime.Controllers
             }
             else
             {
-
                 try
                 {
-                    workflow.w_active_yn = "Y";
-                    workflow.w_cre_by = getCurrentUser().u_id;
-                    workflow.w_cre_date = DateTime.Now;
-                    iworkflow.Add(workflow);
 
-                    return RedirectToAction(nameof(Index));
+                    bool isExist = iuserDepartment.getIsExistOrNot(userDepartment.ud_user_id,userDepartment.ud_depart_id);
+                    System.Diagnostics.Debug.WriteLine(userDepartment.ud_user_id + " "+isExist+" "+userDepartment.ud_depart_id);
+                    if (isExist)
+                    {
+                        ViewBag.UserList = (iuser.GetUsers);
+                        ViewBag.DepartmentList = (idepartment.GetDepartments);
+                        TempData["errorMessage"] = "Already Exist!!";
+                        return View();
+                    }
+                    else
+                    {
+                        userDepartment.ud_active_yn = "Y";
+                        userDepartment.ud_cre_by = getCurrentUser().u_id;
+                        userDepartment.ud_cre_date = DateTime.Now;
+                        iuserDepartment.Add(userDepartment);
+
+                        return RedirectToAction(nameof(Index));
+                    }
+                    
+
                 }
-                catch
+                catch(Exception ex)
                 {
+                    TempData["errorMessage"] = ex.Message;
+                    ViewBag.UserList = (iuser.GetUsers);
+                    ViewBag.DepartmentList = (idepartment.GetDepartments);
                     return View();
                 }
             }
         }
 
-        // GET: Workflow/Edit/5
+        // GET: UserDepartment/Edit/5
         public ActionResult Edit(int id)
         {
             if (getCurrentUser() == null)
@@ -103,15 +113,16 @@ namespace Overtime.Controllers
             }
             else
             {
-
-                return View(iworkflow.GetWorkflow(id));
+                ViewBag.UserList = (iuser.GetUsers);
+                ViewBag.DepartmentList = (idepartment.GetDepartments);
+                return View(iuserDepartment.GetUserDepartment(id));
             }
         }
 
-        // POST: Workflow/Edit/5
+        // POST: UserDepartment/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Workflow workflow)
+        public ActionResult Edit(int id, UserDepartment _userDepartment)
         {
             if (getCurrentUser() == null)
             {
@@ -119,40 +130,43 @@ namespace Overtime.Controllers
             }
             else
             {
-
                 try
                 {
-                    Workflow workflow1 = iworkflow.GetWorkflow(id);
-                    workflow1.w_description = workflow.w_description;
-                    iworkflow.Update(workflow1);
+                    UserDepartment userDepartment=iuserDepartment.GetUserDepartment(id);
+                    userDepartment.ud_user_id = _userDepartment.ud_user_id;
+                    userDepartment.ud_depart_id = _userDepartment.ud_depart_id;
+                    iuserDepartment.Update(userDepartment);
 
                     return RedirectToAction(nameof(Index));
                 }
-                catch
+                catch(Exception ex)
                 {
+                    TempData["errorMessage"] = ex.Message;
+                    ViewBag.UserList = (iuser.GetUsers);
+                    ViewBag.DepartmentList = (idepartment.GetDepartments);
                     return View();
                 }
             }
         }
 
-        // GET: Workflow/Delete/5
+        // GET: UserDepartment/Delete/5
         public ActionResult Delete(int id)
         {
             if (getCurrentUser() == null)
             {
+                
                 return RedirectToAction("Index", "Login");
             }
             else
             {
-
-                return View(iworkflow.GetWorkflow(id));
+                return View(iuserDepartment.GetUserDepartment(id));
             }
         }
 
-        // POST: Workflow/Delete/5
+        // POST: UserDepartment/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, Workflow workflow)
+        public ActionResult Delete(int id, IFormCollection collection)
         {
             if (getCurrentUser() == null)
             {
@@ -160,15 +174,15 @@ namespace Overtime.Controllers
             }
             else
             {
-
                 try
                 {
-                    iworkflow.Remove(id);
-
+                    UserDepartment userDepartment = iuserDepartment.GetUserDepartment(id);
+                    iuserDepartment.Remove(id);
                     return RedirectToAction(nameof(Index));
                 }
-                catch
+                catch(Exception ex)
                 {
+                    TempData["errorMessage"] = ex.Message;
                     return View();
                 }
             }
@@ -207,7 +221,13 @@ namespace Overtime.Controllers
                     }
 
                     ViewBag.MenuList = menulist;
-                   
+
+
+                    if (user.u_role_description.Equals("Monitor")) ViewBag.isMonitor = "Y";
+                    else
+                    {
+                        ViewBag.isMonitor = "N";
+                    }
                     return user;
                 }
 

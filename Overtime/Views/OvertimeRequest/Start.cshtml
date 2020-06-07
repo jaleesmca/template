@@ -5,221 +5,227 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="page-header">
-        <h3>Overtime</h3>
-    </div>
+<div class="container-fluid" style="margin-top:10px;">
+    <div class="card">
+        <div class="card-body">
 
-</div>
-@if (@TempData["errorMessage"] != null)
-{
-    <div class="alert alert-danger">
-        <strong>Error!</strong>  <a href="#" class="alert-link">@TempData["errorMessage"]</a>.
-    </div>
-}
-<div class="container-fluid">
-    @if (Enumerable.Count(ViewBag.MyLiveOvertimeRequest) == 0)
-    {
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <form asp-action="StartOverTime">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label asp-for="rq_description" class="control-label"></label>
-                                    <input asp-for="rq_description" class="form-control" />
-                                    <span asp-validation-for="rq_description" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label asp-for="rq_dep_id" class="control-label"></label>
-                                    <select asp-for="rq_dep_id" class="form-control" asp-items="@(new SelectList(ViewBag.DepartmentList,"d_id","d_description"))"></select>
-                                    <span asp-validation-for="rq_dep_id" class="text-danger"></span>
-                                </div>
-                            </div>
+            <div class="page-header">
+                <h3>Overtime</h3>
+            </div>
 
-                            <div class="col-md-2" style="align-content:center">
-                                <div class="form-group">
-                                    <br />
-                                    <input type="submit" value="Start Now" class="btn btn-success" />
-                                </div>
+        
+        @if (@TempData["errorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                <strong>Error!</strong>  <a href="#" class="alert-link">@TempData["errorMessage"]</a>.
+            </div>
+        }
+        <div class="container-fluid">
+            @if (Enumerable.Count(ViewBag.MyLiveOvertimeRequest) == 0)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form asp-action="StartOverTime">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label asp-for="rq_description" class="control-label"></label>
+                                            <input asp-for="rq_description" class="form-control" />
+                                            <span asp-validation-for="rq_description" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label asp-for="rq_dep_id" class="control-label"></label>
+                                            <select asp-for="rq_dep_id" class="form-control" asp-items="@(new SelectList(ViewBag.DepartmentList,"d_id","d_description"))"></select>
+                                            <span asp-validation-for="rq_dep_id" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2" style="align-content:center">
+                                        <div class="form-group">
+                                            <br />
+                                            <input type="submit" value="Start Now" class="btn btn-success" />
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                        </form>
+                        </div>
+
                     </div>
                 </div>
+            }
+            <br />
 
-            </div>
-        </div>
-    }
-    <br />
-    <br />
-    <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <table class="table  table-responsive text-nowrap" id="mytable">
-                        <thead>
-                            <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.rq_id)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.rq_dep_description)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.rq_description)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.rq_start_time)
-                                </th>
-                                <th>
-                                    Working Hours
-                                </th>
-                                <th>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table  table-responsive text-nowrap" id="mytable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.rq_id)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.rq_dep_description)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.rq_description)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.rq_start_time)
+                                        </th>
+                                        <th>
+                                            Working Hours
+                                        </th>
+                                        <th>
 
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in ViewBag.MyLiveOvertimeRequest)
-                            {
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in ViewBag.MyLiveOvertimeRequest)
+                                    {
 
-                                <tr>
-                                    <td>
-                                        @item.rq_id
-                                    </td>
-                                    <td>
-                                        @item.rq_dep_description
-                                    </td>
-                                    <td>
-                                        @item.rq_description
-                                    </td>
+                                        <tr>
+                                            <td>
+                                                @item.rq_id
+                                            </td>
+                                            <td>
+                                                @item.rq_dep_description
+                                            </td>
+                                            <td>
+                                                @item.rq_description
+                                            </td>
 
-                                    <td>
+                                            <td>
 
-                                        <label id="lbl_start"> @item.rq_start_time.ToString("yyyy/MM/dd HH:mm:ss")</label>
+                                                <label id="lbl_start"> @item.rq_start_time.ToString("yyyy/MM/dd HH:mm:ss")</label>
 
 
-                                    </td>
-                                    <td>
-                                        <label id="demo"></label>
+                                            </td>
+                                            <td>
+                                                <label id="demo"></label>
 
-                                    </td>
-                                    <td>
-                                        <form asp-action="EndWork">
-                                            <input type="hidden" name="id" class="form-control" value="@item.rq_id" />
-                                            <input type="hidden" name="from" class="form-control" value="Index" />
-                                            <input type="submit" value="Finish" class="btn btn-danger" />
-                                        </form>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                                            </td>
+                                            <td>
+                                                <form asp-action="EndWork">
+                                                    <input type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                                                    <input type="hidden" name="from" class="form-control" value="Index" />
+                                                    <input type="submit" value="Finish" class="btn btn-danger" />
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
-        </div>
-    </div>
+ 
+            <div class="page-header">
+                <h3>On process Requests</h3>
+            </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="table2" class="table table-responsive table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.rq_id)
+                                            </th>
 
-    <hr />
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.rq_description)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.rq_dep_description)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.rq_start_time)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.rq_end_time)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.rq_no_of_hours)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.rq_remarks)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.rq_cre_by_name)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.rq_cre_date)
+                                            </th>
+                                            <th class="all">
+                                                Approval History
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.MyOnProcessRequests)
+                                        {
+                                            DateTime end = (DateTime)item.rq_end_time;
+                                            DateTime now = (DateTime)item.rq_start_time;
+                                            TimeSpan diff = end.Subtract(now);
+                                            <tr>
+                                                <td>
+                                                    @item.rq_id
+                                                </td>
 
-    <h3>On process Requests</h3>
-
-    <hr />
-    <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <table id="table2" class="table table-responsive table-striped">
-                        <thead>
-                            <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.rq_id)
-                                </th>
-
-                                <th>
-                                    @Html.DisplayNameFor(model => model.rq_description)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.rq_dep_description)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.rq_start_time)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.rq_end_time)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.rq_no_of_hours)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.rq_remarks)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.rq_cre_by_name)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.rq_cre_date)
-                                </th>
-                                <th class="all">
-                                    Approval History
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in ViewBag.MyOnProcessRequests)
-                            {
-                                DateTime end = (DateTime)item.rq_end_time;
-                                DateTime now = (DateTime)item.rq_start_time;
-                                TimeSpan diff = end.Subtract(now);
-                                <tr>
-                                    <td>
-                                        @item.rq_id
-                                    </td>
-
-                                    <td>
-                                        @item.rq_description
-                                    </td>
-                                    <td>
-                                        @item.rq_dep_description
-                                    </td>
-                                    <td>
-                                        @item.rq_start_time
-                                    </td>
-                                    <td>
-                                        @item.rq_end_time
-                                    </td>
-                                    <td>
-                                        @diff.ToString(@"dd\:hh\:mm\:ss")
-                                    </td>
-                                    <td>
-                                        @item.rq_remarks
-                                    </td>
-                                    <td>
-                                        @item.rq_cre_by_name
-                                    </td>
-                                    <td>
-                                        @item.rq_cre_date
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-success" onclick="workflowHistory(@item.rq_id
+                                                <td>
+                                                    @item.rq_description
+                                                </td>
+                                                <td>
+                                                    @item.rq_dep_description
+                                                </td>
+                                                <td>
+                                                    @item.rq_start_time
+                                                </td>
+                                                <td>
+                                                    @item.rq_end_time
+                                                </td>
+                                                <td>
+                                                    @diff.ToString(@"dd\:hh\:mm\:ss")
+                                                </td>
+                                                <td>
+                                                    @item.rq_remarks
+                                                </td>
+                                                <td>
+                                                    @item.rq_cre_by_name
+                                                </td>
+                                                <td>
+                                                    @item.rq_cre_date
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-success" onclick="workflowHistory(@item.rq_id
                                                               ,@item.rq_doc_id,
                                                                @item.rq_workflow_id,
                                                                @item.rq_status)">
-                                            View
-                                        </button>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                                                        View
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
 
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
-    </div>
+</div>
 </div>

@@ -87,10 +87,10 @@
     </style>
 </head>
 <body>
-    <ul class="list-unstyled multi-steps">
-        
-        @if (ViewBag.status != 0)
-        {
+    @if (ViewBag.status != 0)
+    {
+        <ul class="list-unstyled multi-steps">
+
             @foreach (var item in Model)
             {@if (ViewBag.status == item.wd_priority)
                 {
@@ -104,11 +104,17 @@
                         @Html.DisplayFor(modelItem => item.wd_role_description)
                     </li>
                 }
-                }
-        }else
-        {
-            <h1 class="text-danger">Not Initiated</h1>
         }
-    </ul>
+
+        </ul>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            <strong>
+            !</strong>  <a class="alert-link">Not Initiated or Rejected</a>
+        </div>
+       
+    }
 </body>
 </html>

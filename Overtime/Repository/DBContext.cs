@@ -27,5 +27,7 @@ namespace Overtime.Repository
         public DbSet<RoleMenu> RoleMenus { get; set; }
 
         public DbSet<Menu> Menus { get; set; }
+
+        public DbSet<UserDepartment> UserDepartments { get; set; }
     }
 }

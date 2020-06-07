@@ -45,5 +45,8 @@ namespace Overtime.Models
         [Display(Name = "Created On")]
         [DataType(DataType.Date)]
         public DateTime m_cre_date { get; set; }
+
+        [NotMapped]
+        public IEnumerable<Menu> menuItem { get; set; }
     }
 }

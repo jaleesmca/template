@@ -14,10 +14,12 @@ namespace Overtime.Controllers
     public class HoldController : Controller
     {
         private  readonly IHold ihold;
+        private readonly IMenu imenu;
 
-        public HoldController(IHold _ihold)
+        public HoldController(IHold _ihold,IMenu _imenu)
         {
             ihold = _ihold;
+            imenu = _imenu;
         }
         // GET: Hold
         public ActionResult Index()
@@ -209,6 +211,27 @@ namespace Overtime.Controllers
                     User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
                     ViewBag.Name = user.u_full_name;
                     ViewBag.isAdmin = user.u_is_admin;
+                    List<MenuItems> menulist = new List<MenuItems>();
+
+                    IEnumerable<Menu> menus = imenu.getMenulistByRoleAndType(user.u_role_id, "Menu");
+
+                    foreach (var menu in menus)
+                    {
+                        MenuItems menuItems = new MenuItems();
+                        menuItems.m_id = menu.m_id;
+                        menuItems.m_description = menu.m_description;
+                        menuItems.m_desc_to_show = menu.m_desc_to_show;
+                        menuItems.m_link = menu.m_link;
+                        menuItems.m_parrent_id = menu.m_parrent_id;
+                        menuItems.m_type = menu.m_type;
+                        menuItems.m_cre_by = menu.m_cre_by;
+                        menuItems.m_active_yn = menu.m_active_yn;
+                        menuItems.m_cre_date = menu.m_cre_date;
+                        menuItems.menuItem = imenu.getMenulistByRoleAndTypeAndParrent(user.u_role_id, "MenuItem", menu.m_id);
+                        menulist.Add(menuItems);
+                    }
+
+                    ViewBag.MenuList = menulist;
                     if (user.u_role_description.Equals("Monitor")) ViewBag.isMonitor = "Y";
                     else
                     {

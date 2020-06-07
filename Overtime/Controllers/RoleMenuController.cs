@@ -28,20 +28,42 @@ namespace Overtime.Controllers
         // GET: RoleMenu
         public ActionResult Index()
         {
-            ViewBag.RoleList = (irole.GetRoles);
-            return View();
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.RoleList = (irole.GetRoles);
+
+                return View();
+            }
         }
 
         // GET: RoleMenu/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         // GET: RoleMenu/Create
         public ActionResult Create()
         {
-            return View();
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         // POST: RoleMenu/Create
@@ -49,22 +71,36 @@ namespace Overtime.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
-            try
+            if (getCurrentUser() == null)
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Login");
             }
-            catch
+            else
             {
-                return View();
+                try
+                {
+                    // TODO: Add insert logic here
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
             }
         }
 
         // GET: RoleMenu/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         // POST: RoleMenu/Edit/5
@@ -72,22 +108,36 @@ namespace Overtime.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
-            try
+            if (getCurrentUser() == null)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Login");
             }
-            catch
+            else
             {
-                return View();
+                try
+                {
+                    // TODO: Add update logic here
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
             }
         }
 
         // GET: RoleMenu/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         // POST: RoleMenu/Delete/5
@@ -95,15 +145,22 @@ namespace Overtime.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            try
+            if (getCurrentUser() == null)
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Login");
             }
-            catch
+            else
             {
-                return View();
+                try
+                {
+                    // TODO: Add delete logic here
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
             }
         }
 
@@ -180,6 +237,29 @@ namespace Overtime.Controllers
                     User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
                     ViewBag.Name = user.u_full_name;
                     ViewBag.isAdmin = user.u_is_admin;
+                    List<MenuItems> menulist = new List<MenuItems>();
+
+                    IEnumerable<Menu> menus = imenu.getMenulistByRoleAndType(user.u_role_id, "Menu");
+
+                    foreach (var menu in menus)
+                    {
+                        MenuItems menuItems = new MenuItems();
+                        menuItems.m_id = menu.m_id;
+                        menuItems.m_description = menu.m_description;
+                        menuItems.m_desc_to_show = menu.m_desc_to_show;
+                        menuItems.m_link = menu.m_link;
+                        menuItems.m_parrent_id = menu.m_parrent_id;
+                        menuItems.m_type = menu.m_type;
+                        menuItems.m_cre_by = menu.m_cre_by;
+                        menuItems.m_active_yn = menu.m_active_yn;
+                        menuItems.m_cre_date = menu.m_cre_date;
+                        menuItems.menuItem = imenu.getMenulistByRoleAndTypeAndParrent(user.u_role_id, "MenuItem", menu.m_id);
+                        menulist.Add(menuItems);
+                    }
+
+                    ViewBag.MenuList = menulist;
+                    
+
                     if (user.u_role_description.Equals("Monitor")) ViewBag.isMonitor = "Y";
                     else
                     {

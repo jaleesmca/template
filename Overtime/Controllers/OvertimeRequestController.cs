@@ -231,7 +231,6 @@ namespace Overtime.Controllers
                 OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
                 WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
                 int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
-
                 WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, nextStatus);
                 WorkflowTracker workflowTracker = new WorkflowTracker();
                 workflowTracker.wt_doc_id = documents.dc_id;
@@ -271,7 +270,7 @@ namespace Overtime.Controllers
                 int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
                 int MinofWorkflow = iworkflowDetail.getMinOfWorkFlow(overTimeRequest.rq_workflow_id);
                 int second = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, 0);
-                if (overTimeRequest.rq_status == second && getCurrentUser().u_dep_id != overTimeRequest.rq_dep_id)
+                if (overTimeRequest.rq_status == second )
                 {
                     TempData["errorMessage"] = "You have No permission to Approve";
                     return RedirectToAction(nameof(Approval));
@@ -336,7 +335,7 @@ namespace Overtime.Controllers
                 int previousStatus = iworkflowDetail.getPreviousWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
                 WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, previousStatus);
                 int second = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, 0);
-                if (overTimeRequest.rq_status == second && getCurrentUser().u_dep_id != overTimeRequest.rq_dep_id)
+                if (overTimeRequest.rq_status == second )
                 {
                     return RedirectToAction("Approval");
                 }
@@ -356,7 +355,6 @@ namespace Overtime.Controllers
                     workflowTracker.wt_cre_by_name = getCurrentUser().u_name;
                     workflowTracker.wt_cre_date = DateTime.Now;
                     iworkflowTracker.Add(workflowTracker);
-
                     overTimeRequest.rq_status = previousStatus;
                     ioverTimeRequest.Update(overTimeRequest);
                     return RedirectToAction("Approval");
@@ -401,11 +399,14 @@ namespace Overtime.Controllers
                 else
                 {
 
-                    IEnumerable<MenuItems> UserMenus = Enumerable.Empty<MenuItems>();
+                   
+                   
 
-                    IEnumerable<Menu> menus = imenu.getMenulistByRoleAndType(getCurrentUser().u_role_id, "Menu");
-
-
+                    User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
+                    ViewBag.Name = user.u_full_name;
+                    ViewBag.isAdmin = user.u_is_admin;
+                    List<MenuItems> menulist = new List<MenuItems>();
+                    IEnumerable<Menu> menus = imenu.getMenulistByRoleAndType(user.u_role_id, "Menu");
 
                     foreach (var menu in menus)
                     {
@@ -419,14 +420,12 @@ namespace Overtime.Controllers
                         menuItems.m_cre_by = menu.m_cre_by;
                         menuItems.m_active_yn = menu.m_active_yn;
                         menuItems.m_cre_date = menu.m_cre_date;
-                        menuItems.menuItem = imenu.getMenulistByRoleAndTypeAndParrent(getCurrentUser().u_role_id, "MenuItem", menu.m_id);
-                        UserMenus.Append(menuItems);
+                        menuItems.menuItem = imenu.getMenulistByRoleAndTypeAndParrent(user.u_role_id, "MenuItem", menu.m_id);
+                        menulist.Add(menuItems);
                     }
-                   // ViewBag.MenuList = UserMenus;
 
-                    User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
-                    ViewBag.Name = user.u_full_name;
-                    ViewBag.isAdmin = user.u_is_admin;
+                    ViewBag.MenuList = menulist;
+                 
                     if (user.u_role_description.Equals("Monitor")) ViewBag.isMonitor = "Y";
                     else
                     {
@@ -552,8 +551,8 @@ namespace Overtime.Controllers
                 OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
                 WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
                 int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
-
                 WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, nextStatus);
+
                 WorkflowTracker workflowTracker = new WorkflowTracker();
                 workflowTracker.wt_doc_id = documents.dc_id;
                 workflowTracker.wt_fun_doc_id = overTimeRequest.rq_id;

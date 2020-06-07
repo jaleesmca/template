@@ -60,9 +60,8 @@ namespace Overtime.Repository
                         join r in db.Roles
                           on wd.wd_role_id equals r.r_id
                         where wd.wd_workflow_id == Wf_id
-                        orderby wd.wd_priority 
-                        orderby wd.wd_cre_date
-                      select new WorkflowDetail
+                        orderby wd.wd_priority ,wd.wd_cre_date
+                        select new WorkflowDetail
                         {
                             wd_id = wd.wd_id,
                             wd_workflow_id=wd.wd_workflow_id,
