@@ -546,33 +546,41 @@ namespace Overtime.Controllers
             }
             else
             {
+                try
+                {
+                    Documents documents = idocuments.GetDocument(1);
+                    OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
+                    WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
+                    int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
+                    WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, nextStatus);
 
-                Documents documents = idocuments.GetDocument(1);
-                OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
-                WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
-                int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
-                WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, nextStatus);
+                    WorkflowTracker workflowTracker = new WorkflowTracker();
+                    workflowTracker.wt_doc_id = documents.dc_id;
+                    workflowTracker.wt_fun_doc_id = overTimeRequest.rq_id;
+                    workflowTracker.wt_status = overTimeRequest.rq_status;
+                    workflowTracker.wt_workflow_id = overTimeRequest.rq_workflow_id;
+                    workflowTracker.wt_role_id = getCurrentUser().u_role_id;
+                    workflowTracker.wt_role_description = getCurrentUser().u_role_description;
+                    workflowTracker.wt_status_to = nextStatus;
+                    workflowTracker.wt_assign_role = workflowDetail.wd_role_id;
+                    workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
+                    workflowTracker.wt_approve_status = "WorkDone";
+                    workflowTracker.wt_cre_by = getCurrentUser().u_id;
+                    workflowTracker.wt_cre_by_name = getCurrentUser().u_name;
+                    workflowTracker.wt_cre_date = DateTime.Now;
+                    iworkflowTracker.Add(workflowTracker);
+                    overTimeRequest.rq_status = nextStatus;
+                    overTimeRequest.rq_end_time = DateTime.Now;
+                    ioverTimeRequest.Update(overTimeRequest);
+                    return RedirectToAction(nameof(Start));
+                }
+                catch(Exception ex)
+                {
+                    TempData["errorMessage"] = ex.Message;
+                    return RedirectToAction(nameof(Start));
+                }
 
-                WorkflowTracker workflowTracker = new WorkflowTracker();
-                workflowTracker.wt_doc_id = documents.dc_id;
-                workflowTracker.wt_fun_doc_id = overTimeRequest.rq_id;
-                workflowTracker.wt_status = overTimeRequest.rq_status;
-                workflowTracker.wt_workflow_id = overTimeRequest.rq_workflow_id;
-                workflowTracker.wt_role_id = getCurrentUser().u_role_id;
-                workflowTracker.wt_role_description = getCurrentUser().u_role_description;
-                workflowTracker.wt_status_to = nextStatus;
-                workflowTracker.wt_assign_role = workflowDetail.wd_role_id;
-                workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
-                workflowTracker.wt_approve_status = "WorkDone";
-                workflowTracker.wt_cre_by = getCurrentUser().u_id;
-                workflowTracker.wt_cre_by_name = getCurrentUser().u_name;
-                workflowTracker.wt_cre_date = DateTime.Now;
-                iworkflowTracker.Add(workflowTracker);
-                overTimeRequest.rq_status = nextStatus;
-                overTimeRequest.rq_end_time=DateTime.Now;
-                ioverTimeRequest.Update(overTimeRequest);
-
-                return RedirectToAction(nameof(Start));
+               
             }
 
         }
