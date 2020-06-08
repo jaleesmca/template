@@ -196,7 +196,7 @@ namespace Overtime.Repository
             return query;
         }
 
-        public IEnumerable<OvCustomModel> getConsolidatedAsync(int rq_dep_id, DateTime startDate, DateTime endDate, int rq_cre_for)
+        public IEnumerable<OvCustomModel> getConsolidatedAsync(int rq_dep_id, DateTime startDate, DateTime endDate, int rq_cre_for,string type)
         {
             List<OvCustomModel> result = new List<OvCustomModel>();
             var conn = db.Database.GetDbConnection();
@@ -210,9 +210,12 @@ namespace Overtime.Repository
                         from OverTimeRequest
                         join Users on rq_cre_for = u_id
                         join Departments on rq_dep_id = d_id
-                        where[dbo].[get_workflow_min_max](rq_workflow_id, 'max') = rq_status";
+                        where 1=1 ";
 
-                    if(!startDate.ToString().Equals("1/1/0001 12:00:00 AM")&& !endDate.ToString().Equals("1/1/0001 12:00:00 AM"))
+                    if(type.Equals("Approve")) query=query+" and [dbo].[get_workflow_min_max](rq_workflow_id, 'max') = rq_status";
+                    if(type.Equals("Unapprove")) query = query + " and [dbo].[get_workflow_min_max](rq_workflow_id, 'max') != rq_status";
+
+                    if (!startDate.ToString().Equals("1/1/0001 12:00:00 AM")&& !endDate.ToString().Equals("1/1/0001 12:00:00 AM"))
                         query +=" and rq_start_time between '"+ startDate + @"' and '"+ endDate + @"' ";
                     if (rq_dep_id != 0) query += " and rq_dep_id='"+ rq_dep_id + @"'";
                     if (rq_cre_for !=0) query += " and rq_cre_for='"+ rq_cre_for + @"'";

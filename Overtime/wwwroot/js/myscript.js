@@ -98,22 +98,20 @@
     }
     if ($("#mytable").length) {
         $('#mytable').DataTable({
-            dom: 'Bfrtip',
+            dom: 'lBfrtip',
             buttons: [
                 'copyHtml5',
                 'excelHtml5',
-                'csvHtml5',
                 'pdfHtml5'
             ]
-        } );
+         } );
     }
     if ($("#table2").length) {
         $('#table2').DataTable({
-            dom: 'Bfrtip',
+            dom: 'lBfrtip',
             buttons: [
                 'copyHtml5',
                 'excelHtml5',
-                'csvHtml5',
                 'pdfHtml5'
             ]
         });
@@ -232,11 +230,10 @@ function overTimeRequestReport() {
         success: function (response) {
             $("#container").html(response);
             $('#mytable').DataTable({
-                dom: 'Bfrtip',
+                dom: 'lBfrtip',
                 buttons: [
                     'copyHtml5',
                     'excelHtml5',
-                    'csvHtml5',
                     'pdfHtml5'
                 ]
             });
@@ -295,6 +292,7 @@ function OverTimeConsolidatedReport() {
     data.append("rq_dep_id", $("#rq_dep_id").val());
     data.append("rq_cre_for", $("#rq_cre_for").val());
     data.append("reportrange", $("#reportrange").val());
+    data.append("type", $("#type").val());
     $.ajax({
         url: "/OvertimeRequest/ConsolidatedReports",
         type: "POST",
@@ -305,11 +303,10 @@ function OverTimeConsolidatedReport() {
         success: function (response) {
             $("#container").html(response);
             $('#mytable').DataTable({
-                dom: 'Bfrtip',
+                dom: 'lBfrtip',
                 buttons: [
                     'copyHtml5',
                     'excelHtml5',
-                    'csvHtml5',
                     'pdfHtml5'
                 ]
             });

@@ -25,9 +25,14 @@ namespace Overtime.Models
         [Display(Name = "Department")]
         public string emp_dep_name { get; set; }
 
-        [Display(Name = "No of Hours")]
+        [Display(Name = "Approved Hours")]
         public decimal work_hours { get; set; }
 
+        [Display(Name = "Unapproved Hours")]
+        public decimal emp_unapproved { get; set; }
+
+        [Display(Name = "Total Hours")]
+        public decimal emp_total { get; set; }
 
     }
 }

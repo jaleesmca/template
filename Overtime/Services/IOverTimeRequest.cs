@@ -21,7 +21,7 @@ namespace Overtime.Services
 
         void Approve(int id);
         void Update(OverTimeRequest overTimeRequest);
-        IEnumerable<OvCustomModel> getConsolidatedAsync(int rq_dep_id, DateTime startDate, DateTime endDate, int rq_cre_by);
+        IEnumerable<OvCustomModel> getConsolidatedAsync(int rq_dep_id, DateTime startDate, DateTime endDate, int rq_cre_by,string type);
         dynamic GetMyOnProcessRequests(int u_id);
         IEnumerable<OverTimeRequest> GetMyLiveOvertimeRequest(int u_id);
         object GetAllLiveOvertimeRequest(int u_id);

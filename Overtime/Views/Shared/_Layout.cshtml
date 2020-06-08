@@ -54,7 +54,7 @@
                         {
                             @foreach (var item in ViewBag.MenuList)
                             {
-                              
+
                                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="@String.Format("#nav{0}",@item.m_id)" aria-expanded="true" aria-controls="collapseLayout">
                                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                     @item.m_description
@@ -62,17 +62,17 @@
                                 </a>
                                 @if (item.menuItem != null)
                                 {
-                                   <div class="collapse" id="@String.Format("nav{0}", @item.m_id)" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        @foreach (var abc in item.menuItem)
-                                        {
-                                            <a class="nav-link" href="@abc.m_link">@abc.m_description</a>
+                                    <div class="collapse" id="@String.Format("nav{0}", @item.m_id)" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            @foreach (var abc in item.menuItem)
+                                            {
+                                                <a class="nav-link" href="@abc.m_link">@abc.m_description</a>
 
-                                        }
-                                    </nav>
-                                  </div>
-                                  }
+                                            }
+                                        </nav>
+                                    </div>
                                 }
+                            }
 
 
                         }
@@ -135,6 +135,7 @@
     <script src="~/js/vfs_fonts.js"></script>
     <script src="~/js/multiselect.min.js"></script>
     <script src="~/js/buttons.html5.min.js"></script>
+    <script src="~/js/sum().js"></script>
     @RenderSection("Scripts", required: false)
 
 </body>

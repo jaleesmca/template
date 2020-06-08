@@ -54,6 +54,7 @@
                                             @Html.DisplayNameFor(model => model.rq_cre_date)
                                         </th>
                                         <th>Hold Details</th>
+                                        <th>Approval History</th>
                                         <th></th>
                                         <th></th>
                                     </tr>
@@ -72,123 +73,135 @@
                                             {
 
 
-                                                <tr style="background-color:#fc6f65">
+                                    <tr style="background-color:#fc6f65">
 
-                                                    <td>
-                                                        <form asp-action="Reject">
-                                                            <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
-                                                            <input type="submit" value="Reject" class="btn btn-danger" />
-                                                        </form>
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_cre_for_name)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_description)
-                                                    </td>
+                                        <td>
+                                            <form asp-action="Reject">
+                                                <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                                                <input type="submit" value="Reject" class="btn btn-danger" />
+                                            </form>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.rq_cre_for_name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.rq_description)
+                                        </td>
 
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_dep_description)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_start_time)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_end_time)
-                                                    </td>
-                                                    <td>
-                                                        @diff.ToString(@"dd\:hh\:mm\:ss")
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_remarks)
-                                                    </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.rq_dep_description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.rq_start_time)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.rq_end_time)
+                                        </td>
+                                        <td>
+                                            @diff.ToString(@"dd\:hh\:mm\:ss")
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.rq_remarks)
+                                        </td>
 
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_cre_by_name)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_cre_date)
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-success" onclick="holdHistory(@item.rq_id
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.rq_cre_by_name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.rq_cre_date)
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" onclick="holdHistory(@item.rq_id
                                                               ,@item.rq_doc_id,'Approve')">
-                                                            View
-                                                        </button>
-                                                    </td>
+                                                View
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" onclick="workflowHistory(@item.rq_id
+                                                              ,@item.rq_doc_id,
+                                                               @item.rq_workflow_id,
+                                                               @item.rq_status)">
+                                                View
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <a asp-action="Edit" asp-route-from="Approval" class="btn btn-info" asp-route-id="@item.rq_id">Edit</a>
+                                        </td>
 
-                                                    <td>
-                                                        <a asp-action="Edit" asp-route-from="Approval" class="btn btn-info" asp-route-id="@item.rq_id">Edit</a>
-                                                    </td>
-
-                                                    <td>
-                                                    </td>
+                                        <td>
+                                        </td>
 
 
-                                                </tr>
+                                    </tr>
                                             }
                                             else
                                             {
 
-                                                <tr>
+                                <tr>
 
-                                                    <td>
-                                                        <form asp-action="Reject">
-                                                            <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
-                                                            <input type="submit" value="Reject" class="btn btn-danger" />
-                                                        </form>
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_cre_for_name)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_description)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_dep_id)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_dep_description)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_start_time)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_end_time)
-                                                    </td>
-                                                    <td>
-                                                        @diff.ToString(@"dd\:hh\:mm\:ss")
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_remarks)
-                                                    </td>
+                                    <td>
+                                        <form asp-action="Reject">
+                                            <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                                            <input type="submit" value="Reject" class="btn btn-danger" />
+                                        </form>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.rq_cre_for_name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.rq_description)
+                                    </td>
 
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_cre_by_name)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_cre_date)
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-success" onclick="holdHistory(@item.rq_id
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.rq_dep_description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.rq_start_time)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.rq_end_time)
+                                    </td>
+                                    <td>
+                                        @diff.ToString(@"dd\:hh\:mm\:ss")
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.rq_remarks)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.rq_cre_by_name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.rq_cre_date)
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-success" onclick="holdHistory(@item.rq_id
                                                               ,@item.rq_doc_id)">
-                                                            View
-                                                        </button>
-                                                    </td>
+                                            View
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-success" onclick="workflowHistory(@item.rq_id
+                                                              ,@item.rq_doc_id,
+                                                               @item.rq_workflow_id,
+                                                               @item.rq_status)">
+                                            View
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-from="Approval" class="btn btn-info" asp-route-id="@item.rq_id">Edit</a>
+                                    </td>
 
-                                                    <td>
-                                                        <a asp-action="Edit" asp-route-from="Approval" class="btn btn-info" asp-route-id="@item.rq_id">Edit</a>
-                                                    </td>
-
-                                                    <td>
-                                                        <form asp-action="Approve" id="form1">
-                                                            <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
-                                                            <input type="hidden" name="from" class="form-control" value="Approval" />
-                                                            <input type="submit" value="Approve" class="btn btn-success" />
-                                                        </form>
-                                                    </td>
+                                    <td>
+                                        <form asp-action="Approve" id="form1">
+                                            <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                                            <input type="hidden" name="from" class="form-control" value="Approval" />
+                                            <input type="submit" value="Approve" class="btn btn-success" />
+                                        </form>
+                                    </td>
 
 
-                                                </tr>
+                                </tr>
                                             }
                                         }
                                     }

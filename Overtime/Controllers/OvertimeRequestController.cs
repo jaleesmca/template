@@ -269,16 +269,11 @@ namespace Overtime.Controllers
                 WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
                 int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
                 int MinofWorkflow = iworkflowDetail.getMinOfWorkFlow(overTimeRequest.rq_workflow_id);
-                int second = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, 0);
-                if (overTimeRequest.rq_status == second )
-                {
-                    TempData["errorMessage"] = "You have No permission to Approve";
-                    return RedirectToAction(nameof(Approval));
-                }
-                else if (overTimeRequest.rq_hold_yn == "Y" &&  overTimeRequest.rq_remarks == null)
+               
+                if (overTimeRequest.rq_hold_yn == "Y")
                 {
                    
-                    TempData["errorMessage"] = ("This Document is Hold by Someone , So you must enter Remarks to Approve!!");
+                    TempData["errorMessage"] = ("This Document is Hold by Someone,Click Hold Details For more Information");
                     return RedirectToAction(nameof(Approval));
                 }
                 else 
@@ -334,13 +329,7 @@ namespace Overtime.Controllers
                 Documents documents = idocuments.GetDocument(1);
                 int previousStatus = iworkflowDetail.getPreviousWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
                 WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, previousStatus);
-                int second = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, 0);
-                if (overTimeRequest.rq_status == second )
-                {
-                    return RedirectToAction("Approval");
-                }
-                else
-                {
+                
                     workflowTracker.wt_doc_id = documents.dc_id;
                     workflowTracker.wt_fun_doc_id = overTimeRequest.rq_id;
                     workflowTracker.wt_status = overTimeRequest.rq_status;
@@ -358,7 +347,7 @@ namespace Overtime.Controllers
                     overTimeRequest.rq_status = previousStatus;
                     ioverTimeRequest.Update(overTimeRequest);
                     return RedirectToAction("Approval");
-                }
+                
             }
 
         }
@@ -456,13 +445,13 @@ namespace Overtime.Controllers
             }
         }
         [HttpPost]
-        public ActionResult ConsolidatedReports(int rq_dep_id, String reportrange, int rq_cre_for)
+        public ActionResult ConsolidatedReports(int rq_dep_id, String reportrange, int rq_cre_for,String type)
         {
             String[] array = reportrange.Split('-');
 
             DateTime startDate = DateTime.Parse(array[0]);
             DateTime endDate = DateTime.Parse(array[1]+" 11:59:59 PM");
-            return View(ioverTimeRequest.getConsolidatedAsync(rq_dep_id, startDate, endDate, rq_cre_for));
+            return View(ioverTimeRequest.getConsolidatedAsync(rq_dep_id, startDate, endDate, rq_cre_for, type));
         }
 
         [HttpPost]
