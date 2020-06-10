@@ -1,4 +1,8 @@
 ﻿$(document).ready(function () {
+
+    $("#rq_cre_by").select2();
+    $("#rq_dep_id").select2();
+    $("#rq_cre_for").select2();
     $('#saveMenu').click(function () {
       
         var reqRow = [];
@@ -215,7 +219,6 @@ function saveWorkFlowDetails() {
 
 function overTimeRequestReport() {
     var data = new FormData();
-    data.append("no_of_hours", $("#rq_no_of_hours").val());
     data.append("rq_dep_id", $("#rq_dep_id").val());
     data.append("reportrange", $("#reportrange").val());
     data.append("rq_cre_by", $("#rq_cre_by").val());
@@ -292,7 +295,6 @@ function OverTimeConsolidatedReport() {
     data.append("rq_dep_id", $("#rq_dep_id").val());
     data.append("rq_cre_for", $("#rq_cre_for").val());
     data.append("reportrange", $("#reportrange").val());
-    data.append("type", $("#type").val());
     $.ajax({
         url: "/OvertimeRequest/ConsolidatedReports",
         type: "POST",

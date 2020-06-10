@@ -149,7 +149,7 @@ namespace Overtime.Repository
 
         }
 
-        public IEnumerable<OverTimeRequest> GetReports(int rq_dep_id, DateTime rq_start_time, DateTime rq_end_time, int no_of_hours, int rq_role_id, int rq_cre_by, DateTime rq_cre_date, string approve)
+        public IEnumerable<OverTimeRequest> GetReports(int rq_dep_id, DateTime rq_start_time, DateTime rq_end_time, int rq_role_id, int rq_cre_by, DateTime rq_cre_date, string approve)
         {
             var query = from u in db.OverTimeRequest
                         join d in db.Departments
@@ -185,8 +185,6 @@ namespace Overtime.Repository
                         };
             if (rq_dep_id != 0)
                 query = query.Where(x => x.rq_dep_id == rq_dep_id);
-            if (no_of_hours != 0)
-                query = query.Where(x => x.rq_no_of_hours == no_of_hours);
             if (!rq_start_time.ToString().Equals("1/1/0001 12:00:00 AM") && !rq_end_time.ToString().Equals("1/1/0001 12:00:00 AM"))
                 query = query.Where(x => x.rq_start_time >= rq_start_time && rq_start_time<=rq_end_time );
             if (rq_cre_by != 0)
@@ -196,7 +194,7 @@ namespace Overtime.Repository
             return query;
         }
 
-        public IEnumerable<OvCustomModel> getConsolidatedAsync(int rq_dep_id, DateTime startDate, DateTime endDate, int rq_cre_for,string type)
+        public IEnumerable<OvCustomModel> getConsolidatedAsync(int rq_dep_id, DateTime startDate, DateTime endDate, int rq_cre_for)
         {
             List<OvCustomModel> result = new List<OvCustomModel>();
             var conn = db.Database.GetDbConnection();
@@ -205,20 +203,29 @@ namespace Overtime.Repository
                 conn.Open();
                 using (var command = conn.CreateCommand())
                 {
+
                     string query = @"select rq_cre_for,u_name,u_full_name,rq_dep_id,d_description,
-                        sum([dbo].[fn_GetTotalWorkingHours](rq_start_time, rq_end_time)) hours
-                        from OverTimeRequest
-                        join Users on rq_cre_for = u_id
-                        join Departments on rq_dep_id = d_id
-                        where 1=1 ";
+                            sum(CASE
+                            WHEN  [dbo].[get_workflow_min_max](rq_workflow_id, 'max') = rq_status  THEN
+	                        [dbo].[fn_GetTotalWorkingHours](rq_start_time, rq_end_time)
+                            ELSE 0
+                            END) approved,
+                            sum(CASE
+                                     WHEN  [dbo].[get_workflow_min_max](rq_workflow_id, 'max') = rq_status  THEN 0
+                                    ELSE [dbo].[fn_GetTotalWorkingHours](rq_start_time, rq_end_time)
+                            END) unaproved,
+                            sum(
+						    [dbo].[fn_GetTotalWorkingHours](rq_start_time, rq_end_time)) hours
+                            from OverTimeRequest
+                            join Users on rq_cre_for = u_id
+                            join Departments on rq_dep_id = d_id
+                            where 1=1 and rq_end_time is not null ";
 
-                    if(type.Equals("Approve")) query=query+" and [dbo].[get_workflow_min_max](rq_workflow_id, 'max') = rq_status";
-                    if(type.Equals("Unapprove")) query = query + " and [dbo].[get_workflow_min_max](rq_workflow_id, 'max') != rq_status";
-
-                    if (!startDate.ToString().Equals("1/1/0001 12:00:00 AM")&& !endDate.ToString().Equals("1/1/0001 12:00:00 AM"))
-                        query +=" and rq_start_time between '"+ startDate + @"' and '"+ endDate + @"' ";
-                    if (rq_dep_id != 0) query += " and rq_dep_id='"+ rq_dep_id + @"'";
-                    if (rq_cre_for !=0) query += " and rq_cre_for='"+ rq_cre_for + @"'";
+                   
+                    if (!startDate.ToString().Equals("1/1/0001 12:00:00 AM") && !endDate.ToString().Equals("1/1/0001 12:00:00 AM"))
+                        query += " and rq_start_time between '" + startDate + @"' and '" + endDate + @"' ";
+                    if (rq_dep_id != 0) query += " and rq_dep_id='" + rq_dep_id + @"'";
+                    if (rq_cre_for != 0) query += " and rq_cre_for='" + rq_cre_for + @"'";
 
                     query += " group by rq_cre_for,u_name,u_full_name,rq_dep_id,d_description";
                     System.Diagnostics.Debug.WriteLine(query);
@@ -236,10 +243,14 @@ namespace Overtime.Repository
                             ovCustomModel.emp_dep_id = reader.GetInt32(3);
                             ovCustomModel.emp_dep_name = reader.GetString(4);
                             ovCustomModel.work_hours = reader.GetDecimal(5);
+                            ovCustomModel.emp_unapproved = reader.GetDecimal(6);
+                            ovCustomModel.emp_total = reader.GetDecimal(7);
+
                             result.Add(ovCustomModel);
                         }
                     }
                     reader.Dispose();
+
                 }
             }
             finally

@@ -371,3 +371,12 @@ BEGIN
 END;
 GO
 
+CREATE TABLE [dbo].[UserDepartments](
+	[ud_id] [int] IDENTITY(1,1) NOT NULL,
+	[ud_user_id] [int] NULL,
+	[ud_depart_id] [int] NULL,
+	[ud_active_yn] [varchar](1) NULL,
+	[ud_cre_by] [int] NULL,
+	[ud_cre_date] [datetime] NULL
+) ON [PRIMARY]
+GO

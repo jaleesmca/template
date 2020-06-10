@@ -24,6 +24,13 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.work_hours)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.emp_unapproved)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.emp_total)
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -34,6 +41,8 @@
                 <td> @Html.DisplayFor(modelitem => item.emp_full_name)</td>
                 <td> @Html.DisplayFor(modelitem => item.emp_dep_name)</td>
                 <td> @Html.DisplayFor(modelitem => item.work_hours)</td>
+                <td> @Html.DisplayFor(modelitem => item.emp_unapproved)</td>
+                <td> @Html.DisplayFor(modelitem => item.emp_total)</td>
             </tr>
             }
         </tbody>

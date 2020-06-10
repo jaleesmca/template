@@ -244,7 +244,7 @@ namespace Overtime.Controllers
                 workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
                 workflowTracker.wt_approve_status = "Initiate";
                 workflowTracker.wt_cre_by = getCurrentUser().u_id;
-                workflowTracker.wt_cre_by_name = getCurrentUser().u_name;
+                workflowTracker.wt_cre_by_name = getCurrentUser().u_name + "-" + getCurrentUser().u_full_name;
                 workflowTracker.wt_cre_date = DateTime.Now;
                 iworkflowTracker.Add(workflowTracker);
                 overTimeRequest.rq_status = nextStatus;
@@ -291,7 +291,7 @@ namespace Overtime.Controllers
                     workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
                     workflowTracker.wt_approve_status = "Approved";
                     workflowTracker.wt_cre_by = getCurrentUser().u_id;
-                    workflowTracker.wt_cre_by_name = getCurrentUser().u_name;
+                    workflowTracker.wt_cre_by_name = getCurrentUser().u_name + "-" + getCurrentUser().u_full_name;
                     workflowTracker.wt_cre_date = DateTime.Now;
                     iworkflowTracker.Add(workflowTracker);
                     overTimeRequest.rq_status = nextStatus;
@@ -341,7 +341,7 @@ namespace Overtime.Controllers
                     workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
                     workflowTracker.wt_approve_status = "rejected";
                     workflowTracker.wt_cre_by = getCurrentUser().u_id;
-                    workflowTracker.wt_cre_by_name = getCurrentUser().u_name;
+                    workflowTracker.wt_cre_by_name = getCurrentUser().u_name+"-"+ getCurrentUser().u_full_name;
                     workflowTracker.wt_cre_date = DateTime.Now;
                     iworkflowTracker.Add(workflowTracker);
                     overTimeRequest.rq_status = previousStatus;
@@ -366,14 +366,14 @@ namespace Overtime.Controllers
             }
         }
         [HttpPost]
-        public ActionResult CustomReport(int rq_dep_id,string reportrange, int no_of_hours, int role_id, int rq_cre_by,DateTime rq_cre_date,string approve)
+        public ActionResult CustomReport(int rq_dep_id,string reportrange, int role_id, int rq_cre_by,DateTime rq_cre_date,string approve)
         {
             String[] array = reportrange.Split('-');
 
             DateTime rq_start_time = DateTime.Parse(array[0]);
             DateTime rq_end_time = DateTime.Parse(array[1] + " 11:59:59 PM");
 
-            return View(ioverTimeRequest.GetReports(rq_dep_id,rq_start_time,rq_end_time, no_of_hours, role_id,rq_cre_by,rq_cre_date,approve));
+            return View(ioverTimeRequest.GetReports(rq_dep_id,rq_start_time,rq_end_time, role_id,rq_cre_by,rq_cre_date,approve));
 
         }
             private User getCurrentUser()
@@ -387,9 +387,6 @@ namespace Overtime.Controllers
                 }
                 else
                 {
-
-                   
-                   
 
                     User user = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
                     ViewBag.Name = user.u_full_name;
@@ -445,13 +442,13 @@ namespace Overtime.Controllers
             }
         }
         [HttpPost]
-        public ActionResult ConsolidatedReports(int rq_dep_id, String reportrange, int rq_cre_for,String type)
+        public ActionResult ConsolidatedReports(int rq_dep_id, String reportrange, int rq_cre_for)
         {
             String[] array = reportrange.Split('-');
 
             DateTime startDate = DateTime.Parse(array[0]);
             DateTime endDate = DateTime.Parse(array[1]+" 11:59:59 PM");
-            return View(ioverTimeRequest.getConsolidatedAsync(rq_dep_id, startDate, endDate, rq_cre_for, type));
+            return View(ioverTimeRequest.getConsolidatedAsync(rq_dep_id, startDate, endDate, rq_cre_for));
         }
 
         [HttpPost]
@@ -555,7 +552,7 @@ namespace Overtime.Controllers
                     workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
                     workflowTracker.wt_approve_status = "WorkDone";
                     workflowTracker.wt_cre_by = getCurrentUser().u_id;
-                    workflowTracker.wt_cre_by_name = getCurrentUser().u_name;
+                    workflowTracker.wt_cre_by_name = getCurrentUser().u_name + "-" + getCurrentUser().u_full_name;
                     workflowTracker.wt_cre_date = DateTime.Now;
                     iworkflowTracker.Add(workflowTracker);
                     overTimeRequest.rq_status = nextStatus;
