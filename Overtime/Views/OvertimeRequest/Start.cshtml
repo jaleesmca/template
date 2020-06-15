@@ -170,6 +170,9 @@
                                             <th class="all">
                                                 Approval History
                                             </th>
+                                            <th>
+                                                Insights
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -178,44 +181,51 @@
                                             DateTime end = (DateTime)item.rq_end_time;
                                             DateTime now = (DateTime)item.rq_start_time;
                                             TimeSpan diff = end.Subtract(now);
-                                            <tr>
-                                                <td>
-                                                    @item.rq_id
-                                                </td>
+                                        <tr>
+                                            <td>
+                                                @item.rq_id
+                                            </td>
 
-                                                <td>
-                                                    @item.rq_description
-                                                </td>
-                                                <td>
-                                                    @item.rq_dep_description
-                                                </td>
-                                                <td>
-                                                    @item.rq_start_time
-                                                </td>
-                                                <td>
-                                                    @item.rq_end_time
-                                                </td>
-                                                <td>
-                                                    @diff.ToString(@"dd\:hh\:mm\:ss")
-                                                </td>
-                                                <td>
-                                                    @item.rq_remarks
-                                                </td>
-                                                <td>
-                                                    @item.rq_cre_by_name
-                                                </td>
-                                                <td>
-                                                    @item.rq_cre_date
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-success" onclick="workflowHistory(@item.rq_id
+                                            <td>
+                                                @item.rq_description
+                                            </td>
+                                            <td>
+                                                @item.rq_dep_description
+                                            </td>
+                                            <td>
+                                                @item.rq_start_time
+                                            </td>
+                                            <td>
+                                                @item.rq_end_time
+                                            </td>
+                                            <td>
+                                                @diff.ToString(@"dd\:hh\:mm\:ss")
+                                            </td>
+                                            <td>
+                                                @item.rq_remarks
+                                            </td>
+                                            <td>
+                                                @item.rq_cre_by_name
+                                            </td>
+                                            <td>
+                                                @item.rq_cre_date
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-success" onclick="workflowHistory(@item.rq_id
                                                               ,@item.rq_doc_id,
                                                                @item.rq_workflow_id,
                                                                @item.rq_status)">
-                                                        View
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                                    View
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-warning" onclick="viewInsights(@item.rq_id
+                                                              ,@item.rq_doc_id
+                                                              )">
+                                                    View
+                                                </button>
+                                            </td>
+                                        </tr>
                                         }
                                     </tbody>
                                 </table>

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Overtime.Models.Insight>
+
+@{
+    Layout = null;
+}
+
+
+<table class="table table-responsive">
+    <thead>
+        <tr>
+          
+            <th>
+                @Html.DisplayNameFor(model => model.in_remarks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.in_cre_by_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.in_cre_date)
+            </th>
+          
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.in_remarks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.in_cre_by_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.in_cre_date)
+            </td>
+           
+        </tr>
+}
+    </tbody>
+</table>

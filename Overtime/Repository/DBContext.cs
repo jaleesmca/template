@@ -29,5 +29,7 @@ namespace Overtime.Repository
         public DbSet<Menu> Menus { get; set; }
 
         public DbSet<UserDepartment> UserDepartments { get; set; }
+
+        public DbSet<Insight> Insights { get; set; }
     }
 }

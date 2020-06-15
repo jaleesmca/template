@@ -21,9 +21,10 @@ namespace Overtime.Controllers
         private readonly IUser iuser;
         private readonly IHold ihold;
         private readonly IMenu imenu;
+        private readonly IInsight iinsight;
 
         public OvertimeRequestController(IOverTimeRequest _ioverTimeReques, IWorkflowDetail _iworkflowDetail,
-            IWorkflowTracker _iworkflowTracker,IDepartment _idepartment,IDocuments _idocuments,IRole _irole,IUser _iuser,IHold _ihold, IMenu _imenu)
+            IWorkflowTracker _iworkflowTracker,IDepartment _idepartment,IDocuments _idocuments,IRole _irole,IUser _iuser,IHold _ihold, IMenu _imenu,IInsight _iinsight)
         {
             ioverTimeRequest = _ioverTimeReques;
             iworkflowDetail= _iworkflowDetail;
@@ -34,6 +35,7 @@ namespace Overtime.Controllers
             iuser = _iuser;
             ihold = _ihold;
             imenu = _imenu;
+            iinsight = _iinsight;
         }
 
         // GET: OvertimeRequest
@@ -315,7 +317,7 @@ namespace Overtime.Controllers
             }
         }
         [HttpPost]
-        public ActionResult Reject(int id)
+        public ActionResult Reject(int id,string reason)
         {
             if (getCurrentUser() == null)
             {
@@ -323,6 +325,7 @@ namespace Overtime.Controllers
             }
             else
             {
+                
                 OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
                 WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
                 WorkflowTracker workflowTracker = new WorkflowTracker();
@@ -346,6 +349,17 @@ namespace Overtime.Controllers
                     iworkflowTracker.Add(workflowTracker);
                     overTimeRequest.rq_status = previousStatus;
                     ioverTimeRequest.Update(overTimeRequest);
+                if (!reason.Equals(""))
+                {
+                    Insight insight = new Insight();
+                    insight.in_fun_doc_id = overTimeRequest.rq_id;
+                    insight.in_doc_id = overTimeRequest.rq_doc_id;
+                    insight.in_remarks = reason;
+                    insight.in_cre_by = getCurrentUser().u_id;
+                    insight.in_cre_date = DateTime.Now;
+
+                    iinsight.Add(insight);
+                }
                     return RedirectToAction("Approval");
                 
             }

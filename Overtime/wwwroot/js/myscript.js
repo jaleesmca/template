@@ -503,5 +503,64 @@ function load_user_menus() {
     });
 }
 
+function viewInsights(id,doc_id,flag) {
+    var data = new FormData();
+    data.append('id', id);
+    data.append('doc_id', doc_id);
+    $.ajax({
+        url: "/Insights/index",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#insightsContainer").html(response);
+            if (flag == 0) {
+                $("#filter").empty()
+            }
+            $("#id").val(id);
+            $("#doc_id").val(doc_id);
+            $('#insightsModal').modal('show');
+        },
+        error: function () {
+        }
+    });
+}
 
+function saveInsight() {
+    var id = $("#id").val();
+    var doc_id = $("#doc_id").val();
+    var in_remarks = $("#remarks").val();
 
+    var data = new FormData();
+    data.append('id', id);
+    data.append('doc_id', doc_id);
+    data.append('remarks', in_remarks);
+    $.ajax({
+        url: "/Insights/Create",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#insightsContainer").html(response);
+            $("#id").val(id);
+            $("#doc_id").val(doc_id);
+            $('#insightsModal').modal('show');
+            $("#remarks").val("");
+
+        },
+        error: function () {
+        }
+    });
+}
+
+function Reject(id) {
+    var data = prompt("Reason For Rejection?? ", "");
+    if (data != null) {
+        $("#reason" + id).val(data);
+        $("#reject" + id).submit();
+    }
+}

@@ -49,6 +49,9 @@
                                                 Hold History
                                             </th>
                                             <th>
+                                                Insights
+                                            </th>
+                                            <th>
 
                                             </th>
 
@@ -59,124 +62,138 @@
                                         {
                                             if (item.rq_hold_yn == "Y")
                                             {
-                                                <tr class="a" style="background-color:#fc6f65">
-                                                    <td>
-                                                        <input type="hidden" class="b" value="@Html.DisplayFor(modelItem => item.rq_id)" />
-                                                        @Html.DisplayFor(modelItem => item.rq_id)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_cre_for_emp_id)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_cre_for_name)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_description)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_dep_description)
-                                                    </td>
-                                                    <td>
-                                                        <input type="hidden" name="starttime" id="@string.Format("starttime{0}", @item.rq_id)" value="@Html.DisplayFor(modelItem => item.rq_start_time)" />
-                                                        @Html.DisplayFor(modelItem => item.rq_start_time)
-                                                    </td>
-                                                    <td>
-                                                        <label type="text" align="right" name="Duration" id="@string.Format("Duration{0}", @item.rq_id)" />
+                                        <tr class="a" style="background-color:#fc6f65">
+                                            <td>
+                                                <input type="hidden" class="b" value="@Html.DisplayFor(modelItem => item.rq_id)" />
+                                                @Html.DisplayFor(modelItem => item.rq_id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.rq_cre_for_emp_id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.rq_cre_for_name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.rq_description)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.rq_dep_description)
+                                            </td>
+                                            <td>
+                                                <input type="hidden" name="starttime" id="@string.Format("starttime{0}", @item.rq_id)" value="@Html.DisplayFor(modelItem => item.rq_start_time)" />
+                                                @Html.DisplayFor(modelItem => item.rq_start_time)
+                                            </td>
+                                            <td>
+                                                <label type="text" align="right" name="Duration" id="@string.Format("Duration{0}", @item.rq_id)" />
 
-                                                    </td>
+                                            </td>
 
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_cre_date)
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-success" onclick="holdHistory(@item.rq_id
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.rq_cre_date)
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-success" onclick="holdHistory(@item.rq_id
                                                               ,@item.rq_doc_id)">
-                                                            View
-                                                        </button>
-                                                    </td>
-                                                    @if (@item.rq_hold_yn == "Y")
-                                                    {
-                                                        <td>
-                                                            <form asp-action="UnHold" id="@string.Format("unhold{0}", @item.rq_id)">
-                                                                <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
-                                                                <input type="hidden" class="form-control" name="reason" id="@string.Format("reason{0}", @item.rq_id)" value="" />
-                                                                <button type="button" class="btn btn-danger" onclick="unhold(@item.rq_id);">Unblock</button>
-                                                            </form>
-                                                        </td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td>
-                                                            <form asp-action="Hold" id="@string.Format("hold{0}", @item.rq_id)">
-                                                                <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
-                                                                <input type="hidden" class="form-control" name="reason" id="@string.Format("reason{0}", @item.rq_id)" value="" />
-                                                                <button type="button" class="btn btn-danger" onclick="hold(@item.rq_id);">Block</button>
-                                                            </form>
-                                                        </td>
-                                                    }
-                                                </tr>
+                                                    View
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-warning" onclick="viewInsights(@item.rq_id
+                                                              ,@item.rq_doc_id
+                                                              )">
+                                                    View
+                                                </button>
+                                            </td>
+                                            @if (@item.rq_hold_yn == "Y")
+                                            {
+                                                <td>
+                                                    <form asp-action="UnHold" id="@string.Format("unhold{0}", @item.rq_id)">
+                                                        <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                                                        <input type="hidden" class="form-control" name="reason" id="@string.Format("reason{0}", @item.rq_id)" value="" />
+                                                        <button type="button" class="btn btn-danger" onclick="unhold(@item.rq_id);">Unblock</button>
+                                                    </form>
+                                                </td>
                                             }
                                             else
                                             {
-                                                <tr class="a">
-                                                    <td>
-                                                        <input type="hidden" class="b" value="@Html.DisplayFor(modelItem => item.rq_id)" />
-                                                        @Html.DisplayFor(modelItem => item.rq_id)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_cre_for_emp_id)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_cre_for_name)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_description)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_dep_description)
-                                                    </td>
-                                                    <td>
-                                                        <input type="hidden" name="starttime"
-                                                               id="@string.Format("starttime{0}", @item.rq_id)" value="@Html.DisplayFor(modelItem => item.rq_start_time)" />
-                                                        @Html.DisplayFor(modelItem => item.rq_start_time)
-                                                    </td>
-                                                    <td>
-                                                        <label type="text" align="right" name="Duration" id="@string.Format("Duration{0}", @item.rq_id)" />
-                                                    </td>
+                                                <td>
+                                                    <form asp-action="Hold" id="@string.Format("hold{0}", @item.rq_id)">
+                                                        <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                                                        <input type="hidden" class="form-control" name="reason" id="@string.Format("reason{0}", @item.rq_id)" value="" />
+                                                        <button type="button" class="btn btn-danger" onclick="hold(@item.rq_id);">Block</button>
+                                                    </form>
+                                                </td>
+                                            }
+                                        </tr>
+                                            }
+                                            else
+                                            {
+                                    <tr class="a">
+                                        <td>
+                                            <input type="hidden" class="b" value="@Html.DisplayFor(modelItem => item.rq_id)" />
+                                            @Html.DisplayFor(modelItem => item.rq_id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.rq_cre_for_emp_id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.rq_cre_for_name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.rq_description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.rq_dep_description)
+                                        </td>
+                                        <td>
+                                            <input type="hidden" name="starttime"
+                                                   id="@string.Format("starttime{0}", @item.rq_id)" value="@Html.DisplayFor(modelItem => item.rq_start_time)" />
+                                            @Html.DisplayFor(modelItem => item.rq_start_time)
+                                        </td>
+                                        <td>
+                                            <label type="text" align="right" name="Duration" id="@string.Format("Duration{0}", @item.rq_id)" />
+                                        </td>
 
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.rq_cre_date)
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-success" onclick="holdHistory(@item.rq_id
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.rq_cre_date)
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" onclick="holdHistory(@item.rq_id
                                                               ,@item.rq_doc_id,'View')">
-                                                            View
-                                                        </button>
-                                                    </td>
-                                                    @if (@item.rq_hold_yn == "Y")
-                                                    {
-                                                        <td>
-                                                            <form asp-action="UnHold" id="@string.Format("unhold{0}", @item.rq_id)">
-                                                                <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
-                                                                <input type="hidden" class="form-control" name="reason" id="@string.Format("reason{0}", @item.rq_id)" value="" />
-                                                                <button type="button" class="btn btn-danger" onclick="unhold(@item.rq_id);">Unblock</button>
-                                                            </form>
-                                                        </td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td>
-                                                            <form asp-action="Hold" id="@string.Format("hold{0}", @item.rq_id)">
-                                                                <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
-                                                                <input type="hidden" class="form-control" name="reason" id="@string.Format("reason{0}", @item.rq_id)" value="" />
-                                                                <button type="button" class="btn btn-danger" onclick="hold(@item.rq_id);">Block</button>
-                                                            </form>
-                                                        </td>
-                                                    }
+                                                View
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-warning" onclick="viewInsights(@item.rq_id
+                                                              ,@item.rq_doc_id
+                                                              )">
+                                                View
+                                            </button>
+                                        </td>
+                                        @if (@item.rq_hold_yn == "Y")
+                                        {
+                                            <td>
+                                                <form asp-action="UnHold" id="@string.Format("unhold{0}", @item.rq_id)">
+                                                    <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                                                    <input type="hidden" class="form-control" name="reason" id="@string.Format("reason{0}", @item.rq_id)" value="" />
+                                                    <button type="button" class="btn btn-danger" onclick="unhold(@item.rq_id);">Unblock</button>
+                                                </form>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <form asp-action="Hold" id="@string.Format("hold{0}", @item.rq_id)">
+                                                    <input asp-for="@item.rq_id" type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                                                    <input type="hidden" class="form-control" name="reason" id="@string.Format("reason{0}", @item.rq_id)" value="" />
+                                                    <button type="button" class="btn btn-danger" onclick="hold(@item.rq_id);">Block</button>
+                                                </form>
+                                            </td>
+                                        }
 
 
 
-                                                </tr>
+                                    </tr>
                                             }
                                         }
                                     </tbody>
@@ -233,6 +250,9 @@
                                             Approval History
                                         </th>
                                         <th>
+                                            Insights
+                                        </th>
+                                        <th>
 
                                         </th>
                                     </tr>
@@ -243,68 +263,75 @@
                                         DateTime end = (DateTime)item.rq_end_time;
                                         DateTime now = (DateTime)item.rq_start_time;
                                         TimeSpan diff = end.Subtract(now);
-                                        <tr>
-                                            <td>
-                                                @item.rq_id
-                                            </td>
+                                    <tr>
+                                        <td>
+                                            @item.rq_id
+                                        </td>
 
-                                            <td>
-                                                @item.rq_description
-                                            </td>
-                                            <td>
-                                                @item.rq_dep_description
-                                            </td>
-                                            <td>
-                                                @item.rq_start_time
-                                            </td>
-                                            <td>
-                                                @item.rq_end_time
-                                            </td>
-                                            <td>
-                                                @diff.ToString(@"dd\:hh\:mm\:ss")
-                                            </td>
-                                            <td>
-                                                @item.rq_remarks
-                                            </td>
-                                            <td>
-                                                @item.rq_cre_by_name
-                                            </td>
-                                            <td>
-                                                @item.rq_cre_date
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-success" onclick="holdHistory(@item.rq_id
+                                        <td>
+                                            @item.rq_description
+                                        </td>
+                                        <td>
+                                            @item.rq_dep_description
+                                        </td>
+                                        <td>
+                                            @item.rq_start_time
+                                        </td>
+                                        <td>
+                                            @item.rq_end_time
+                                        </td>
+                                        <td>
+                                            @diff.ToString(@"dd\:hh\:mm\:ss")
+                                        </td>
+                                        <td>
+                                            @item.rq_remarks
+                                        </td>
+                                        <td>
+                                            @item.rq_cre_by_name
+                                        </td>
+                                        <td>
+                                            @item.rq_cre_date
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" onclick="holdHistory(@item.rq_id
                                                               ,@item.rq_doc_id)">
-                                                    View
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-success" onclick="workflowHistory(@item.rq_id
+                                                View
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" onclick="workflowHistory(@item.rq_id
                                                               ,@item.rq_doc_id,
                                                                @item.rq_workflow_id,
                                                                @item.rq_status)">
-                                                    View
-                                                </button>
+                                                View
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-warning" onclick="viewInsights(@item.rq_id
+                                                              ,@item.rq_doc_id
+                                                              )">
+                                                View
+                                            </button>
+                                        </td>
+                                        @if (@item.rq_hold_yn == "Y")
+                                        {
+                                            <td>
+                                                <form asp-action="UnHold">
+                                                    <input type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                                                    <input type="submit" value="UnHold" class="btn btn-danger" />
+                                                </form>
                                             </td>
-                                            @if (@item.rq_hold_yn == "Y")
-                                            {
-                                                <td>
-                                                    <form asp-action="UnHold">
-                                                        <input type="hidden" name="id" class="form-control" value="@item.rq_id" />
-                                                        <input type="submit" value="UnHold" class="btn btn-danger" />
-                                                    </form>
-                                                </td>
-                                            }
-                                            else
-                                            {
-                                                <td>
-                                                    <form asp-action="Hold">
-                                                        <input type="hidden" name="id" class="form-control" value="@item.rq_id" />
-                                                        <input type="submit" value="Hold" class="btn btn-danger" />
-                                                    </form>
-                                                </td>
-                                            }
-                                        </tr>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <form asp-action="Hold">
+                                                    <input type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                                                    <input type="submit" value="Hold" class="btn btn-danger" />
+                                                </form>
+                                            </td>
+                                        }
+                                    </tr>
                                     }
                                 </tbody>
                             </table>

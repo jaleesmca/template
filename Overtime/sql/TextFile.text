@@ -380,3 +380,14 @@ CREATE TABLE [dbo].[UserDepartments](
 	[ud_cre_date] [datetime] NULL
 ) ON [PRIMARY]
 GO
+
+
+
+CREATE TABLE [dbo].[Insights](
+	[in_id] [int] IDENTITY(1,1) NOT NULL,
+	[in_fun_doc_id] [int] NULL,
+	[in_doc_id] [int] NULL,
+	[in_remarks] [varchar](max) NULL,
+	[in_cre_by] [int] NULL,
+	[in_cre_by_name] [varchar](250) NULL,
+	[in_cre_date] [datetime] NULL)

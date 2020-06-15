@@ -46,7 +46,7 @@ namespace Overtime.Models
         public int h_cre_by { get; set; }
 
         [NotMapped]
-        [Display(Name = "Hold by")]
+        [Display(Name = "Created by Name")]
         public string h_cre_by_name { get; set; }
 
         [Display(Name = "Created Date")]
