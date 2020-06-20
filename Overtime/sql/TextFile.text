@@ -391,3 +391,19 @@ CREATE TABLE [dbo].[Insights](
 	[in_cre_by] [int] NULL,
 	[in_cre_by_name] [varchar](250) NULL,
 	[in_cre_date] [datetime] NULL)
+
+
+
+	CREATE FUNCTION [dbo].[getRoleByWorkflowPriority](
+    @workflow INT, @priority INT
+)
+RETURNS varchar(50)
+AS 
+BEGIN
+	DECLARE @role VARCHAR(50);
+	set @role='';
+	SET @role = (select string_agg(r_description,' | ') from WorkflowDetails  join Roles on wd_role_id=r_id 
+				 where wd_workflow_id=@workflow and wd_priority=@priority);
+	return @role;
+END;
+GO

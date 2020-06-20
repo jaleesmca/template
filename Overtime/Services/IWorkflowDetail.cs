@@ -24,5 +24,6 @@ namespace Overtime.Services
 
         int getPreviousWorkflow(int workflow, int current);
         WorkflowDetail getWorkflowDetlByWorkflowCodeAndPriority(int wd_id, int priority);
+        int getPriorityByRole(int rq_workflow_id, int r_id);
     }
 }

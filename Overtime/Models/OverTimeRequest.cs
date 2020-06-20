@@ -48,6 +48,10 @@ namespace Overtime.Models
         public int rq_status { get; set; }
 
         [NotMapped]
+        [Display(Name = "On desk")]
+        public string rq_current_position { get; set; }
+
+        [NotMapped]
         [Display(Name = "Status description")]
         public string rq_status_desc { get; set; }
 

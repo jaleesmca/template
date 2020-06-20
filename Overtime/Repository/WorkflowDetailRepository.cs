@@ -49,7 +49,17 @@ namespace Overtime.Repository
             return previous;
 
         }
-            public WorkflowDetail GetWorkFlowDetail(int id)
+
+        public int getPriorityByRole(int workflow, int r_id)
+        {
+            int priority = (from q in db.WorkflowDetails
+                           where (q.wd_workflow_id == workflow && q.wd_role_id == r_id)
+                           select q.wd_priority).FirstOrDefault();
+                           
+            return priority;
+        }
+
+        public WorkflowDetail GetWorkFlowDetail(int id)
         {
             WorkflowDetail workflowDetail = db.WorkflowDetails.Find(id);
             return workflowDetail;

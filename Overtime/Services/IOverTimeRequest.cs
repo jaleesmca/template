@@ -26,5 +26,6 @@ namespace Overtime.Services
         IEnumerable<OverTimeRequest> GetMyLiveOvertimeRequest(int u_id);
         object GetAllLiveOvertimeRequest(int u_id);
         IEnumerable<OverTimeRequest> getAllHoldDocuments();
+        object getConsolidateByType(DateTime startDate, DateTime endDate, string type);
     }
 }

@@ -31,5 +31,7 @@ namespace Overtime.Repository
         public DbSet<UserDepartment> UserDepartments { get; set; }
 
         public DbSet<Insight> Insights { get; set; }
+
+        public DbSet<Overtime.Models.OvCustomModel> OvCustomModel { get; set; }
     }
 }

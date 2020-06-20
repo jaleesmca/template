@@ -564,3 +564,44 @@ function Reject(id) {
         $("#reject" + id).submit();
     }
 }
+
+function consolidatedByType() {
+    var data = new FormData();
+    data.append("type", $("#type").val());
+    if ($("#type").val() != "") {
+        data.append("reportrange", $("#reportrange").val());
+        $.ajax({
+            url: "/OvertimeRequest/consolidateReportByType",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#container").html(response);
+
+                if ($("#type").val() == "Department") {
+                    $('td[name^="emp"]').remove();
+                    $('th[name^="emp"]').remove();
+                }
+                else {
+                    $('td[name^="dep"]').remove();
+                    $('th[name^="dep"]').remove();
+                }
+                $('#mytable').DataTable({
+                    dom: 'lBfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'pdfHtml5'
+                    ]
+                });
+            },
+            error: function () {
+            }
+        });
+    } else {
+        alert("Please choose Report type");
+    }
+    
+}

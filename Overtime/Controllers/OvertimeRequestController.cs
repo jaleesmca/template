@@ -270,35 +270,42 @@ namespace Overtime.Controllers
                 OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
                 WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
                 int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
+                int rolePriority = iworkflowDetail.getPriorityByRole(overTimeRequest.rq_workflow_id, getCurrentUser().u_role_id);
+                int nextStatusbyUser = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, rolePriority);
                 int MinofWorkflow = iworkflowDetail.getMinOfWorkFlow(overTimeRequest.rq_workflow_id);
-               
-                if (overTimeRequest.rq_hold_yn == "Y")
+                if (nextStatus == nextStatusbyUser)
                 {
-                   
-                    TempData["errorMessage"] = ("This Document is Hold by Someone,Click Hold Details For more Information");
-                    return RedirectToAction(nameof(Approval));
-                }
-                else 
+                    if (overTimeRequest.rq_hold_yn == "Y")
+                    {
+
+                        TempData["errorMessage"] = ("This Document is Hold by Someone,Click Hold Details For more Information");
+                        return RedirectToAction(nameof(Approval));
+                    }
+                    else
+                    {
+                        WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, nextStatus);
+                        WorkflowTracker workflowTracker = new WorkflowTracker();
+                        workflowTracker.wt_doc_id = documents.dc_id;
+                        workflowTracker.wt_fun_doc_id = overTimeRequest.rq_id;
+                        workflowTracker.wt_status = overTimeRequest.rq_status;
+                        workflowTracker.wt_workflow_id = overTimeRequest.rq_workflow_id;
+                        workflowTracker.wt_role_id = getCurrentUser().u_role_id;
+                        workflowTracker.wt_role_description = getCurrentUser().u_role_description;
+                        workflowTracker.wt_status_to = nextStatus;
+                        workflowTracker.wt_assign_role = workflowDetail.wd_role_id;
+                        workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
+                        workflowTracker.wt_approve_status = "Approved";
+                        workflowTracker.wt_cre_by = getCurrentUser().u_id;
+                        workflowTracker.wt_cre_by_name = getCurrentUser().u_name + "-" + getCurrentUser().u_full_name;
+                        workflowTracker.wt_cre_date = DateTime.Now;
+                        iworkflowTracker.Add(workflowTracker);
+                        overTimeRequest.rq_status = nextStatus;
+                        ioverTimeRequest.Update(overTimeRequest);
+
+                        return RedirectToAction(from);
+                    }
+                }else
                 {
-                    WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, nextStatus);
-                    WorkflowTracker workflowTracker = new WorkflowTracker();
-                    workflowTracker.wt_doc_id = documents.dc_id;
-                    workflowTracker.wt_fun_doc_id = overTimeRequest.rq_id;
-                    workflowTracker.wt_status = overTimeRequest.rq_status;
-                    workflowTracker.wt_workflow_id = overTimeRequest.rq_workflow_id;
-                    workflowTracker.wt_role_id = getCurrentUser().u_role_id;
-                    workflowTracker.wt_role_description = getCurrentUser().u_role_description;
-                    workflowTracker.wt_status_to = nextStatus;
-                    workflowTracker.wt_assign_role = workflowDetail.wd_role_id;
-                    workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
-                    workflowTracker.wt_approve_status = "Approved";
-                    workflowTracker.wt_cre_by = getCurrentUser().u_id;
-                    workflowTracker.wt_cre_by_name = getCurrentUser().u_name + "-" + getCurrentUser().u_full_name;
-                    workflowTracker.wt_cre_date = DateTime.Now;
-                    iworkflowTracker.Add(workflowTracker);
-                    overTimeRequest.rq_status = nextStatus;
-                    ioverTimeRequest.Update(overTimeRequest);
-                    
                     return RedirectToAction(from);
                 }
             }
@@ -330,9 +337,14 @@ namespace Overtime.Controllers
                 WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
                 WorkflowTracker workflowTracker = new WorkflowTracker();
                 Documents documents = idocuments.GetDocument(1);
-                int previousStatus = iworkflowDetail.getPreviousWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
-                WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, previousStatus);
+                int rolePriority = iworkflowDetail.getPriorityByRole(overTimeRequest.rq_workflow_id, getCurrentUser().u_role_id);
                 
+                int previousStatus = iworkflowDetail.getPreviousWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
+                int previousStatusByRole = iworkflowDetail.getPreviousWorkflow(overTimeRequest.rq_workflow_id, rolePriority);
+                if (previousStatus == previousStatusByRole)
+                {
+                    WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, previousStatus);
+
                     workflowTracker.wt_doc_id = documents.dc_id;
                     workflowTracker.wt_fun_doc_id = overTimeRequest.rq_id;
                     workflowTracker.wt_status = overTimeRequest.rq_status;
@@ -344,24 +356,25 @@ namespace Overtime.Controllers
                     workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
                     workflowTracker.wt_approve_status = "rejected";
                     workflowTracker.wt_cre_by = getCurrentUser().u_id;
-                    workflowTracker.wt_cre_by_name = getCurrentUser().u_name+"-"+ getCurrentUser().u_full_name;
+                    workflowTracker.wt_cre_by_name = getCurrentUser().u_name + "-" + getCurrentUser().u_full_name;
                     workflowTracker.wt_cre_date = DateTime.Now;
                     iworkflowTracker.Add(workflowTracker);
                     overTimeRequest.rq_status = previousStatus;
                     ioverTimeRequest.Update(overTimeRequest);
-                if (!reason.Equals(""))
-                {
-                    Insight insight = new Insight();
-                    insight.in_fun_doc_id = overTimeRequest.rq_id;
-                    insight.in_doc_id = overTimeRequest.rq_doc_id;
-                    insight.in_remarks = reason;
-                    insight.in_cre_by = getCurrentUser().u_id;
-                    insight.in_cre_date = DateTime.Now;
+                    if (!reason.Equals(""))
+                    {
+                        Insight insight = new Insight();
+                        insight.in_fun_doc_id = overTimeRequest.rq_id;
+                        insight.in_doc_id = overTimeRequest.rq_doc_id;
+                        insight.in_remarks = reason;
+                        insight.in_cre_by = getCurrentUser().u_id;
+                        insight.in_cre_date = DateTime.Now;
 
-                    iinsight.Add(insight);
-                }
+                        iinsight.Add(insight);
+                    }
                     return RedirectToAction("Approval");
-                
+                }
+                return RedirectToAction("Approval");
             }
 
         }
@@ -462,7 +475,13 @@ namespace Overtime.Controllers
 
             DateTime startDate = DateTime.Parse(array[0]);
             DateTime endDate = DateTime.Parse(array[1]+" 11:59:59 PM");
-            return View(ioverTimeRequest.getConsolidatedAsync(rq_dep_id, startDate, endDate, rq_cre_for));
+            IEnumerable<OvCustomModel> ovCustomModels = ioverTimeRequest.getConsolidatedAsync(rq_dep_id, startDate, endDate, rq_cre_for);
+            ConOverTime conOverTime =new  ConOverTime();
+            conOverTime.NumberOfDep=ovCustomModels.Select(x => x.emp_dep_id).Distinct().Count();
+            conOverTime.NumberOfEmp = ovCustomModels.Select(x => x.emp_id).Distinct().Count();
+            conOverTime.TotalWorkingHour = ovCustomModels.Select(x => x.emp_total).Sum();
+            ViewBag.ConOverTime = conOverTime;
+            return View(ovCustomModels);
         }
 
         [HttpPost]
@@ -655,6 +674,29 @@ namespace Overtime.Controllers
 
             }
 
+        }
+        public ActionResult consolidateByType()
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.RoleList = (irole.GetRoles);
+                ViewBag.UserList = (iuser.GetUsersList());
+                ViewBag.DepartmentList = (idepartment.GetDepartments);
+                return View();
+            }
+        }
+        [HttpPost]
+        public ActionResult consolidateReportByType(String reportrange,string type)
+        {
+            String[] array = reportrange.Split('-');
+
+            DateTime startDate = DateTime.Parse(array[0]);
+            DateTime endDate = DateTime.Parse(array[1] + " 11:59:59 PM");
+            return View(ioverTimeRequest.getConsolidateByType(startDate, endDate,type));
         }
 
     }

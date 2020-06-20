@@ -9,43 +9,75 @@
     <meta name="viewport" content="width=device-width" />
 </head>
 <body>
-
-    <table class="table table-striped" id="mytable">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.emp_name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.emp_full_name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.emp_dep_name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.work_hours)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.emp_unapproved)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.emp_total)
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-            <tr>
-                <td> @Html.DisplayFor(modelitem => item.emp_name)</td>
-                <td> @Html.DisplayFor(modelitem => item.emp_full_name)</td>
-                <td> @Html.DisplayFor(modelitem => item.emp_dep_name)</td>
-                <td> @Html.DisplayFor(modelitem => item.work_hours)</td>
-                <td> @Html.DisplayFor(modelitem => item.emp_unapproved)</td>
-                <td> @Html.DisplayFor(modelitem => item.emp_total)</td>
-            </tr>
-            }
-        </tbody>
-        </table>
+    <div class="card">
+        <div class="card-body" style="text-align: center">
+           
+                <div class="row">
+                    <div class="col" >
+                        <div class="card  mb-3">
+                            <div class="card-header"> <h5 class="card-title">Total Number Of Department</h5></div>
+                            <div class="card-body">
+                                <p class="card-text">@ViewBag.ConOverTime.NumberOfDep</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col" >
+                        <div class="card  mb-3">
+                            <div class="card-header"> <h5 class="card-title">Total Number Of Employees</h5></div>
+                                    <div class="card-body">
+                                        <p class="card-text">@ViewBag.ConOverTime.NumberOfEmp</p>
+                                    </div>
+                        </div>
+                    </div>
+                    <div class="col" >
+                        <div class="card  mb-3">
+                            <div class="card-header"> <h5 class="card-title">Total Working Hours</h5></div>
+                                    <div class="card-body">
+                                        <p class="card-text">@ViewBag.ConOverTime.TotalWorkingHour</p>
+                                    </div>
+                             </div>
+                    </div>
+                    </div>
+               </div> 
+        </div>
+       
+    <hr/>
+            <table class="table table-striped" id="mytable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.emp_name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.emp_full_name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.emp_dep_name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.work_hours)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.emp_unapproved)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.emp_total)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td> @Html.DisplayFor(modelitem => item.emp_name)</td>
+                            <td> @Html.DisplayFor(modelitem => item.emp_full_name)</td>
+                            <td> @Html.DisplayFor(modelitem => item.emp_dep_name)</td>
+                            <td> @Html.DisplayFor(modelitem => item.work_hours)</td>
+                            <td> @Html.DisplayFor(modelitem => item.emp_unapproved)</td>
+                            <td> @Html.DisplayFor(modelitem => item.emp_total)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 </body>
 </html>

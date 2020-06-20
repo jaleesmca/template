@@ -51,7 +51,7 @@ namespace Overtime.Repository
                          where r.r_active_yn =="Y"
                          select new User{u_id=u.u_id,
                                     u_name= u.u_name,
-                                    u_full_name=u.u_full_name,
+                                    u_full_name= u.u_name+" - "+u.u_full_name,
                                     u_password= u.u_password,
                                     u_role_id= u.u_role_id,
                                     u_role_description=r.r_description,
