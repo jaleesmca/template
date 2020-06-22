@@ -25,7 +25,7 @@ namespace Overtime.Repository
         private readonly IHold ihold;
         private readonly IInsight iinsight;
         public AndroidController(IOverTimeRequest _ioverTimeReques, IWorkflowDetail _iworkflowDetail,
-            IWorkflowTracker _iworkflowTracker, IDepartment _idepartment, IDocuments _idocuments, IRole _irole, IUser _iuser, IHold _ihold, IMenu _imenu,IInsight _iinsight)
+            IWorkflowTracker _iworkflowTracker, IDepartment _idepartment, IDocuments _idocuments, IRole _irole, IUser _iuser, IHold _ihold, IMenu _imenu, IInsight _iinsight)
         {
             ioverTimeRequest = _ioverTimeReques;
             iworkflowDetail = _iworkflowDetail;
@@ -39,12 +39,12 @@ namespace Overtime.Repository
             iinsight = _iinsight;
         }
         [HttpPost]
-        public String Login(string username,string password)
+        public String Login(string username, string password)
         {
             Result result = new Result();
-           
+
             var key = "shdfg2323g3g4j3879sdfh2j3237w8eh";
-           
+
             try
             {
                 if (username != null && password != null)
@@ -81,7 +81,7 @@ namespace Overtime.Repository
                         result.Message = "User Name and Password are incorrect!!!";
 
                         return JsonConvert.SerializeObject(result);
-                      
+
                     }
                 }
                 else
@@ -102,7 +102,7 @@ namespace Overtime.Repository
         }
 
         [HttpPost]
-        public String Approvals(int  u_id)
+        public String Approvals(int u_id)
         {
             Result result = new Result();
             try
@@ -114,24 +114,24 @@ namespace Overtime.Repository
                 result.Message = "Success";
                 return JsonConvert.SerializeObject(result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 result.Objects = null;
                 result.Message = ex.Message;
                 return JsonConvert.SerializeObject(result);
             }
-           
-            
+
+
         }
 
         [HttpPost]
         public String LiveMonitoring(int u_id)
         {
-           
+
             Result result = new Result();
             try
             {
-               
+
                 result.Objects = ioverTimeRequest.GetAllLiveOvertimeRequest(u_id);
                 result.Message = "Success";
                 return JsonConvert.SerializeObject(result);
@@ -154,7 +154,8 @@ namespace Overtime.Repository
                 result.Objects = ihold.GetHoldsbyDocument(rowid, doc_id);
                 result.Message = "Success";
                 return JsonConvert.SerializeObject(result);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
 
 
@@ -162,15 +163,16 @@ namespace Overtime.Repository
                 result.Message = ex.Message;
                 return JsonConvert.SerializeObject(result);
             }
-           
-            
+
+
         }
         [HttpPost]
-        public String Hold(int id, string reason,int u_id)
+        public String Hold(int id, string reason, int u_id)
         {
-           
+
             Result result = new Result();
-            try {
+            try
+            {
                 User user = iuser.GetUser(u_id);
                 if (user != null)
                 {
@@ -191,14 +193,15 @@ namespace Overtime.Repository
                     result.Objects = null;
                     result.Message = "Success";
                     return JsonConvert.SerializeObject(result);
-                }else
+                }
+                else
                 {
                     result.Objects = null;
                     result.Message = "You have No privilage to Hold";
                     return JsonConvert.SerializeObject(result);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
 
@@ -206,7 +209,7 @@ namespace Overtime.Repository
                 result.Message = ex.Message;
                 return JsonConvert.SerializeObject(result);
             }
-}
+        }
         [HttpPost]
         public String AllHold(int u_id)
         {
@@ -271,8 +274,9 @@ namespace Overtime.Repository
             }
         }
         [HttpPost]
-        public string Approve(int id, String reason,int u_id)
+        public string Approve(int id, String reason, int u_id)
         {
+           // reason = "";
             Result result = new Result();
             try
             {
@@ -286,7 +290,8 @@ namespace Overtime.Repository
                 int rolePriority = iworkflowDetail.getPriorityByRole(overTimeRequest.rq_workflow_id, role.r_id);
                 int nextStatusbyUser = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, rolePriority);
                 int MinofWorkflow = iworkflowDetail.getMinOfWorkFlow(overTimeRequest.rq_workflow_id);
-                if(nextStatus== nextStatusbyUser) {
+                if (nextStatus == nextStatusbyUser)
+                {
                     if (overTimeRequest.rq_hold_yn == "Y")
                     {
                         result.Objects = null;
@@ -313,17 +318,7 @@ namespace Overtime.Repository
                         iworkflowTracker.Add(workflowTracker);
                         overTimeRequest.rq_status = nextStatus;
                         ioverTimeRequest.Update(overTimeRequest);
-                        if (!reason.Equals(""))
-                        {
-                            Insight insight = new Insight();
-                            insight.in_fun_doc_id = overTimeRequest.rq_id;
-                            insight.in_doc_id = overTimeRequest.rq_doc_id;
-                            insight.in_remarks = reason;
-                            insight.in_cre_by = user.u_id;
-                            insight.in_cre_date = DateTime.Now;
-
-                            iinsight.Add(insight);
-                        }
+                      
                         result.Objects = null;
                         result.Message = "Success";
                         return JsonConvert.SerializeObject(result);
@@ -336,9 +331,9 @@ namespace Overtime.Repository
                     result.Message = "You have No privilage to Approve";
                     return JsonConvert.SerializeObject(result);
                 }
-               
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var st = new StackTrace(ex, true);
                 // Get the top stack frame
@@ -346,7 +341,7 @@ namespace Overtime.Repository
                 // Get the line number from the stack frame
                 var line = frame.GetFileLineNumber();
                 result.Objects = null;
-                result.Message = ex.Message+""+ line;
+                result.Message = ex.Message + "" + line;
 
                 return JsonConvert.SerializeObject(result);
             }
@@ -415,7 +410,8 @@ namespace Overtime.Repository
                         result.Message = "You have no priviage";
                         return JsonConvert.SerializeObject(result);
                     }
-                }else
+                }
+                else
                 {
                     result.Objects = null;
                     result.Message = "Please enter Remarks";
@@ -425,11 +421,11 @@ namespace Overtime.Repository
 
             catch (Exception ex)
             {
-              /*  var st = new StackTrace(ex, true);
-                // Get the top stack frame
-                var frame = st.GetFrame(0);
-                // Get the line number from the stack frame
-                var line = frame.GetFileLineNumber();*/
+                /*  var st = new StackTrace(ex, true);
+                  // Get the top stack frame
+                  var frame = st.GetFrame(0);
+                  // Get the line number from the stack frame
+                  var line = frame.GetFileLineNumber();*/
                 result.Objects = null;
                 result.Message = ex.Message;
 
@@ -451,13 +447,107 @@ namespace Overtime.Repository
             catch (Exception ex)
             {
                 result.Objects = iworkflowTracker.GetWorkflowTrackersbyDocument(rowid, doc_id, workflow);
-                result.Message = ex.Message ;
+                result.Message = ex.Message;
 
 
                 return JsonConvert.SerializeObject(result);
             }
 
-            
+
+        }
+        [HttpPost]
+        public String Replay(int hold_id, int u_id, string replay)
+        {
+            Result result = new Result();
+            try
+            {
+                User user = iuser.GetUser(u_id);
+                Hold hold = ihold.GetHold(hold_id);
+
+                if (replay == null)
+                {
+                    hold.h_replay = String.Empty;
+                }
+                else
+                {
+                    hold.h_replay = replay.Replace("  ", String.Empty);
+                }
+
+                hold.h_replay_by = user.u_id;
+                hold.h_replay_date = DateTime.Now;
+                ihold.Update(hold);
+                result.Objects = null;
+                result.Message = "Success";
+                return JsonConvert.SerializeObject(result);
+            }
+            catch (Exception ex)
+            {
+                result.Objects = null;
+                result.Message = ex.Message;
+                return JsonConvert.SerializeObject(result);
+            }
+        }
+        [HttpPost]
+        public String Insights(int id, int doc_id)
+        {
+            Result result = new Result();
+            try
+            {
+                
+                result.Objects = iinsight.GetInsightsByDocument(id, doc_id);
+                result.Message = "Success";
+                return JsonConvert.SerializeObject(result);
+            }
+            catch (Exception ex)
+            {
+                result.Objects = null;
+                result.Message = ex.Message;
+                return JsonConvert.SerializeObject(result);
+            }
+        }
+        [HttpPost]
+        public String AddInsight(int id, int doc_id,int u_id,String remarks)
+        {
+            Result result = new Result();
+            try
+            {
+               
+                Insight insight = new Insight();
+                insight.in_fun_doc_id = id;
+                insight.in_doc_id = doc_id;
+                insight.in_cre_by = 1;
+                insight.in_cre_date = DateTime.Now;
+                insight.in_remarks = remarks;
+                iinsight.Add(insight);
+                result.Objects = iinsight.GetInsightsByDocument(id, doc_id);
+                result.Message = "Success";
+                return JsonConvert.SerializeObject(result);
+            }
+            catch (Exception ex)
+            {
+                result.Objects = null;
+                result.Message = ex.Message;
+                return JsonConvert.SerializeObject(result);
+            }
+        }
+        [HttpPost]
+        public String Menu(int u_id, String type)
+        {
+            Result result = new Result();
+            try
+            {
+                User user = iuser.GetUser(u_id);
+                result.Objects = imenu.getMenulistByRoleAndType(user.u_role_id, type);
+                result.Message = "Success";
+                return JsonConvert.SerializeObject(result);
+            }
+            catch (Exception ex)
+            {
+                result.Objects = null;
+                result.Message = ex.Message;
+                return JsonConvert.SerializeObject(result);
+            }
         }
     }
+
 }
