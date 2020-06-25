@@ -19,11 +19,10 @@ namespace Overtime.Repository
         public DbSet<Workflow> Workflows { get; set; }
         public DbSet<WorkflowDetail> WorkflowDetails { get; set; }
         public DbSet<WorkflowTracker> workflowTrackers { get; set; }
-        public DbSet<OverTimeRequest> OverTimeRequest { get; set; }
+    
         public DbSet<Documents> Documents { get; set; }
 
-        public DbSet<Hold> Holds { get; set; }
-
+ 
         public DbSet<RoleMenu> RoleMenus { get; set; }
 
         public DbSet<Menu> Menus { get; set; }
@@ -32,6 +31,6 @@ namespace Overtime.Repository
 
         public DbSet<Insight> Insights { get; set; }
 
-        public DbSet<Overtime.Models.OvCustomModel> OvCustomModel { get; set; }
+      
     }
 }

@@ -45,9 +45,7 @@ namespace Overtime
             services.AddTransient<IWorkflow, WorkflowRepository>();
             services.AddTransient<IWorkflowDetail, WorkflowDetailRepository>();
             services.AddTransient<IWorkflowTracker,WorkflowTrackerRepository>();
-            services.AddTransient<IOverTimeRequest, OverTimeRequestRepository>();
             services.AddTransient<IDocuments, DocumentsRepository>();
-            services.AddTransient<IHold, HoldRepository>();
             services.AddTransient<IRoleMenu, RoleMenuRepository>();
             services.AddTransient<IMenu, MenuRepository>();
             services.AddTransient<IUserDepartment, UserDeapatmentRepository>();
